@@ -1,0 +1,33 @@
+version: '3.4'
+
+services:
+  booking-service:
+    build:
+      context: .
+      dockerfile: Services/CalHealth.BookingService/src/Dockerfile
+    depends_on: 
+      - booking-db
+
+  calendar-service:
+    build:
+      context: .
+      dockerfile: Services/CalHealth.CalendarService/src/Dockerfile
+    depends_on: 
+      - calendar-db
+
+  calendar-db:
+    image: "mcr.microsoft.com/mssql/server:2017-CU20-ubuntu-16.04"
+
+  booking-db:
+    image: "mcr.microsoft.com/mssql/server:2017-CU20-ubuntu-16.04"
+
+  blazor-server:
+    build:
+      context: .
+      dockerfile: Client/CalHealth.Blazor/Server/Dockerfile
+
+  rabbitmq:
+    build: 
+      context: .
+      dockerfile: Infrastructure/RabbitMQ/Dockerfile
+    restart: always
