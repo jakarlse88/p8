@@ -173,9 +173,19 @@ namespace CalHealth.BookingService.Data
                     .IsUnicode(false);
             });
 
-            OnModelCreatingPartial(modelBuilder);
+            modelBuilder.Entity<Gender>()
+                .HasData(
+                    new Gender
+                    {
+                        Id = 1,
+                        Name = "Male"
+                    },
+                    new Gender
+                    {
+                        Id = 2,
+                        Name = "Female"
+                    }
+            );
         }
-
-        partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
 }

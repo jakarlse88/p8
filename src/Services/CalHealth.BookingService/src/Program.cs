@@ -42,6 +42,7 @@ namespace CalHealth.BookingService
                     configuration.AddJsonFile(
                         $"appsettings.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json",
                         optional: true);
+                    configuration.AddEnvironmentVariables();
                 })
                 .UseSerilog();
 
