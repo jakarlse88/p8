@@ -8,7 +8,7 @@ namespace CalHealth.CalendarService.Models
         public Consultant()
         {
             Appointment = new HashSet<Appointment>();
-            ConsultantAvailabilityPeerWeek = new HashSet<ConsultantAvailabilityPeerWeek>();
+            ConsultantAvailabilityPerWeek = new HashSet<ConsultantAvailabilityPerWeek>();
         }
 
         public int Id { get; set; }
@@ -21,6 +21,6 @@ namespace CalHealth.CalendarService.Models
         public virtual Gender Gender { get; set; }
         public virtual Specialty Specialty { get; set; }
         public virtual ICollection<Appointment> Appointment { get; set; }
-        public virtual ICollection<ConsultantAvailabilityPeerWeek> ConsultantAvailabilityPeerWeek { get; set; }
+        public virtual ICollection<ConsultantAvailabilityPerWeek> ConsultantAvailabilityPerWeek { get; set; }
     }
 }

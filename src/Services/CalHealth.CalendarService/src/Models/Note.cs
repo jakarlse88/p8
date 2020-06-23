@@ -3,18 +3,18 @@ using System.Collections.Generic;
 
 namespace CalHealth.CalendarService.Models
 {
-    public partial class Week
+    public partial class Note
     {
-        public Week()
+        public Note()
         {
             Appointment = new HashSet<Appointment>();
-            ConsultantAvailabilityPerWeek = new HashSet<ConsultantAvailabilityPerWeek>();
         }
 
         public int Id { get; set; }
-        public byte Number { get; set; }
+        public DateTime TimeCreated { get; set; }
+        public DateTime TimeLastUpdated { get; set; }
+        public string Content { get; set; }
 
         public virtual ICollection<Appointment> Appointment { get; set; }
-        public virtual ICollection<ConsultantAvailabilityPerWeek> ConsultantAvailabilityPerWeek { get; set; }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CalHealth.CalendarService.Models
 {
-    public partial class ConsultantAvailabilityPeerWeek
+    public partial class ConsultantAvailabilityPerWeek
     {
         public int ConsultantId { get; set; }
         public int WeekId { get; set; }
@@ -11,5 +11,7 @@ namespace CalHealth.CalendarService.Models
         public bool Available { get; set; }
 
         public virtual Consultant Consultant { get; set; }
+        public virtual Day Day { get; set; }
+        public virtual Week Week { get; set; }
     }
 }
