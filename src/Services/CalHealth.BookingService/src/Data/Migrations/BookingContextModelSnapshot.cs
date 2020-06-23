@@ -72,6 +72,48 @@ namespace CalHealth.BookingService.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Allergy");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Type = "Latex"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Type = "Nuts"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Type = "Fruit"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Type = "Shellfish"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Type = "Egg"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Type = "Lactose"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Type = "Mould"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Type = "Antibiotics"
+                        });
                 });
 
             modelBuilder.Entity("CalHealth.BookingService.Models.Gender", b =>
@@ -81,7 +123,7 @@ namespace CalHealth.BookingService.Data.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("Name")
+                    b.Property<string>("Type")
                         .IsRequired()
                         .HasColumnType("varchar(10)")
                         .HasMaxLength(10)
@@ -95,35 +137,13 @@ namespace CalHealth.BookingService.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Name = "Male"
+                            Type = "Male"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Female"
+                            Type = "Female"
                         });
-                });
-
-            modelBuilder.Entity("CalHealth.BookingService.Models.Note", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(400)")
-                        .HasMaxLength(400);
-
-                    b.Property<int>("PatientId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PatientId");
-
-                    b.ToTable("Note");
                 });
 
             modelBuilder.Entity("CalHealth.BookingService.Models.Patient", b =>
@@ -240,16 +260,53 @@ namespace CalHealth.BookingService.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Religion");
-                });
 
-            modelBuilder.Entity("CalHealth.BookingService.Models.Note", b =>
-                {
-                    b.HasOne("CalHealth.BookingService.Models.Patient", "Patient")
-                        .WithMany("Note")
-                        .HasForeignKey("PatientId")
-                        .HasConstraintName("FK_Note_Patient")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Christianity (Protestant)"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Christianity (Roman Catholic)"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "Christianity (Orthodox)"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "Islam (Shia)"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "Islam (Sunni)"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Name = "Judaism"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Name = "Buddhism"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Name = "Hinduism"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Name = "Scientology"
+                        });
                 });
 
             modelBuilder.Entity("CalHealth.BookingService.Models.Patient", b =>

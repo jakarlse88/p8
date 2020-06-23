@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CalHealth.BookingService.Data.Migrations
 {
-    public partial class Test : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -43,7 +43,7 @@ namespace CalHealth.BookingService.Data.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(unicode: false, maxLength: 10, nullable: false)
+                    Type = table.Column<string>(unicode: false, maxLength: 10, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -103,26 +103,6 @@ namespace CalHealth.BookingService.Data.Migrations
                         principalTable: "Religion",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.SetNull);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Note",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    PatientId = table.Column<int>(nullable: false),
-                    Content = table.Column<string>(maxLength: 400, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Note", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Note_Patient",
-                        column: x => x.PatientId,
-                        principalTable: "Patient",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -198,19 +178,44 @@ namespace CalHealth.BookingService.Data.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Gender",
-                columns: new[] { "Id", "Name" },
-                values: new object[] { 1, "Male" });
+                table: "Allergy",
+                columns: new[] { "Id", "Type" },
+                values: new object[,]
+                {
+                    { 1, "Latex" },
+                    { 2, "Nuts" },
+                    { 3, "Fruit" },
+                    { 4, "Shellfish" },
+                    { 5, "Egg" },
+                    { 6, "Lactose" },
+                    { 7, "Mould" },
+                    { 8, "Antibiotics" }
+                });
 
             migrationBuilder.InsertData(
                 table: "Gender",
-                columns: new[] { "Id", "Name" },
-                values: new object[] { 2, "Female" });
+                columns: new[] { "Id", "Type" },
+                values: new object[,]
+                {
+                    { 2, "Female" },
+                    { 1, "Male" }
+                });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Note_PatientId",
-                table: "Note",
-                column: "PatientId");
+            migrationBuilder.InsertData(
+                table: "Religion",
+                columns: new[] { "Id", "Name" },
+                values: new object[,]
+                {
+                    { 8, "Hinduism" },
+                    { 1, "Christianity (Protestant)" },
+                    { 2, "Christianity (Roman Catholic)" },
+                    { 3, "Christianity (Orthodox)" },
+                    { 4, "Islam (Shia)" },
+                    { 5, "Islam (Sunni)" },
+                    { 6, "Judaism" },
+                    { 7, "Buddhism" },
+                    { 9, "Scientology" }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Patient_GenderId",
@@ -240,9 +245,6 @@ namespace CalHealth.BookingService.Data.Migrations
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "Note");
-
             migrationBuilder.DropTable(
                 name: "PatientAddress");
 

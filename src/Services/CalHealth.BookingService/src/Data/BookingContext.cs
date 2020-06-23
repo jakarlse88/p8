@@ -19,7 +19,6 @@ namespace CalHealth.BookingService.Data
         public virtual DbSet<Address> Address { get; set; }
         public virtual DbSet<Allergy> Allergy { get; set; }
         public virtual DbSet<Gender> Gender { get; set; }
-        public virtual DbSet<Note> Note { get; set; }
         public virtual DbSet<Patient> Patient { get; set; }
         public virtual DbSet<PatientAddress> PatientAddress { get; set; }
         public virtual DbSet<PatientAllergy> PatientAllergy { get; set; }
@@ -69,26 +68,18 @@ namespace CalHealth.BookingService.Data
 
             modelBuilder.Entity<Gender>(entity =>
             {
-                entity.Property(e => e.Name)
+                entity.Property(e => e.Type)
                     .IsRequired()
                     .HasMaxLength(10)
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<Note>(entity =>
-            {
-                entity.Property(e => e.Content)
-                    .IsRequired()
-                    .HasMaxLength(400);
-
-                entity.HasOne(d => d.Patient)
-                    .WithMany(p => p.Note)
-                    .HasForeignKey(d => d.PatientId)
-                    .HasConstraintName("FK_Note_Patient");
-            });
-
             modelBuilder.Entity<Patient>(entity =>
             {
+                entity.HasIndex(e => e.GenderId);
+
+                entity.HasIndex(e => e.ReligionId);
+
                 entity.Property(e => e.DateOfBirth).HasColumnType("datetime");
 
                 entity.Property(e => e.FirstName)
@@ -115,6 +106,8 @@ namespace CalHealth.BookingService.Data
             {
                 entity.HasKey(e => new { e.PatientId, e.AddressId });
 
+                entity.HasIndex(e => e.AddressId);
+
                 entity.HasOne(d => d.Address)
                     .WithMany(p => p.PatientAddress)
                     .HasForeignKey(d => d.AddressId)
@@ -130,6 +123,8 @@ namespace CalHealth.BookingService.Data
             {
                 entity.HasKey(e => new { e.PatientId, e.AllergyId });
 
+                entity.HasIndex(e => e.AllergyId);
+
                 entity.HasOne(d => d.Allergy)
                     .WithMany(p => p.PatientAllergy)
                     .HasForeignKey(d => d.AllergyId)
@@ -144,6 +139,8 @@ namespace CalHealth.BookingService.Data
             modelBuilder.Entity<PatientPhoneNumber>(entity =>
             {
                 entity.HasKey(e => new { e.PatientId, e.PhoneNumberId });
+
+                entity.HasIndex(e => e.PhoneNumberId);
 
                 entity.HasOne(d => d.Patient)
                     .WithMany(p => p.PatientPhoneNumber)
@@ -173,18 +170,126 @@ namespace CalHealth.BookingService.Data
                     .IsUnicode(false);
             });
 
-            modelBuilder.Entity<Gender>()
-                .HasData(
-                    new Gender
-                    {
-                        Id = 1,
-                        Name = "Male"
-                    },
-                    new Gender
-                    {
-                        Id = 2,
-                        Name = "Female"
-                    }
+            OnModelCreatingPartial(modelBuilder);
+        }
+
+        private void OnModelCreatingPartial(ModelBuilder modelBuilder)
+        {
+            PopulateAllergy(modelBuilder);
+            PopulateReligion(modelBuilder);
+            PopulateGender(modelBuilder);
+        }
+
+        private static void PopulateGender(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Gender>().HasData(
+                new Gender
+                {
+                    Id = 1,
+                    Type = "Male"
+                },
+                new Gender
+                {
+                    Id = 2,
+                    Type = "Female"
+                }
+            );
+        }
+
+        private static void PopulateReligion(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Religion>().HasData(
+                new Religion
+                {
+                    Id = 1,
+                    Name = "Christianity (Protestant)"
+                },
+                new Religion
+                {
+                    Id = 2,
+                    Name = "Christianity (Roman Catholic)"
+                },
+                new Religion
+                {
+                    Id = 3,
+                    Name = "Christianity (Orthodox)"
+                },
+                new Religion
+                {
+                    Id = 4,
+                    Name = "Islam (Shia)"
+                },
+                new Religion
+                {
+                    Id = 5,
+                    Name = "Islam (Sunni)"
+                },
+                new Religion
+                {
+                    Id = 6,
+                    Name = "Judaism"
+                },
+                new Religion
+                {
+                    Id = 7,
+                    Name = "Buddhism"
+                },
+                new Religion
+                {
+                    Id = 8,
+                    Name = "Hinduism"
+                },
+                new Religion
+                {
+                    Id = 9,
+                    Name = "Scientology"
+                }
+            );
+        }
+
+        private static void PopulateAllergy(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Allergy>().HasData(
+                new Allergy
+                {
+                    Id = 1,
+                    Type = "Latex"
+                },
+                new Allergy
+                {
+                    Id = 2,
+                    Type = "Nuts"
+                },
+                new Allergy
+                {
+                    Id = 3,
+                    Type = "Fruit"
+                },
+                new Allergy
+                {
+                    Id = 4,
+                    Type = "Shellfish"
+                },
+                new Allergy
+                {
+                    Id = 5,
+                    Type = "Egg"
+                },
+                new Allergy
+                {
+                    Id = 6,
+                    Type = "Lactose"
+                },
+                new Allergy
+                {
+                    Id = 7,
+                    Type = "Mould"
+                },
+                new Allergy
+                {
+                    Id = 8,
+                    Type = "Antibiotics"
+                }
             );
         }
     }
