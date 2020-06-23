@@ -31,3 +31,15 @@ services:
       context: .
       dockerfile: Infrastructure/RabbitMQ/Dockerfile
     restart: always
+
+volumes:
+  rabbitmq:
+  calendar-db-sqldata:
+    external: false
+  calendar-db-sqluser:
+    external: false
+  booking-db-sqldata:
+    external: false
+  booking-db-sqluser:
+    external: false
+    
