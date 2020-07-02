@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CalHealth.CalendarService.Models
 {
-    public partial class Consultant
+    public class Consultant
     {
         public Consultant()
         {
@@ -18,9 +18,9 @@ namespace CalHealth.CalendarService.Models
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
 
-        public virtual Gender Gender { get; set; }
-        public virtual Specialty Specialty { get; set; }
-        public virtual ICollection<Appointment> Appointment { get; set; }
-        public virtual ICollection<ConsultantAvailabilityPerWeek> ConsultantAvailabilityPerWeek { get; set; }
+        public Gender Gender { get; set; }
+        public Specialty Specialty { get; set; }
+        public ICollection<Appointment> Appointment { get; set; }
+        public ICollection<ConsultantAvailabilityPerWeek> ConsultantAvailabilityPerWeek { get; set; }
     }
 }

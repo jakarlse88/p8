@@ -15,6 +15,17 @@ namespace CalHealth.CalendarService.Infrastructure
 {
     internal static class ApplicationBuilderExtensions
     {
+        internal static IApplicationBuilder UseSwaggerUI(this IApplicationBuilder app)
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Californian Health Calendar Service API 1.0");
+                c.RoutePrefix = string.Empty;
+            });
+
+            return app;
+        }
         internal static IApplicationBuilder ApplyMigrations(this IApplicationBuilder app)
         {
             Log.Information("Applying migrations. This may take a moment.");

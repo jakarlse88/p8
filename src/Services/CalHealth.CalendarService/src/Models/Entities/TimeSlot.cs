@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CalHealth.CalendarService.Models
 {
-    public partial class TimeSlot
+    public class TimeSlot
     {
         public TimeSlot()
         {
@@ -14,6 +14,6 @@ namespace CalHealth.CalendarService.Models
         public DateTime StartTime { get; set; }
         public DateTime EndTime { get; set; }
 
-        public virtual ICollection<Appointment> Appointment { get; set; }
+        public ICollection<Appointment> Appointment { get; set; }
     }
 }

@@ -6,6 +6,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using AutoMapper;
+using CalHealth.CalendarService.Infrastructure.Extensions;
+using CalHealth.CalendarService.Repositories;
+using CalHealth.CalendarService.Repositories.Interfaces;
 
 namespace CalHealth.CalendarService
 {
@@ -16,13 +20,20 @@ namespace CalHealth.CalendarService
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<CalendarContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+
+            services
+                .AddAutoMapper(typeof(Startup))
+                .ConfigureDbContext(Configuration)
+                .AddRepositoryLayer()
+                .AddServiceLayer()
+                .ConfigureSwagger()
+                .ConfigureCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,12 +47,11 @@ namespace CalHealth.CalendarService
             app.ApplyMigrations()
                 .UseHttpsRedirection()
                 .UseCustomExceptionHandler()
+                .UseCors()
                 .UseRouting()
                 .UseAuthorization()
-                .UseEndpoints(endpoints =>
-                {
-                    endpoints.MapControllers();
-                });
+                .UseSwaggerUI()
+                .UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

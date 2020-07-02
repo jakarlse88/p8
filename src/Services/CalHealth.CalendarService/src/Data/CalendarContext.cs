@@ -195,10 +195,7 @@ namespace CalHealth.CalendarService.Data
                                 ConsultantId = consultant,
                                 WeekId = week,
                                 DayId = day,
-                                Available =
-                                    randomInt >= 50
-                                    ? true
-                                    : false
+                                Available = randomInt >= 50
                             }
                         );
                     }
