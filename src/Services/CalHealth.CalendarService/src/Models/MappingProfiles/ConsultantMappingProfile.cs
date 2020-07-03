@@ -7,7 +7,11 @@ namespace CalHealth.CalendarService.Models.MappingProfiles
     {
         public ConsultantMappingProfile()
         {
-            CreateMap<Consultant, ConsultantDTO>();
+            CreateMap<Consultant, ConsultantDTO>()
+                .ForMember(dto => dto.Specialty, 
+                    action => action.MapFrom(
+                        (entity, dto) => entity.Specialty.Type));
+
             CreateMap<ConsultantDTO, Consultant>();
         }
     }
