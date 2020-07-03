@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace CalHealth.CalendarService.Repositories.Interfaces
 {
     public interface IRepositoryBase<TEntity>
     {
-        Task<IEnumerable<TEntity>> GetAllAsync();
+        IQueryable<TEntity> Get(Expression<Func<TEntity, bool>> predicate);
     }
 }

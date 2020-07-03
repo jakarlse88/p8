@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
 using CalHealth.CalendarService.Data;
 using CalHealth.CalendarService.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
 
 namespace CalHealth.CalendarService.Repositories
 {
@@ -16,9 +16,23 @@ namespace CalHealth.CalendarService.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        /// <summary>
+        /// Gets every occurence of a given entity that satisfy
+        /// a supplied predicate.
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        public IQueryable<TEntity> Get(Expression<Func<TEntity, bool>> predicate)
         {
-            var result = await _context.Set<TEntity>().ToListAsync();
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            var result = _context
+                .Set<TEntity>()
+                .Where(predicate);
 
             return result;
         }
