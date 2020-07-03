@@ -1,12 +1,10 @@
 using System;
 using System.Net.Http;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Text;
+using CalHealth.Blazor.Client.Services;
+using CalHealth.Blazor.Client.Services.Interfaces;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace CalHealth.Blazor.Client
 {
@@ -18,6 +16,7 @@ namespace CalHealth.Blazor.Client
             builder.RootComponents.Add<App>("app");
 
             builder.Services.AddTransient(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
+            builder.Services.AddTransient<IApiRequestService, ApiRequestService>();
 
             await builder.Build().RunAsync();
         }

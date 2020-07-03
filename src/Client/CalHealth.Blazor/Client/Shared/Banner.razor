@@ -1,0 +1,38 @@
+﻿@namespace CalHealth.Blazor.Client.Shared
+
+<section id="banner" class="banner">
+    <div class="bg-color">
+        <div class="container">
+
+            <div class="row d-flex justify-content-center">
+                <div class="banner-info">
+
+                    <div class="banner-text text-center">
+                        <h1 class="white"><i class="fas fa-heartbeat fa-sm"></i> CALIFORNIAN HEALTH</h1>
+                        <p>Healthcare at your desk</p>
+                        @{
+                            if (IsHomePage)
+                            {
+                                <a href="/Booking" class="btn btn-appoint">Book an Appointment</a>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+
+            @{
+                if (IsHomePage)
+                {
+                    <div class="row d-flex justify-content-center" style="max-height: 100px">
+                        <div class="overlay-detail text-center">
+                            <a href="#" @onclick="@(e => NavigateToAnchor("service"))">
+                                <i class="fa fa-angle-down"></i>
+                            </a>
+                        </div>
+                    </div>
+                }
+            }
+
+        </div>
+    </div>
+</section>
