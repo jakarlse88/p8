@@ -28,7 +28,7 @@ namespace CalHealth.CalendarService.Test.RepositoryTests
             var repository = new TimeSlotRepository(mockContext.Object); 
             
             // Act
-            var result = await repository.GetAll();
+            var result = await repository.GetAllAsync();
 
             // Assert
             Assert.NotNull(result);
@@ -50,7 +50,7 @@ namespace CalHealth.CalendarService.Test.RepositoryTests
             var repository = new TimeSlotRepository(mockContext.Object); 
             
             // Act
-            var result = await repository.GetAll();
+            var result = await repository.GetAllAsync();
 
             // Assert
             Assert.NotNull(result);

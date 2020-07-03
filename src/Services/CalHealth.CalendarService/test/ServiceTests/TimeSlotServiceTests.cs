@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using CalHealth.CalendarService.Models;
-using CalHealth.CalendarService.Repositories;
+using CalHealth.CalendarService.Models.MappingProfiles;
 using CalHealth.CalendarService.Repositories.Interfaces;
 using CalHealth.CalendarService.Services;
 using Moq;
@@ -13,6 +14,15 @@ namespace CalHealth.CalendarService.Test.ServiceTests
 {
     public class TimeSlotServiceTests
     {
+        private readonly IMapper _mapper;
+
+        public TimeSlotServiceTests()
+        {
+            var config = new MapperConfiguration(opt => { opt.AddProfile(new TimeSlotMappingProfile()); });
+
+            _mapper = config.CreateMapper();
+        }
+
         [Fact]
         public async Task TestGetAll()
         {
@@ -21,10 +31,10 @@ namespace CalHealth.CalendarService.Test.ServiceTests
             
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork
-                .Setup(x => x.TimeSlotRepository.GetAll())
+                .Setup(x => x.TimeSlotRepository.GetAllAsync())
                 .ReturnsAsync(timeSlots);
 
-            var service = new TimeSlotService(mockUnitOfWork.Object, null);
+            var service = new TimeSlotService(mockUnitOfWork.Object, _mapper);
             
             // Act
             var result = await service.GetAllAsDTOAsync();
@@ -42,10 +52,10 @@ namespace CalHealth.CalendarService.Test.ServiceTests
             
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork
-                .Setup(x => x.TimeSlotRepository.GetAll())
+                .Setup(x => x.TimeSlotRepository.GetAllAsync())
                 .ReturnsAsync(timeSlots);
 
-            var service = new TimeSlotService(mockUnitOfWork.Object, null);
+            var service = new TimeSlotService(mockUnitOfWork.Object, _mapper);
             
             // Act
             var result = await service.GetAllAsDTOAsync();

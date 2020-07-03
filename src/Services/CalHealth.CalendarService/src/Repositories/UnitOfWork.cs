@@ -8,6 +8,7 @@ namespace CalHealth.CalendarService.Repositories
     {
         private readonly CalendarContext _context;
         private ITimeSlotRepository _timeSlotRepository;
+        private IConsultantRepository _consultantRepository;
 
         public UnitOfWork(CalendarContext context)
         {
@@ -16,7 +17,10 @@ namespace CalHealth.CalendarService.Repositories
 
         public ITimeSlotRepository TimeSlotRepository =>
             _timeSlotRepository ??= new TimeSlotRepository(_context);
-        
+
+        public IConsultantRepository ConsultantRepository =>
+            _consultantRepository ??= new ConsultantRepository(_context);
+
         public async Task CommitAsync()
         {
             await _context.SaveChangesAsync();

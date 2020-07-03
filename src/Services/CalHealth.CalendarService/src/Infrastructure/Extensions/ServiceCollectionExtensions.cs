@@ -24,7 +24,9 @@ namespace CalHealth.CalendarService.Infrastructure.Extensions
         
         internal static IServiceCollection AddServiceLayer(this IServiceCollection services)
         {
-            services.AddTransient<ITimeSlotService, TimeSlotService>();
+            services
+                .AddTransient<ITimeSlotService, TimeSlotService>()
+                .AddTransient<IConsultantService, ConsultantService>();
 
             return services;
         }

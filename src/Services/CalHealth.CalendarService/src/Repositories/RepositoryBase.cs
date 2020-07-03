@@ -16,7 +16,7 @@ namespace CalHealth.CalendarService.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAll()
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
         {
             var result = await _context.Set<TEntity>().ToListAsync();
 

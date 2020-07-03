@@ -6,6 +6,6 @@ namespace CalHealth.CalendarService.Repositories.Interfaces
 {
     public interface ITimeSlotRepository
     {
-        Task<IEnumerable<TimeSlot>> GetAll();
+        Task<IEnumerable<TimeSlot>> GetAllAsync();
     }
 }

@@ -11,7 +11,7 @@ namespace CalHealth.CalendarService.Test.RepositoryTests
     public class UnitOfWorkTests
     {
         [Fact]
-        public void TestTimeSlotRepository()
+        public void TestTimeSlotRepositoryProperty()
         {
             // Arrange
             var unitOfWork = new UnitOfWork(Mock.Of<CalendarContext>());
@@ -23,6 +23,21 @@ namespace CalHealth.CalendarService.Test.RepositoryTests
             Assert.NotNull(result);
             Assert.IsAssignableFrom<ITimeSlotRepository>(result);
         }
+
+        [Fact]
+        public void TestConsultantRepositoryProperty()
+        {
+            // Arrange
+            var unitOfWork = new UnitOfWork(Mock.Of<CalendarContext>());
+
+            // Act
+            var result = unitOfWork.ConsultantRepository;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsAssignableFrom<IConsultantRepository>(result);
+        }
+
 
         [Fact]
         public async Task TestCommitAsync()

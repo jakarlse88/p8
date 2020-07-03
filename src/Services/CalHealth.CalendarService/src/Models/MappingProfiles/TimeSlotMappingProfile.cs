@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using CalHealth.CalendarService.Models;
 using CalHealth.CalendarService.Models.DTOs;
 
-namespace CalHealth.CalendarService.Infrastructure.MappingProfiles
+namespace CalHealth.CalendarService.Models.MappingProfiles
 {
     public class TimeSlotMappingProfile : Profile
     {

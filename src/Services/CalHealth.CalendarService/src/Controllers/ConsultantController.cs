@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using CalHealth.CalendarService.Models;
+using CalHealth.CalendarService.Models.DTOs;
 using CalHealth.CalendarService.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,28 +10,26 @@ namespace CalHealth.CalendarService.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class TimeSlotController : ControllerBase
+    public class ConsultantController : ControllerBase
     {
-        private readonly ITimeSlotService _timeSlotService;
+        private readonly IConsultantService _consultantService;
 
-        public TimeSlotController(ITimeSlotService timeSlotService)
+        public ConsultantController(IConsultantService consultantService)
         {
-            _timeSlotService = timeSlotService;
+            _consultantService = consultantService;
         }
 
         /// <summary>
-        /// Gets all <see cref="TimeSlot"/> entities.
+        /// Gets all <see cref="Consultant"/> entities.
         /// </summary>
         /// <returns></returns>
-        /// <response code="200">Request OK, return results.</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<ActionResult<IEnumerable<TimeSlot>>> Get()
+        public async Task<ActionResult<IEnumerable<ConsultantDTO>>> Get()
         {
-            var result = await _timeSlotService.GetAllAsDTOAsync();
+            var result = await _consultantService.GetAllAsDTOAsync();
 
             return Ok(result);
         }
-        
     }
 }
