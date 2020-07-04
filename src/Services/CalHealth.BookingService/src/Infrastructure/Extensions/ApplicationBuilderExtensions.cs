@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using CalHealth.BookingService.Data;
+using CalHealth.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
@@ -10,10 +11,22 @@ using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Serilog;
 
-namespace CalHealth.Infrastructure.Extensions
+namespace CalHealth.BookingService.Infrastructure
 {
     internal static class ApplicationBuilderExtensions
     {
+        internal static IApplicationBuilder UseSwaggerUI(this IApplicationBuilder app)
+        {
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Californian Health Booking Service API 1.0");
+                c.RoutePrefix = string.Empty;
+            });
+
+            return app;
+        }
+        
         internal static IApplicationBuilder ApplyMigrations(this IApplicationBuilder app)
         {
             Log.Information("Applying migrations. This may take a moment.");

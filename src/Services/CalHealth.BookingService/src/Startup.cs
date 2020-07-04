@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CalHealth.BookingService.Data;
-using CalHealth.Infrastructure.Extensions;
+using CalHealth.BookingService.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,7 +29,12 @@ namespace CalHealth.BookingService
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddDbContext<BookingContext>(opt => opt.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services
+                .ConfigureDbContext(Configuration)
+                .AddRepositoryLayer()
+                .AddServiceLayer()
+                .ConfigureCors()
+                .ConfigureSwagger();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -45,6 +50,7 @@ namespace CalHealth.BookingService
                 .UseHttpsRedirection()
                 .UseRouting()
                 .UseAuthorization()
+                .UseSwaggerUI()
                 .UseEndpoints(endpoints =>
                 {
                     endpoints.MapControllers();

@@ -71,7 +71,6 @@ namespace CalHealth.CalendarService.Test.ControllerTests
                 {
                     Id = 1,
                     GenderId = 2,
-                    SpecialtyId = 2,
                     FirstName = "Sophie",
                     LastName = "Harrington",
                     DateOfBirth = new DateTime(1985, 5, 24)
@@ -80,7 +79,6 @@ namespace CalHealth.CalendarService.Test.ControllerTests
                 {
                     Id = 2,
                     GenderId = 1,
-                    SpecialtyId = 5,
                     FirstName = "Kilian",
                     LastName = "Lopez",
                     DateOfBirth = new DateTime(1967, 2, 5)
@@ -89,7 +87,6 @@ namespace CalHealth.CalendarService.Test.ControllerTests
                 {
                     Id = 3,
                     GenderId = 2,
-                    SpecialtyId = 1,
                     FirstName = "Aya",
                     LastName = "Ahmed",
                     DateOfBirth = new DateTime(1990, 1, 9)
@@ -98,7 +95,6 @@ namespace CalHealth.CalendarService.Test.ControllerTests
                 {
                     Id = 4,
                     GenderId = 2,
-                    SpecialtyId = 2,
                     FirstName = "Hyeo-jin",
                     LastName = "Lim",
                     DateOfBirth = new DateTime(1980, 2, 29)
@@ -107,7 +103,6 @@ namespace CalHealth.CalendarService.Test.ControllerTests
                 {
                     Id = 5,
                     GenderId = 1,
-                    SpecialtyId = 7,
                     FirstName = "Lasse",
                     LastName = "Hansson",
                     DateOfBirth = new DateTime(1977, 12, 7)
@@ -116,7 +111,6 @@ namespace CalHealth.CalendarService.Test.ControllerTests
                 {
                     Id = 6,
                     GenderId = 1,
-                    SpecialtyId = 4,
                     FirstName = "Abe",
                     LastName = "Shiraishi",
                     DateOfBirth = new DateTime(1973, 9, 5)
