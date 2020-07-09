@@ -14,6 +14,9 @@ namespace CalHealth.Blazor.Client.Shared
 
         protected override void OnInitialized()
         {
+            IsHomePage = 
+                !NavigationManager.Uri.Contains("booking", StringComparison.OrdinalIgnoreCase);
+            
             NavigationManager.LocationChanged += HandleUriChanged;
         }
 

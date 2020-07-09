@@ -10,7 +10,7 @@ namespace CalHealth.Blazor.Client.Pages.ConsultantOverview
     public partial class ConsultantOverview
     {
         [Inject] private IApiRequestService ApiRequestService { get; set; }
-        private const string RequestUrl = "https://localhost:8085/api/Consultant";
+        private const string RequestUrl = "https://localhost:8088/gateway/consultant";
         private IEnumerable<ConsultantViewModel> Consultants { get; set; }
         private APIOperationStatus Status { get; set; }
 

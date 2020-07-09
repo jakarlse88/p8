@@ -474,6 +474,17 @@ contact us
     font-size: 13px;
 }
 
+.validation-message {
+    color: red;
+    margin: 0 0 20px;
+    font-weight: 400;
+    font-size: 13px;
+}
+
+.list-group-item {
+    border: none !important;
+}
+
 #sendmessage {
     color: green;
     border: 1px solid green;

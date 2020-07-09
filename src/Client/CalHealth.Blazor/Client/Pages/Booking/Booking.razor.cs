@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Net.Http.Json;
 using System.Threading.Tasks;
 using CalHealth.Blazor.Client.Models;
 using CalHealth.Blazor.Client.Services.Interfaces;
@@ -14,12 +12,17 @@ namespace CalHealth.Blazor.Client.Pages.Booking
     {
         [Inject] private IApiRequestService ApiRequestService { get; set; }
         [Inject] private NavigationManager NavigationManager { get; set; }
-        private BookingViewModel Model { get; set; }
-        private IEnumerable<ConsultantViewModel> Consultants { get; set; }
-        private EditContext DateEditContext { get; set; }
+        private BookingDTO InputModel { get; set; }
+        private BookingViewModel ViewModel { get; set; }
+        private EditContext ScheduleEditContext { get; set; }
+        private EditContext PatientEditContext { get; set; }
+        private bool ConsultantIsValid { get; set; }
         private bool DateIsValid { get; set; }
-        private IEnumerable<TimeSlotViewModel> TimeSlots { get; set; }
+        private bool PatientIsValid { get; set; }
         private APIOperationStatus Status { get; set; }
+        private bool FormIsValid => ConsultantIsValid 
+                                    && DateIsValid 
+                                    && PatientIsValid;
 
         /// <summary>
         /// Component initialization logic.
@@ -27,15 +30,58 @@ namespace CalHealth.Blazor.Client.Pages.Booking
         /// <returns></returns>
         protected override async Task OnInitializedAsync()
         {
-            Model = new BookingViewModel { Date = DateTime.Today };
-            Consultants = new List<ConsultantViewModel>();
-            DateEditContext = new EditContext(Model.Date);
-            DateEditContext.OnFieldChanged += HandleEditContextFieldChanged;
+            Status = APIOperationStatus.GET_Pending;
+
+            ViewModel = new BookingViewModel();
+            InputModel = new BookingDTO();
+
+            ConsultantIsValid = false;
+            PatientIsValid = false;
+
+            PatientEditContext = new EditContext(InputModel.Patient);
+            PatientEditContext.OnFieldChanged += HandlePatientEditContextFieldChanged;
+
+            ScheduleEditContext = new EditContext(InputModel.Schedule);
+            ScheduleEditContext.OnFieldChanged += HandleDateEditContextFieldChanged;
+            ScheduleEditContext.OnFieldChanged += HandleConsultantFieldChanged;
 
             try
             {
-                Consultants = await FetchConsultants();
-                TimeSlots = await FetchTimeSlots();
+                ViewModel = await FetchBookingInfo();
+                ViewModel.Allergies = new List<AllergyViewModel>
+                {
+                    new AllergyViewModel
+                    {
+                        Id = 1,
+                        Type = "Gluten"
+                    },
+                    new AllergyViewModel
+                    {
+                        Id = 2,
+                        Type = "Lactose"
+                    },
+                    new AllergyViewModel
+                    {
+                        Id = 3,
+                        Type = "Latex"
+                    },
+                    new AllergyViewModel
+                    {
+                        Id = 1,
+                        Type = "Gluten"
+                    },
+                    new AllergyViewModel
+                    {
+                        Id = 2,
+                        Type = "Lactose"
+                    },
+                    new AllergyViewModel
+                    {
+                        Id = 3,
+                        Type = "Latex"
+                    }
+                };
+                Status = APIOperationStatus.GET_Success;
             }
             catch (Exception e)
             {
@@ -49,24 +95,19 @@ namespace CalHealth.Blazor.Client.Pages.Booking
 
         private async Task HandleSubmit()
         {
-            const string requestUrl = "https://localhost:8083/api/Booking";
+            const string requestUrl = "https://localhost:8088/gateway/appointment";
             Status = APIOperationStatus.POST_Pending;
             StateHasChanged();
 
-            var dto = new BookingDTO
-            {
-                ConsultantId = Model.ConsultantId,
-                Date = Model.Date,
-                TimeSlotId = Model.TimeSlotId
-            };
+            // TODO: Validation?
 
             try
             {
-                var result = await ApiRequestService.HandlePostRequest<BookingDTO>(requestUrl, dto);
+                var result = await ApiRequestService.HandlePostRequest(requestUrl, InputModel);
 
                 Status = APIOperationStatus.POST_Success;
                 StateHasChanged();
-                
+
                 // TODO: /Appointment/Id page?
                 // NavigationManager.NavigateTo(result.ConsultantId);
             }
@@ -77,35 +118,44 @@ namespace CalHealth.Blazor.Client.Pages.Booking
             }
         }
 
-        private async Task<IEnumerable<ConsultantViewModel>> FetchConsultants()
+        private async Task<BookingViewModel> FetchBookingInfo()
         {
-            const string requestUrl = "https://localhost:8085/api/Consultant";
-        
+            const string requestUrl = "https://localhost:8088/gateway/booking-aggregate";
+
             var result =
-                await ApiRequestService.HandleGetRequest<IEnumerable<ConsultantViewModel>>(requestUrl);
+                await ApiRequestService.HandleGetRequest<BookingViewModel>(requestUrl);
 
             return result;
         }
 
-        private async Task<IEnumerable<TimeSlotViewModel>> FetchTimeSlots()
+        private void HandleDateEditContextFieldChanged(object sender, EventArgs ea)
         {
-            const string requestUrl = "https://localhost:8085/api/TimeSlot";
-            
-            var result = await ApiRequestService.HandleGetRequest<IEnumerable<TimeSlotViewModel>>(requestUrl);
-
-            return result;
-        }
-        
-        private void HandleEditContextFieldChanged(object sender, EventArgs args)
-        {
-            // We will likely have to perform some validation on the selected date against 
-            // consultant availability here at some point.
+            Console.WriteLine("asd");
+            // TODO: We will likely have to perform some validation on the selected date against consultant availability here at some point.
             DateIsValid = true;
+            
+            StateHasChanged();
         }
-        
+
+        private void HandleConsultantFieldChanged(object sender, EventArgs ea)
+        {
+            ConsultantIsValid = !string.IsNullOrWhiteSpace(InputModel.Schedule.ConsultantIdProxy)
+                                && InputModel.Schedule.ConsultantIdProxy != "0";
+            
+            StateHasChanged();
+        }
+
+        private void HandlePatientEditContextFieldChanged(object sender, EventArgs ea)
+        {
+            PatientIsValid = PatientEditContext.Validate();
+            StateHasChanged();
+        }
+
         public void Dispose()
         {
-            DateEditContext.OnFieldChanged -= HandleEditContextFieldChanged;
+            ScheduleEditContext.OnFieldChanged -= HandleDateEditContextFieldChanged;
+            PatientEditContext.OnFieldChanged -= HandlePatientEditContextFieldChanged;
+            ScheduleEditContext.OnFieldChanged -= HandleConsultantFieldChanged;
         }
     }
 }

@@ -4,8 +4,13 @@ namespace CalHealth.Blazor.Client.Models
 {
     public class BookingDTO
     {
-        public int TimeSlotId { get; set; }
-        public string ConsultantId { get; set; }
-        public DateTime Date { get; set; }
+        public BookingDTO()
+        {
+            Schedule = new ScheduleDTO();
+            Patient = new PatientDTO();
+        }
+
+        public ScheduleDTO Schedule { get; }
+        public PatientDTO Patient { get; }
     }
 }
