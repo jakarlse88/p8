@@ -1,7 +1,7 @@
 ﻿{
   "Routes": [
     {
-      "UpstreamPathTemplate": "/gateway/appointment",
+      "UpstreamPathTemplate": "/client-gw/appointment",
       "UpstreamHttpMethod": [
         "POST"
       ],
@@ -15,8 +15,8 @@
       ]
     },
     {
-      "Key": "Consultants",
-      "UpstreamPathTemplate": "/gateway/consultant",
+      "Key": "ConsultantList",
+      "UpstreamPathTemplate": "/client-gw/consultant",
       "UpstreamHttpMethod": [
         "GET"
       ],
@@ -34,8 +34,8 @@
       }
     },
     {
-      "Key": "TimeSlots",
-      "UpstreamPathTemplate": "/gateway/timeslot",
+      "Key": "TimeSlotList",
+      "UpstreamPathTemplate": "/client-gw/timeslot",
       "UpstreamHttpMethod": [
         "GET"
       ],
@@ -53,8 +53,8 @@
       }
     },
     {
-      "Key": "Religion",
-      "UpstreamPathTemplate": "/gateway/religion",
+      "Key": "ReligionList",
+      "UpstreamPathTemplate": "/client-gw/religion",
       "UpstreamHttpMethod": [
         "GET"
       ],
@@ -72,8 +72,8 @@
       }
     },
     {
-      "Key": "Allergy",
-      "UpstreamPathTemplate": "/gateway/allergy",
+      "Key": "AllergyList",
+      "UpstreamPathTemplate": "/client-gw/allergy",
       "UpstreamHttpMethod": [
         "GET"
       ],
@@ -91,8 +91,8 @@
       }
     },
     {
-      "Key": "Gender",
-      "UpstreamPathTemplate": "/gateway/gender",
+      "Key": "GenderList",
+      "UpstreamPathTemplate": "/client-gw/gender",
       "UpstreamHttpMethod": [
         "GET"
       ],
@@ -111,7 +111,7 @@
     },
     {
       "Key": "Patient",
-      "UpstreamPathTemplate": "/gateway/patient",
+      "UpstreamPathTemplate": "/client-gw/patient",
       "UpstreamHttpMethod": [
         "GET",
         "POST"
@@ -133,18 +133,13 @@
   "Aggregates": [
     {
       "RouteKeys": [
-        "Consultants",
-        "TimeSlots"
+        "ConsultantList",
+        "TimeSlotList",
+        "ReligionList",
+        "AllergyList",
+        "GenderList"
       ],
-      "UpstreamPathTemplate": "/gateway/booking-aggregate"
-    },
-    {
-      "RouteKeys": [
-        "Religion",
-        "Allergy",
-        "Gender"
-      ],
-      "UpstreamPathTemplate": "/gateway/patient-aggregate"
+      "UpstreamPathTemplate": "/client-gw/aggregate"
     }
   ],
   "GlobalConfiguration": {

@@ -1,10 +1,16 @@
-﻿@namespace CalHealth.Blazor.Client.Pages.Booking
+﻿@using CalHealth.Blazor.Client.Shared
+@namespace CalHealth.Blazor.Client.Pages.Booking
 @page "/Booking"
-
 
 <section class="section-padding">
 
 <div class="container">
+
+<div class="row d-flex flex-column justify-content-center align-content-center mb-4">
+    <h2 class="ser-title">Book an Appointment</h2>
+    <hr class="botm-line">
+</div>
+
 
 @{
     if (Status == APIOperationStatus.GET_Pending)
@@ -33,21 +39,16 @@
 @{
     if (Status == APIOperationStatus.GET_Success)
     {
-        <div class="row d-flex flex-column justify-content-center align-content-center mb-4">
-            <h2 class="ser-title">Book an Appointment</h2>
-            <hr class="botm-line">
-        </div>
-
         <EditForm EditContext="@ScheduleEditContext">
             <div class="form-row d-flex justify-content-center align-items-end mb-2">
 
                 <div class="col-8">
                     <div class="form-group">
                         <label for="consultant-select">Consultant</label>
-                        <InputSelect id="consultant-select" @bind-Value="@InputModel.Schedule.ConsultantIdProxy" class="form-control">
+                        <InputSelect id="consultant-select" @bind-Value="@FormModel.Schedule.ConsultantIdProxy" class="form-control">
                             <option value="0" disabled>Select a consultant</option>
                             @{
-                                foreach (var consultant in ViewModel.Consultants)
+                                foreach (var consultant in ViewModel.ConsultantList)
                                 {
                                     <option value="@consultant.Id.ToString()">@consultant.FirstName @consultant.LastName, @consultant.Specialty</option>
                                 }
@@ -73,7 +74,7 @@
                                        disabled="@(!ConsultantIsValid)"
                                        min="@formattedMinYear"
                                        max="@formattedMaxYear"
-                                       @bind-Value="@InputModel.Schedule.Date"
+                                       @bind-Value="@FormModel.Schedule.Date"
                                        placeholder="DD/MM/YYYY"
                                        class="form-control"/>
                         </div>
@@ -89,9 +90,9 @@
                                 disabled="@(!ConsultantIsValid)"
                                 id="date-select"
                                 class="form-control"
-                                @bind="@InputModel.Schedule.TimeSlotId">
+                                @bind="@FormModel.Schedule.TimeSlotId">
                                 <option value="0" disabled>Select a time</option>
-                                @foreach (var timeSlot in ViewModel.TimeSlots)
+                                @foreach (var timeSlot in ViewModel.TimeSlotList)
                                 {
                                     <option value="@timeSlot.Id">@timeSlot.StartTime.ToString("HH:mm") - @timeSlot.EndTime.ToString("HH:mm")</option>
                                 }
@@ -112,15 +113,15 @@
                 <div class="col-4">
                     <div class="form-group">
                         <label for="first-name-input">First Name</label>
-                        <InputText id="first-name-input" @bind-Value="@InputModel.Patient.FirstName" placeholder="Given Name" class="form-control"/>
-                        <ValidationMessage For="@(() => InputModel.Patient.FirstName)"/>
+                        <InputText id="first-name-input" @bind-Value="@FormModel.Patient.FirstName" placeholder="Given Name" class="form-control"/>
+                        <ValidationMessage For="@(() => FormModel.Patient.FirstName)"/>
                     </div>
                 </div>
                 <div class="col-4">
                     <div class="form-group">
                         <label for="family-name-input">Last Name</label>
-                        <InputText id="family-name-input" @bind-Value="@InputModel.Patient.LastName" placeholder="Family Name" class="form-control"/>
-                        <ValidationMessage For="@(() => InputModel.Patient.LastName)"/>
+                        <InputText id="family-name-input" @bind-Value="@FormModel.Patient.LastName" placeholder="Family Name" class="form-control"/>
+                        <ValidationMessage For="@(() => FormModel.Patient.LastName)"/>
                     </div>
                 </div>
 
@@ -131,39 +132,40 @@
                 <div class="col-2">
                     <div class="form-group">
                         <label for="date-of-birth-input">Date of Birth</label>
-                        <InputDate id="date-of-birth-input" @bind-Value="@InputModel.Patient.DateOfBirth" placeholder="DD/MM/YYYY" class="form-control" aria-describedby="date-of-birth-input-help"/>
-                        <ValidationMessage For="@(() => InputModel.Patient.DateOfBirth)"/>
+                        <InputDate id="date-of-birth-input" @bind-Value="@FormModel.Patient.DateOfBirth" placeholder="DD/MM/YYYY" class="form-control" aria-describedby="date-of-birth-input-help"/>
+                        <ValidationMessage For="@(() => FormModel.Patient.DateOfBirth)"/>
                     </div>
                 </div>
 
                 <div class="col-2">
                     <div class="form-group">
                         <label for="sex-input">Gender</label>
-                        <InputSelect id="sex-input" @bind-Value="@InputModel.Patient.GenderId" class="form-control" placeholder="Gender">
+                        <InputSelectNumber id="sex-input" @bind-Value="@FormModel.Patient.GenderId" class="form-control" placeholder="Gender">
                             <option value="0" disabled>Select a gender</option>
                             @{
-                                foreach (var gender in ViewModel.Genders)
+                                foreach (var gender in ViewModel.GenderList)
                                 {
                                     <option value="@gender.Id">@gender.Type</option>
                                 }
                             }
-                        </InputSelect>
-                        <ValidationMessage For="@(() => InputModel.Patient.GenderId)"/>
+                        </InputSelectNumber>
+                        <ValidationMessage For="@(() => FormModel.Patient.GenderId)"/>
                     </div>
                 </div>
 
                 <div class="col-4">
                     <div class="form-group">
                         <label for="religion-input">Religion</label>
-                        <InputSelect id="religion-input" @bind-Value="@InputModel.Patient.ReligionId" class="form-control">
-                            <option value="" selected disabled>Select a religion</option>
+                        <InputSelectNumber id="religion-input" @bind-Value="@FormModel.Patient.ReligionId" class="form-control">
+                            <option value="0" selected disabled>Select a religion</option>
                             @{
-                                foreach (var religion in ViewModel.Religions)
+                                foreach (var religion in ViewModel.ReligionList)
                                 {
                                     <option value="@religion.Id">@religion.Name</option>
                                 }
                             }
-                        </InputSelect>
+                        </InputSelectNumber>
+                        <small class="text-muted">Voluntary. Leave blank if none apply.</small>
                     </div>
                 </div>
 
@@ -173,9 +175,9 @@
 
                 <div class="col-8 d-flex flex-column justify-content-center">
                     <label for="allergy-input">Allergies</label>
-                    <div id ="allergy-input" class="list-group list-group-horizontal d-flex flex-row flex-wrap checkbox-list-group justify-content-between">
+                    <div id="allergy-input" class="list-group list-group-horizontal d-flex flex-row flex-wrap checkbox-list-group justify-content-between">
                         @{
-                            foreach (var allergy in ViewModel.Allergies)
+                            foreach (var allergy in ViewModel.AllergyList)
                             {
                                 <div class="list-group-item">
                                     <input type="checkbox" @bind="@allergy.Selected">

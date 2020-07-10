@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace CalHealth.Blazor.Client.Models
 {
@@ -7,17 +6,17 @@ namespace CalHealth.Blazor.Client.Models
     {
         public BookingViewModel()
         {
-            Consultants = new List<ConsultantViewModel>();
-            TimeSlots = new List<TimeSlotViewModel>();
-            Genders = new List<GenderViewModel>();
-            Allergies = new List<AllergyViewModel>();
-            Religions = new List<ReligionViewModel>();
+            ConsultantList = new List<ConsultantViewModel>();
+            TimeSlotList = new List<TimeSlotViewModel>();
+            GenderList = new List<GenderViewModel>();
+            AllergyList = new List<AllergyViewModel>();
+            ReligionList = new List<ReligionViewModel>();
         }
 
-        public IEnumerable<ConsultantViewModel> Consultants { get; }
-        public IEnumerable<TimeSlotViewModel> TimeSlots { get; }
-        public IEnumerable<GenderViewModel> Genders { get; set; }
-        public IEnumerable<AllergyViewModel> Allergies { get; set; }
-        public IEnumerable<ReligionViewModel> Religions { get; set; }
+        public IEnumerable<ConsultantViewModel> ConsultantList { get; }
+        public IEnumerable<TimeSlotViewModel> TimeSlotList { get; }
+        public IEnumerable<GenderViewModel> GenderList { get; }
+        public IEnumerable<AllergyViewModel> AllergyList { get; }
+        public IEnumerable<ReligionViewModel> ReligionList { get; }
     }
 }

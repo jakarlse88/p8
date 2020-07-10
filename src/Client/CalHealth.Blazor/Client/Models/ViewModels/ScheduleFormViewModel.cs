@@ -2,9 +2,9 @@
 
 namespace CalHealth.Blazor.Client.Models
 {
-    public class ScheduleDTO
+    public class ScheduleFormViewModel
     {
-        public ScheduleDTO()
+        public ScheduleFormViewModel()
         {
             ConsultantId = 0;
             TimeSlotId = 0;
