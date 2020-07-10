@@ -25,7 +25,7 @@ namespace CalHealth.BookingService.Test.RepositoryTests
                 .Setup(x => x.Set<Consultant>())
                 .Returns(mockDbSet.Object);
 
-            var repository = new ConsultantRepository(mockContext.Object);
+            var repository = new Repository<Consultant>(mockContext.Object);
 
             // Act
             var result = await repository.GetAllAsync();
@@ -47,7 +47,7 @@ namespace CalHealth.BookingService.Test.RepositoryTests
                 .Setup(x => x.Set<Consultant>())
                 .Returns(mockDbSet.Object);
 
-            var repository = new ConsultantRepository(mockContext.Object);
+            var repository = new Repository<Consultant>(mockContext.Object);
 
             // Act
             var result = await repository.GetAllAsync();

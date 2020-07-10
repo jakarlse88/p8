@@ -10,21 +10,21 @@ using Xunit;
 
 namespace CalHealth.PatientService.Test.RepositoryTests
 {
-    public class AllergyRepositoryTests
+    public class PatientRepositoryTests
     {
         [Fact]
         public async Task TestGetAllNoResults()
         {
             // Arrange
-            var allergies = new List<Allergy>();
-            var mockDbSet = allergies.AsQueryable().BuildMockDbSet();
+            var religions = new List<Patient>();
+            var mockDbSet = religions.AsQueryable().BuildMockDbSet();
 
             var mockContext = new Mock<PatientContext>();
             mockContext
-                .Setup(x => x.Set<Allergy>())
+                .Setup(x => x.Set<Patient>())
                 .Returns(mockDbSet.Object);
 
-            var repository = new Repository<Allergy>(mockContext.Object);
+            var repository = new Repository<Patient>(mockContext.Object);
 
             // Act
             var result = await repository.GetAllAsync();
@@ -38,15 +38,15 @@ namespace CalHealth.PatientService.Test.RepositoryTests
         public async Task TestGetAll()
         {
             // Arrange
-            var allergies = GenerateAllergies();
-            var mockDbSet = allergies.AsQueryable().BuildMockDbSet();
+            var religions = GenerateReligions();
+            var mockDbSet = religions.AsQueryable().BuildMockDbSet();
 
             var mockContext = new Mock<PatientContext>();
             mockContext
-                .Setup(x => x.Set<Allergy>())
+                .Setup(x => x.Set<Patient>())
                 .Returns(mockDbSet.Object);
 
-            var repository = new Repository<Allergy>(mockContext.Object);
+            var repository = new Repository<Patient>(mockContext.Object);
 
             // Act
             var result = await repository.GetAllAsync();
@@ -61,15 +61,15 @@ namespace CalHealth.PatientService.Test.RepositoryTests
          * Internal helper methods
          *  ===========================
          */
-        private static IEnumerable<Allergy> GenerateAllergies()
+        private static IEnumerable<Patient> GenerateReligions()
         {
-            var genders = new List<Allergy>
+            var genders = new List<Patient>
             {
-                new Allergy
+                new Patient
                 {
                     Id = 1
                 },
-                new Allergy
+                new Patient
                 {
                     Id = 2
                 }

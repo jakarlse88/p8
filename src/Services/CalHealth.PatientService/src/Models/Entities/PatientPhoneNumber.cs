@@ -1,6 +1,6 @@
 ﻿namespace CalHealth.PatientService.Models
 {
-    public partial class PatientPhoneNumber
+    public class PatientPhoneNumber
     {
         public int PatientId { get; set; }
         public int PhoneNumberId { get; set; }

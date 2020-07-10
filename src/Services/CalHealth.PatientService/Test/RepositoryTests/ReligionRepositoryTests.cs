@@ -24,7 +24,7 @@ namespace CalHealth.PatientService.Test.RepositoryTests
                 .Setup(x => x.Set<Religion>())
                 .Returns(mockDbSet.Object);
 
-            var repository = new ReligionRepository(mockContext.Object);
+            var repository = new Repository<Religion>(mockContext.Object);
 
             // Act
             var result = await repository.GetAllAsync();
@@ -46,7 +46,7 @@ namespace CalHealth.PatientService.Test.RepositoryTests
                 .Setup(x => x.Set<Religion>())
                 .Returns(mockDbSet.Object);
 
-            var repository = new ReligionRepository(mockContext.Object);
+            var repository = new Repository<Religion>(mockContext.Object);
 
             // Act
             var result = await repository.GetAllAsync();

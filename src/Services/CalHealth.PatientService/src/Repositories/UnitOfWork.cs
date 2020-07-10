@@ -1,29 +1,34 @@
 ﻿using System.Threading.Tasks;
 using CalHealth.PatientService.Data;
+using CalHealth.PatientService.Models;
 
 namespace CalHealth.PatientService.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
         private readonly PatientContext _context;
-        private IAllergyRepository _allergyRepository;
-        private IReligionRepository _religionRepository;
-        private IGenderRepository _genderRepository;
+        private IRepository<Allergy> _allergyRepository;
+        private IRepository<Religion> _religionRepository;
+        private IRepository<Gender> _genderRepository;
+        private IRepository<Patient> _patientRepository;
 
         public UnitOfWork(PatientContext context)
         {
             _context = context;
         }
 
-        public IAllergyRepository AllergyRepository =>
-            _allergyRepository ??= new AllergyRepository(_context);
+        public IRepository<Allergy> AllergyRepository =>
+            _allergyRepository ??= new Repository<Allergy>(_context);
 
-        public IReligionRepository ReligionRepository =>
-            _religionRepository ??= new ReligionRepository(_context);
+        public IRepository<Religion> ReligionRepository =>
+            _religionRepository ??= new Repository<Religion>(_context);
 
-        public IGenderRepository GenderRepository =>
-            _genderRepository ??= new GenderRepository(_context);
-        
+        public IRepository<Gender> GenderRepository =>
+            _genderRepository ??= new Repository<Gender>(_context);
+
+        public IRepository<Patient> PatientRepository =>
+            _patientRepository ??= new Repository<Patient>(_context);
+
         public async Task CommitAsync()
         {
             await _context.SaveChangesAsync();

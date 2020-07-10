@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CalHealth.BookingService.Models
 {
-    public partial class Note
+    public partial class Note : IEntityBase
     {
         public Note()
         {

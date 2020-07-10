@@ -2,7 +2,7 @@
 
 namespace CalHealth.PatientService.Models
 {
-    public partial class PhoneNumber
+    public class PhoneNumber : IEntityBase
     {
         public PhoneNumber()
         {
@@ -12,6 +12,6 @@ namespace CalHealth.PatientService.Models
         public int Id { get; set; }
         public string Number { get; set; }
 
-        public virtual ICollection<PatientPhoneNumber> PatientPhoneNumber { get; set; }
+        public ICollection<PatientPhoneNumber> PatientPhoneNumber { get;  }
     }
 }

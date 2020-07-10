@@ -2,7 +2,7 @@
 
 namespace CalHealth.BookingService.Models
 {
-    public partial class Gender
+    public partial class Gender : IEntityBase
     {
         public Gender()
         {

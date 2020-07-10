@@ -1,4 +1,4 @@
-﻿namespace CalHealth.BookingService.Models
+﻿namespace CalHealth.BookingService.Messaging
 {
     public class PatientMessage
     {

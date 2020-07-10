@@ -2,7 +2,7 @@
 
 namespace CalHealth.PatientService.Models
 {
-    public partial class Religion
+    public class Religion : IEntityBase
     {
         public Religion()
         {
@@ -12,6 +12,6 @@ namespace CalHealth.PatientService.Models
         public int Id { get; set; }
         public string Name { get; set; }
 
-        public virtual ICollection<Patient> Patient { get; set; }
+        public ICollection<Patient> Patient { get; }
     }
 }

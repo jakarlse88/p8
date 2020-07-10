@@ -2,7 +2,7 @@
 
 namespace CalHealth.BookingService.Models
 {
-    public partial class Specialty
+    public partial class Specialty : IEntityBase
     {
         public Specialty()
         {

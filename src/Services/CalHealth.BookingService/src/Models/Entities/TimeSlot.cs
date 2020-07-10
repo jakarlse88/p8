@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CalHealth.BookingService.Models
 {
-    public class TimeSlot
+    public class TimeSlot : IEntityBase
     {
         public TimeSlot()
         {

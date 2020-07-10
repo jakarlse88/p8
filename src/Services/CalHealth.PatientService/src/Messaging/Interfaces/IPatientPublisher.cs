@@ -1,6 +1,6 @@
-using CalHealth.PatientService.Models;
+using CalHealth.PatientService.Messaging.Messages;
 
-namespace CalHealth.PatientService.Services
+namespace CalHealth.PatientService.Messaging.Interfaces
 {
     public interface IPatientPublisher
     {

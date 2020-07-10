@@ -25,7 +25,7 @@ namespace CalHealth.BookingService.Test.RepositoryTests
                 .Setup(x => x.Set<TimeSlot>())
                 .Returns(mockDbSet.Object);
 
-            var repository = new TimeSlotRepository(mockContext.Object); 
+            var repository = new Repository<TimeSlot>(mockContext.Object); 
             
             // Act
             var result = await repository.GetAllAsync();
@@ -47,7 +47,7 @@ namespace CalHealth.BookingService.Test.RepositoryTests
                 .Setup(x => x.Set<TimeSlot>())
                 .Returns(mockDbSet.Object);
 
-            var repository = new TimeSlotRepository(mockContext.Object); 
+            var repository = new Repository<TimeSlot>(mockContext.Object); 
             
             // Act
             var result = await repository.GetAllAsync();

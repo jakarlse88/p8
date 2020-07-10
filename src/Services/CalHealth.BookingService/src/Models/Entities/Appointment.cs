@@ -1,6 +1,6 @@
 ﻿namespace CalHealth.BookingService.Models
 {
-    public class Appointment
+    public class Appointment : IEntityBase
     {
         public int Id { get; set; }
         public int ConsultantId { get; set; }

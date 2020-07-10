@@ -339,7 +339,6 @@ namespace CalHealth.BookingService.Data
             modelBuilder
                 .Entity<TimeSlot>()
                 .HasData(timeSlots);
-
         }
 
         private static void PopulateWeek(ModelBuilder modelBuilder)

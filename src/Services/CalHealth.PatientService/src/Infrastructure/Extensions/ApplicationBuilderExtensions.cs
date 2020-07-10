@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using CalHealth.PatientService.Data;
+using CalHealth.PatientService.Messaging.Interfaces;
 using CalHealth.PatientService.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -17,50 +18,70 @@ namespace CalHealth.PatientService.Infrastructure
     internal static class ApplicationBuilderExtensions
     {
         private static IAppointmentSubscriber AppointmentSubscriber { get; set; }
-        public static IPatientPublisher PatientPublisher { get; set; }
+        private static IPatientPublisher PatientPublisher { get; set; }
 
+        /// <summary>
+        /// Set up the <see cref="AppointmentSubscriber"/> messaging service.
+        /// </summary>
+        /// <param name="app"></param>
         internal static IApplicationBuilder UseAppointmentSubscriber(this IApplicationBuilder app)
         {
             AppointmentSubscriber = app.ApplicationServices.GetService<IAppointmentSubscriber>();
 
             var lifetime = app.ApplicationServices.GetService<IHostApplicationLifetime>();
 
-            lifetime.ApplicationStarted.Register(OnStarted);
-            lifetime.ApplicationStopping.Register(OnStopping);
+            lifetime.ApplicationStarted.Register(OnAppointmentSubscriberStarted);
+            lifetime.ApplicationStopping.Register(OnAppointmentSubscriberStopping);
 
             return app;
         }
 
-        private static void OnStarted()
+        /// <summary>
+        /// Register the <see cref="AppointmentSubscriber"/> messaging service on app startup.
+        /// </summary>
+        private static void OnAppointmentSubscriberStarted()
         {
             AppointmentSubscriber.Register();
         }
 
-        private static void OnStopping()
+        /// <summary>
+        /// Deregister the <see cref="AppointmentSubscriber"/> messaging service on app shutdown.
+        /// </summary>
+        private static void OnAppointmentSubscriberStopping()
         {
             AppointmentSubscriber.Deregister();
         }
 
-        internal static IApplicationBuilder UsePatientProducer(this IApplicationBuilder app)
+        /// <summary>
+        /// Set up the <see cref="PatientPublisher"/> messaging service.
+        /// </summary>
+        /// <param name="app"></param>
+        internal static IApplicationBuilder UsePatientPublisher(this IApplicationBuilder app)
         {
             PatientPublisher = app.ApplicationServices.GetService<IPatientPublisher>();
 
             var lifetime = app.ApplicationServices.GetService<IHostApplicationLifetime>();
 
-            lifetime.ApplicationStarted.Register(OnPatientProducerStarted);
-            lifetime.ApplicationStopping.Register(OnPatientProducerStopping);
+            lifetime.ApplicationStarted.Register(OnPatientPublisherStarted);
+            lifetime.ApplicationStopping.Register(OnPatientPublisherStopping);
 
             return app;
         }
 
-        private static void OnPatientProducerStarted()
+        /// <summary>
+        /// Register the <see cref="PatientPublisher"/> messaging service on app startup.
+        /// </summary>
+        private static void OnPatientPublisherStarted()
         {
-            AppointmentSubscriber.Register();
+            PatientPublisher.Register();
         }
 
-        private static void OnPatientProducerStopping()
+        /// <summary>
+        /// Deregister the <see cref="PatientPublisher"/> messaging service on app shutdown.
+        /// </summary>
+        private static void OnPatientPublisherStopping()
         {
-            AppointmentSubscriber.Deregister();
+            PatientPublisher.Deregister();
         }
 
         internal static IApplicationBuilder UseSwaggerUI(this IApplicationBuilder app)

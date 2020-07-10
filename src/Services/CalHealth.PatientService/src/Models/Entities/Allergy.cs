@@ -2,7 +2,7 @@
 
 namespace CalHealth.PatientService.Models
 {
-    public class Allergy
+    public class Allergy : IEntityBase
     {
         public Allergy()
         {

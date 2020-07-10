@@ -2,7 +2,7 @@
 
 namespace CalHealth.PatientService.Models
 {
-    public partial class Address
+    public class Address : IEntityBase
     {
         public Address()
         {
@@ -16,6 +16,6 @@ namespace CalHealth.PatientService.Models
         public string State { get; set; }
         public string ZipCode { get; set; }
 
-        public virtual ICollection<PatientAddress> PatientAddress { get; set; }
+        public ICollection<PatientAddress> PatientAddress { get; }
     }
 }

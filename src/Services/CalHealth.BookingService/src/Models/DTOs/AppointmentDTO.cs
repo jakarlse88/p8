@@ -6,7 +6,8 @@ namespace CalHealth.BookingService.Models
     {
         public int TimeSlotId { get; set; }
         public int ConsultantId { get; set; }
-        public int PatientId { get; set; }
         public DateTime Date { get; set; }
+
+        public PatientDTO Patient { get; set; }
     }
 }

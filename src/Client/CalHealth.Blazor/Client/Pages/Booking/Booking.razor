@@ -29,15 +29,13 @@
     if (Status == APIOperationStatus.GET_Error)
     {
         <div class="row d-flex flex-column justify-content-center mb-4">
-            <h2 class="ser-title">Error</h2>
-            <hr class="botm-line">
-            <p class="text-muted">There was an error loading data from the server. Please refresh the page to try again.</p>
+            <p class="text-muted text-center">There was an error loading data from the server. Please refresh the page to try again.</p>
         </div>
     }
 }
 
 @{
-    if (Status == APIOperationStatus.GET_Success)
+    if (Status == APIOperationStatus.GET_Success || Status == APIOperationStatus.POST_Pending)
     {
         <EditForm EditContext="@ScheduleEditContext">
             <div class="form-row d-flex justify-content-center align-items-end mb-2">

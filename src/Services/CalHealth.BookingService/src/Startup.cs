@@ -42,7 +42,7 @@ namespace CalHealth.BookingService
 
             app.ApplyMigrations()
                 .UseAppointmentPublisher()
-                .UsePatientListener()
+                .UsePatientSubscriber()
                 .UseCustomExceptionHandler()
                 .UseCors()
                 .UseRouting()

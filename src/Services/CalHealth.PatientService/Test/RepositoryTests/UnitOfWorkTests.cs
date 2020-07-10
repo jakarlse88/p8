@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using CalHealth.PatientService.Data;
+using CalHealth.PatientService.Models;
 using CalHealth.PatientService.Repositories;
 using Moq;
 using Xunit;
@@ -20,7 +21,7 @@ namespace CalHealth.PatientService.Test.RepositoryTests
 
             // Assert
             Assert.NotNull(result);
-            Assert.IsAssignableFrom<AllergyRepository>(result);
+            Assert.IsAssignableFrom<IRepository<Allergy>>(result);
         }
         
         [Fact]
@@ -34,7 +35,7 @@ namespace CalHealth.PatientService.Test.RepositoryTests
 
             // Assert
             Assert.NotNull(result);
-            Assert.IsAssignableFrom<ReligionRepository>(result);
+            Assert.IsAssignableFrom<IRepository<Religion>>(result);
         }
         
         [Fact]
@@ -48,7 +49,21 @@ namespace CalHealth.PatientService.Test.RepositoryTests
 
             // Assert
             Assert.NotNull(result);
-            Assert.IsAssignableFrom<GenderRepository>(result);
+            Assert.IsAssignableFrom<IRepository<Gender>>(result);
+        }
+        
+        [Fact]
+        public void TestPatientRepositoryProperty()
+        {
+            // Arrange
+            var unitOfWork = new UnitOfWork(Mock.Of<PatientContext>());
+
+            // Act
+            var result = unitOfWork.PatientRepository;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsAssignableFrom<IRepository<Patient>>(result);
         }
 
 

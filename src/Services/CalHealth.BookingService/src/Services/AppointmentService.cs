@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Globalization;
 using System.Threading.Tasks;
-using AutoMapper;
+using CalHealth.BookingService.Messaging;
+using CalHealth.BookingService.Messaging.Interfaces;
 using CalHealth.BookingService.Models;
 using CalHealth.BookingService.Repositories;
 
@@ -18,42 +20,103 @@ namespace CalHealth.BookingService.Services
         {
             _unitOfWork = unitOfWork;
             _appointmentPublisher = appointmentPublisher;
-            _cultureInfo = new CultureInfo("EN-us");
+            _cultureInfo = new CultureInfo("");
             _calendar = _cultureInfo.Calendar;
         }
 
+        /// <summary>
+        /// Create a new <see cref="Appointment"/> entity.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public async Task<Appointment> CreateAsync(AppointmentDTO model)
         {
-            if (model == null)
+            if (model?.Patient == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entity = new Appointment
-            {
-                ConsultantId = model.ConsultantId,
-                WeekId = _calendar.GetWeekOfYear(model.Date, _cultureInfo.DateTimeFormat.CalendarWeekRule, _cultureInfo.DateTimeFormat.FirstDayOfWeek),
-                DayId = (int) model.Date.DayOfWeek,
-                TimeSlotId = model.TimeSlotId,
-                PatientId = model.PatientId
-            };
+            var entity = GenerateEntity(model);
+
+            await CheckDuplicate(model, entity);
 
             try
             {
-                _unitOfWork.AppointmentRepository.Create(entity);
-
-                // TODO: Before offloading to PatientService, query said service to check whether entity exists
-                // TODO: public IActionResult GetPatientId(PatientDTO model) -- { bool Exists, int PatientId }
-
-                _appointmentPublisher.PushMessageToQueue(new AppointmentMessage { AppointmentId = entity.PatientId });
+                await _unitOfWork.AppointmentRepository.InsertAsync(entity);
                 await _unitOfWork.CommitAsync();
+
+                var message = GenerateMessage(model, entity);
+                
+                _appointmentPublisher.PushMessageToQueue(message);
+                
                 return entity;
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 await _unitOfWork.RollbackAsync();
                 throw;
             }
+        }
+
+        /// <summary>
+        /// Verify that there doesn't exist a duplicate <see cref="Appointment"/> entity.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        private async Task CheckDuplicate(AppointmentDTO model, Appointment entity)
+        {
+            var result = await _unitOfWork.AppointmentRepository.GetByConditionAsync(a =>
+                a.ConsultantId == model.ConsultantId
+                && a.WeekId == entity.WeekId
+                && a.TimeSlotId == entity.TimeSlotId
+                && a.DayId == entity.DayId);
+
+            if (result.Any())
+            {
+                throw new Exception("There already exists an appointment for this consultant at the specified time.");
+            }
+        }
+
+        /// <summary>
+        /// Generate a <see cref="Appointment"/> entity.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        private Appointment GenerateEntity(AppointmentDTO model)
+        {
+            var entity = new Appointment
+            {
+                ConsultantId = model.ConsultantId,
+                WeekId = _calendar.GetWeekOfYear(model.Date, _cultureInfo.DateTimeFormat.CalendarWeekRule,
+                    _cultureInfo.DateTimeFormat.FirstDayOfWeek),
+                DayId = (int) _calendar.GetDayOfWeek(model.Date),
+                TimeSlotId = model.TimeSlotId,
+            };
+            return entity;
+        }
+
+        /// <summary>
+        /// Generate a <see cref="AppointmentMessage"/>.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        private static AppointmentMessage GenerateMessage(AppointmentDTO model, Appointment entity)
+        {
+            var message = new AppointmentMessage
+            {
+                AppointmentId = entity.Id,
+                FirstName = model.Patient.FirstName,
+                LastName = model.Patient.LastName,
+                ReligionId = model.Patient.ReligionId,
+                GenderId = model.Patient.GenderId,
+                DateOfBirth = model.Patient.DateOfBirth,
+                AllergyList = model.Patient.AllergyList
+            };
+            return message;
         }
     }
 }

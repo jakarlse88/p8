@@ -1,12 +1,13 @@
 ﻿using System.Threading.Tasks;
+using CalHealth.BookingService.Models;
 
 namespace CalHealth.BookingService.Repositories
 {
     public interface IUnitOfWork
     {
-        ITimeSlotRepository TimeSlotRepository { get; }
-        IConsultantRepository ConsultantRepository { get; }
-        IAppointmentRepository AppointmentRepository { get; }
+        IRepository<TimeSlot> TimeSlotRepository { get; }
+        IRepository<Consultant> ConsultantRepository { get; }
+        IRepository<Appointment> AppointmentRepository { get; }
         
         Task CommitAsync();
         Task RollbackAsync();

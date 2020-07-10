@@ -2,7 +2,7 @@
 
 namespace CalHealth.BookingService.Models
 {
-    public partial class Week
+    public partial class Week : IEntityBase
     {
         public Week()
         {

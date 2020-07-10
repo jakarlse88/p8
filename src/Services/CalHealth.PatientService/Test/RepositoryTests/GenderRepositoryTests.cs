@@ -24,7 +24,7 @@ namespace CalHealth.PatientService.Test.RepositoryTests
                 .Setup(x => x.Set<Gender>())
                 .Returns(mockDbSet.Object);
 
-            var repository = new GenderRepository(mockContext.Object);
+            var repository = new Repository<Gender>(mockContext.Object);
 
             // Act
             var result = await repository.GetAllAsync();
@@ -46,7 +46,7 @@ namespace CalHealth.PatientService.Test.RepositoryTests
                 .Setup(x => x.Set<Gender>())
                 .Returns(mockDbSet.Object);
 
-            var repository = new GenderRepository(mockContext.Object);
+            var repository = new Repository<Gender>(mockContext.Object);
 
             // Act
             var result = await repository.GetAllAsync();

@@ -82,6 +82,11 @@ services:
       - ~/.aspnet/https:/https:ro
 
   rabbitmq:
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "localhost", "5672" ]
+      interval: 30s
+      timeout: 15s
+      retries: 5
     environment: 
         - RABBITMQ_DEFAULT_USER=${RABBITMQ_DEFAULT_USER}
         - RABBITMQ_DEFAULT_PASS=${RABBITMQ_DEFAULT_PASS}

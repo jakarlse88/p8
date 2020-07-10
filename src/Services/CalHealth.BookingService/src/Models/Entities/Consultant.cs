@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CalHealth.BookingService.Models
 {
-    public class Consultant
+    public class Consultant : IEntityBase 
     {
         public Consultant()
         {

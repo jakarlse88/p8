@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
 using CalHealth.BookingService.Data;
+using CalHealth.BookingService.Messaging;
+using CalHealth.BookingService.Messaging.Interfaces;
 
 namespace CalHealth.BookingService.Infrastructure.Extensions
 {
@@ -19,7 +21,7 @@ namespace CalHealth.BookingService.Infrastructure.Extensions
 
             return services;
         }
-        
+
         internal static IServiceCollection AddServiceLayer(this IServiceCollection services)
         {
             services

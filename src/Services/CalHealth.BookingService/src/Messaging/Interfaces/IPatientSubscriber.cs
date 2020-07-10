@@ -1,4 +1,4 @@
-﻿namespace CalHealth.BookingService.Services
+﻿namespace CalHealth.BookingService.Messaging.Interfaces
 {
     public interface IPatientSubscriber
     {

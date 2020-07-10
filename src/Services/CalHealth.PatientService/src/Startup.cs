@@ -40,7 +40,7 @@ namespace CalHealth.PatientService
 
             app.ApplyMigrations()
                 .UseAppointmentSubscriber()
-                .UsePatientProducer()
+                .UsePatientPublisher()
                 .UseCustomExceptionHandler()
                 .UseRouting()
                 .UseAuthorization()

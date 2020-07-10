@@ -1,6 +1,7 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
 using CalHealth.BookingService.Data;
+using CalHealth.BookingService.Models;
 using CalHealth.BookingService.Repositories;
 using Moq;
 using Xunit;
@@ -20,7 +21,7 @@ namespace CalHealth.BookingService.Test.RepositoryTests
 
             // Assert
             Assert.NotNull(result);
-            Assert.IsAssignableFrom<ITimeSlotRepository>(result);
+            Assert.IsAssignableFrom<IRepository<TimeSlot>>(result);
         }
 
         [Fact]
@@ -34,9 +35,22 @@ namespace CalHealth.BookingService.Test.RepositoryTests
 
             // Assert
             Assert.NotNull(result);
-            Assert.IsAssignableFrom<IConsultantRepository>(result);
+            Assert.IsAssignableFrom<IRepository<Consultant>>(result);
         }
 
+        [Fact]
+        public void TestAppointmentRepositoryProperty()
+        {
+            // Arrange
+            var unitOfWork = new UnitOfWork(Mock.Of<BookingContext>());
+
+            // Act
+            var result = unitOfWork.AppointmentRepository;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsAssignableFrom<IRepository<Appointment>>(result);
+        }
 
         [Fact]
         public async Task TestCommitAsync()

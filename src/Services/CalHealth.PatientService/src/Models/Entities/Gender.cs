@@ -2,7 +2,7 @@
 
 namespace CalHealth.PatientService.Models
 {
-    public partial class Gender
+    public class Gender : IEntityBase
     {
         public Gender()
         {
@@ -12,6 +12,6 @@ namespace CalHealth.PatientService.Models
         public int Id { get; set; }
         public string Type { get; set; }
 
-        public virtual ICollection<Patient> Patient { get; set; }
+        public ICollection<Patient> Patient { get; }
     }
 }

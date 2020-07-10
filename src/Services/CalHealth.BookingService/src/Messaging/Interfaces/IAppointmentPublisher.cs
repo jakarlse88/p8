@@ -1,6 +1,4 @@
-﻿using CalHealth.BookingService.Models;
-
-namespace CalHealth.BookingService.Services
+﻿namespace CalHealth.BookingService.Messaging.Interfaces
 {
     public interface IAppointmentPublisher
     {

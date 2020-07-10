@@ -48,7 +48,7 @@ namespace CalHealth.BookingService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Post(AppointmentDTO dto)
         {
-            if (dto == null)
+            if (dto?.Patient == null)
             {
                 return BadRequest();
             }
@@ -57,7 +57,5 @@ namespace CalHealth.BookingService.Controllers
 
             return CreatedAtAction("Get", new { entity.Id }, entity);
         }
-        
-        
     }
 }

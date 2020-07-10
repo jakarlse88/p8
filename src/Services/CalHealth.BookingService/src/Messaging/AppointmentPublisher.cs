@@ -1,22 +1,21 @@
 ﻿using System;
 using System.Text;
 using System.Threading;
-using CalHealth.BookingService.Models;
+using CalHealth.BookingService.Messaging.Interfaces;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using Serilog;
 
-namespace CalHealth.BookingService.Services
+namespace CalHealth.BookingService.Messaging
 {
     public class AppointmentPublisher : IAppointmentPublisher
     {
         private ConnectionFactory Factory { get; }
-        private IConnection Connection { get; set; }
+        private IConnection Connection { get; }
         private IModel Channel { get; }
 
         public AppointmentPublisher()
         {
-            Thread.Sleep(60000); // TODO This is a temporary hack to allow RabbitMQ to come up when using docker-compose
             Factory = new ConnectionFactory { HostName = "rabbitmq" };
             Connection = Factory.CreateConnection();
             Channel = Connection.CreateModel();

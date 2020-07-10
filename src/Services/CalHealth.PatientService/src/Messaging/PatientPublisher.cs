@@ -1,12 +1,13 @@
 using System;
 using System.Text;
 using System.Threading;
-using CalHealth.PatientService.Models;
+using CalHealth.PatientService.Messaging.Interfaces;
+using CalHealth.PatientService.Messaging.Messages;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using Serilog;
 
-namespace CalHealth.PatientService.Services
+namespace CalHealth.PatientService.Messaging
 {
     public class PatientPublisher : IPatientPublisher
     {
@@ -16,7 +17,6 @@ namespace CalHealth.PatientService.Services
 
         public PatientPublisher()
         {
-            Thread.Sleep(60000); // TODO This is a temporary hack to allow RabbitMQ to come up when using docker-compose
             Factory = new ConnectionFactory { HostName = "rabbitmq" };
             Connection = Factory.CreateConnection();
             Channel = Connection.CreateModel();

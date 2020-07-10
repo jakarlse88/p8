@@ -2,6 +2,8 @@
 using System.IO;
 using System.Reflection;
 using CalHealth.PatientService.Data;
+using CalHealth.PatientService.Messaging;
+using CalHealth.PatientService.Messaging.Interfaces;
 using CalHealth.PatientService.Repositories;
 using CalHealth.PatientService.Services;
 using Microsoft.EntityFrameworkCore;

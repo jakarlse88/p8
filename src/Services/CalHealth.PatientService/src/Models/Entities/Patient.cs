@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CalHealth.PatientService.Models
 {
-    public partial class Patient
+    public class Patient : IEntityBase
     {
         public Patient()
         {
@@ -19,10 +19,10 @@ namespace CalHealth.PatientService.Models
         public string LastName { get; set; }
         public DateTime DateOfBirth { get; set; }
 
-        public virtual Gender Gender { get; set; }
-        public virtual Religion Religion { get; set; }
-        public virtual ICollection<PatientAddress> PatientAddress { get; set; }
-        public virtual ICollection<PatientAllergy> PatientAllergy { get; set; }
-        public virtual ICollection<PatientPhoneNumber> PatientPhoneNumber { get; set; }
+        public Gender Gender { get; set; }
+        public Religion Religion { get; set; }
+        public ICollection<PatientAddress> PatientAddress { get; }
+        public ICollection<PatientAllergy> PatientAllergy { get; }
+        public ICollection<PatientPhoneNumber> PatientPhoneNumber { get; }
     }
 }
