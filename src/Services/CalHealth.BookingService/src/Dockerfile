@@ -24,5 +24,5 @@ COPY --from=publish /app/publish .
 COPY Services/CalHealth.BookingService/src/wait-for-it.sh ./wait-for-it.sh
 RUN dos2unix ./wait-for-it.sh && apt-get --purge remove -y dos2unix && rm -rf /var/lib/apt/lists/*
 RUN chmod +x ./wait-for-it.sh
-ENTRYPOINT ["./wait-for-it.sh", "booking-db:1435", "-t", "40", "--", "dotnet", "CalHealth.BookingService.dll"]
+ENTRYPOINT ["./wait-for-it.sh", "calendar-db:1434", "-t", "40", "--", "dotnet", "CalHealth.BookingService.dll"]
 

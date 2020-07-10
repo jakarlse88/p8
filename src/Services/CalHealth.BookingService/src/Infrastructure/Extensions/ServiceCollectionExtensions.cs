@@ -1,61 +1,65 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using CalHealth.BookingService.Data;
+using CalHealth.BookingService.Services;
+using CalHealth.BookingService.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using CalHealth.BookingService.Data;
 
-namespace CalHealth.BookingService.Infrastructure
+namespace CalHealth.BookingService.Infrastructure.Extensions
 {
     internal static class ServiceCollectionExtensions
     {
         internal static IServiceCollection AddRepositoryLayer(this IServiceCollection services)
         {
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             return services;
         }
         
         internal static IServiceCollection AddServiceLayer(this IServiceCollection services)
         {
+            services
+                .AddTransient<IAppointmentService, AppointmentService>()
+                .AddTransient<ITimeSlotService, TimeSlotService>()
+                .AddTransient<IConsultantService, ConsultantService>()
+                .AddSingleton<IAppointmentPublisher, AppointmentPublisher>()
+                .AddSingleton<IPatientSubscriber, PatientSubscriber>();
 
             return services;
         }
         
-        internal static IServiceCollection ConfigureCors(this IServiceCollection services)
+        internal static void ConfigureCors(this IServiceCollection services)
         {
-            services.AddCors(options =>
+            services.AddCors(options => options.AddDefaultPolicy(builder =>
             {
-                options.AddDefaultPolicy(builder =>
-                {
-                    builder // For testing using docker-compose
-                        .WithOrigins("https://localhost:8081")
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
+                builder // For testing using docker-compose
+                    .WithOrigins("https://localhost:8081")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
                     
-                    builder // For testing using docker-compose
-                        .WithOrigins("http://localhost:8080")
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
+                builder // For testing using docker-compose
+                    .WithOrigins("http://localhost:8080")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
 
-                    builder // For testing with non-container client
-                        .WithOrigins("http://localhost:5000")
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
+                builder // For testing with non-container client
+                    .WithOrigins("http://localhost:5000")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
                     
-                    builder // For testing with non-container client
-                        .WithOrigins("https://localhost:5001")
-                        .AllowAnyHeader()
-                        .AllowAnyMethod()
-                        .AllowCredentials();
-                });
-            });
-
-            return services;
+                builder // For testing with non-container client
+                    .WithOrigins("https://localhost:5001")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials();
+            }));
         }
         
         internal static IServiceCollection ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)
@@ -72,7 +76,7 @@ namespace CalHealth.BookingService.Infrastructure
             {
                 config.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Booking Service",
+                    Title = "Calendar Service",
                     Version = "v1",
                     Description = "Californian Health Booking Service API",
                     Contact = new OpenApiContact

@@ -1,6 +1,6 @@
 using Newtonsoft.Json;
 
-namespace CalHealth.Infrastructure
+namespace CalHealth.BookingService.Extensions
 {
     internal class ErrorDetails
     {
