@@ -217,6 +217,23 @@ namespace CalHealth.PatientService.Data.Migrations
                     { 9, "Scientology" }
                 });
 
+            migrationBuilder.InsertData(
+                table: "Patient",
+                columns: new[] { "Id", "DateOfBirth", "FirstName", "GenderId", "LastName", "ReligionId" },
+                values: new object[,]
+                {
+                    { 4, new DateTime(2007, 5, 27, 0, 0, 0, 0, DateTimeKind.Unspecified), "Daniaal", 1, "Hill", null },
+                    { 6, new DateTime(1977, 9, 9, 0, 0, 0, 0, DateTimeKind.Unspecified), "Rhodri", 1, "Ellis", null },
+                    { 7, new DateTime(2001, 4, 11, 0, 0, 0, 0, DateTimeKind.Unspecified), "Hakeem", 1, "Conner", null },
+                    { 8, new DateTime(1963, 2, 19, 0, 0, 0, 0, DateTimeKind.Unspecified), "Nur", 1, "Lim", null },
+                    { 9, new DateTime(1990, 10, 30, 0, 0, 0, 0, DateTimeKind.Unspecified), "Kenzo", 1, "Traynor", null },
+                    { 1, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified), "Alima", 2, "Rankin", null },
+                    { 2, new DateTime(1980, 7, 17, 0, 0, 0, 0, DateTimeKind.Unspecified), "Chelsie", 2, "Regan", null },
+                    { 3, new DateTime(1997, 3, 12, 0, 0, 0, 0, DateTimeKind.Unspecified), "Michalina", 2, "Dejesus", null },
+                    { 5, new DateTime(1989, 11, 29, 0, 0, 0, 0, DateTimeKind.Unspecified), "Adele", 2, "Benjamin", null },
+                    { 10, new DateTime(2007, 6, 13, 0, 0, 0, 0, DateTimeKind.Unspecified), "Nyla", 2, "Davey", null }
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Patient_GenderId",
                 table: "Patient",

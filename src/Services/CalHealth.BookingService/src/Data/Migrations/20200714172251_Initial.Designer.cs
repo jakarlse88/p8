@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CalHealth.BookingService.Data.Migrations
 {
     [DbContext(typeof(BookingContext))]
-    [Migration("20200704204147_Initial")]
+    [Migration("20200714172251_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -21,7 +21,7 @@ namespace CalHealth.BookingService.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CalHealth.CalendarService.Models.Appointment", b =>
+            modelBuilder.Entity("CalHealth.BookingService.Models.Appointment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -30,6 +30,9 @@ namespace CalHealth.BookingService.Data.Migrations
 
                     b.Property<int>("ConsultantId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
 
                     b.Property<int>("DayId")
                         .HasColumnType("int");
@@ -61,7 +64,7 @@ namespace CalHealth.BookingService.Data.Migrations
                     b.ToTable("Appointment");
                 });
 
-            modelBuilder.Entity("CalHealth.CalendarService.Models.Consultant", b =>
+            modelBuilder.Entity("CalHealth.BookingService.Models.Consultant", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -152,7 +155,7 @@ namespace CalHealth.BookingService.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CalHealth.CalendarService.Models.ConsultantAvailabilityPerWeek", b =>
+            modelBuilder.Entity("CalHealth.BookingService.Models.ConsultantAvailabilityPerWeek", b =>
                 {
                     b.Property<int>("ConsultantId")
                         .HasColumnType("int");
@@ -187,49 +190,49 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 1,
                             DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 1,
-                            WeekId = 1,
-                            DayId = 3,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 1,
-                            DayId = 4,
+                            DayId = 3,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 1,
-                            DayId = 5,
+                            DayId = 4,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 1,
-                            DayId = 6,
+                            DayId = 5,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 1,
-                            DayId = 7,
+                            DayId = 6,
                             Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 1,
+                            DayId = 7,
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 2,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -243,7 +246,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 2,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -257,7 +260,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 2,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -271,7 +274,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 2,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -292,21 +295,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 3,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 3,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 3,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -341,14 +344,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 4,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 4,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -369,21 +372,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 4,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 5,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 5,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -425,28 +428,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 6,
                             DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 1,
-                            WeekId = 6,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 1,
-                            WeekId = 6,
-                            DayId = 3,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 6,
-                            DayId = 4,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 6,
+                            DayId = 3,
                             Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 6,
+                            DayId = 4,
+                            Available = true
                         },
                         new
                         {
@@ -460,21 +463,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 6,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 6,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 7,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -495,7 +498,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 7,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -509,7 +512,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 7,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -537,35 +540,35 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 8,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 8,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 8,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 8,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 8,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -579,7 +582,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 9,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -593,14 +596,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 9,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 9,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -614,21 +617,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 9,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 10,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 10,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -649,7 +652,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 10,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -691,14 +694,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 11,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 11,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -719,14 +722,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 12,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 12,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -747,7 +750,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 12,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -775,7 +778,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 13,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -796,21 +799,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 13,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 13,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 13,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -824,7 +827,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 14,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -838,7 +841,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 14,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -866,14 +869,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 15,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 15,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -887,14 +890,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 15,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 15,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -922,21 +925,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 16,
                             DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 1,
-                            WeekId = 16,
-                            DayId = 3,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 16,
-                            DayId = 4,
+                            DayId = 3,
                             Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 16,
+                            DayId = 4,
+                            Available = true
                         },
                         new
                         {
@@ -964,7 +967,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 17,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -1041,28 +1044,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 18,
                             DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 1,
-                            WeekId = 18,
-                            DayId = 6,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 18,
-                            DayId = 7,
+                            DayId = 6,
                             Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 18,
+                            DayId = 7,
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 19,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -1090,21 +1093,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 19,
                             DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 1,
-                            WeekId = 19,
-                            DayId = 6,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 19,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 19,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -1125,21 +1128,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 20,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 20,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 20,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -1153,7 +1156,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 20,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -1167,28 +1170,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 21,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 21,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 21,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 21,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -1209,7 +1212,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 22,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -1223,7 +1226,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 22,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -1258,35 +1261,35 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 23,
                             DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 1,
-                            WeekId = 23,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 1,
-                            WeekId = 23,
-                            DayId = 3,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 23,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 23,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 23,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 23,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -1307,19 +1310,19 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 24,
                             DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 1,
-                            WeekId = 24,
-                            DayId = 2,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 24,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 24,
                             DayId = 3,
                             Available = false
                         },
@@ -1328,7 +1331,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 24,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -1349,35 +1352,35 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 24,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 25,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 25,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 25,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 25,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -1391,35 +1394,35 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 25,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 25,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 26,
                             DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 1,
-                            WeekId = 26,
-                            DayId = 2,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 26,
-                            DayId = 3,
+                            DayId = 2,
                             Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 26,
+                            DayId = 3,
+                            Available = true
                         },
                         new
                         {
@@ -1433,7 +1436,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 26,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -1447,7 +1450,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 26,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -1461,14 +1464,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 27,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 27,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -1489,28 +1492,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 27,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 27,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 28,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 28,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -1524,7 +1527,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 28,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -1545,14 +1548,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 28,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 29,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -1573,7 +1576,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 29,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -1601,21 +1604,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 30,
                             DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 1,
-                            WeekId = 30,
-                            DayId = 2,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 30,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 30,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -1643,35 +1646,35 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 30,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 31,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 31,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 31,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 31,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -1692,21 +1695,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 31,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 32,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 32,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -1727,14 +1730,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 32,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 32,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -1748,21 +1751,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 33,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 33,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 33,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -1776,14 +1779,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 33,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 33,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -1797,14 +1800,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 34,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 34,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -1832,7 +1835,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 34,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -1846,7 +1849,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 35,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -1881,7 +1884,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 35,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -1902,7 +1905,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 36,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -1916,7 +1919,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 36,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -1944,7 +1947,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 37,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -1965,21 +1968,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 37,
                             DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 1,
-                            WeekId = 37,
-                            DayId = 5,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 37,
-                            DayId = 6,
+                            DayId = 5,
                             Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 37,
+                            DayId = 6,
+                            Available = false
                         },
                         new
                         {
@@ -1993,7 +1996,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 38,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -2014,7 +2017,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 38,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -2028,7 +2031,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 38,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -2042,21 +2045,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 39,
                             DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 1,
-                            WeekId = 39,
-                            DayId = 2,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 39,
-                            DayId = 3,
+                            DayId = 2,
                             Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 39,
+                            DayId = 3,
+                            Available = true
                         },
                         new
                         {
@@ -2070,7 +2073,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 39,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -2084,7 +2087,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 39,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -2098,28 +2101,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 40,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 40,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 40,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 40,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -2133,21 +2136,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 40,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 41,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 41,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -2168,7 +2171,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 41,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -2182,14 +2185,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 41,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 42,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -2210,7 +2213,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 42,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -2224,7 +2227,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 42,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -2252,7 +2255,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 43,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -2280,21 +2283,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 43,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 44,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 44,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -2322,7 +2325,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 44,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -2336,14 +2339,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 45,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 45,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -2357,21 +2360,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 45,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 45,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 45,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -2406,21 +2409,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 46,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 46,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 46,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -2434,7 +2437,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 47,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -2455,7 +2458,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 47,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -2469,14 +2472,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 47,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 47,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -2497,7 +2500,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 48,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -2546,7 +2549,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 49,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -2560,14 +2563,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 49,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 49,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -2581,7 +2584,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 50,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -2595,14 +2598,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 50,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 50,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -2630,7 +2633,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 51,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -2658,14 +2661,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 51,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 51,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -2679,14 +2682,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 52,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 1,
                             WeekId = 52,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -2707,7 +2710,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 52,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -2721,7 +2724,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 1,
                             WeekId = 52,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -2735,2579 +2738,2579 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 2,
                             WeekId = 1,
                             DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 1,
-                            DayId = 3,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 2,
                             WeekId = 1,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 1,
-                            DayId = 5,
+                            DayId = 3,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 2,
                             WeekId = 1,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 1,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 2,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 2,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 2,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 2,
                             DayId = 4,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 2,
-                            WeekId = 2,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 2,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 2,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 3,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 3,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 3,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 3,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 3,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 3,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 3,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 4,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 4,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 4,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 4,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 4,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 4,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 4,
-                            DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 5,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 5,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 5,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 5,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 5,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 5,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 5,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 6,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 6,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 6,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 6,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 6,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 6,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 6,
-                            DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 7,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 7,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 7,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 7,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 7,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 7,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 7,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 8,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 8,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 8,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 8,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 8,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 8,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 8,
-                            DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 9,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 9,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 9,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 9,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 9,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 9,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 9,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 10,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 10,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 10,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 10,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 10,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 10,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 10,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 11,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 11,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 11,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 11,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 11,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 11,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 11,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 12,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 12,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 12,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 12,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 12,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 12,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 12,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 13,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 13,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 13,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 13,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 13,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 13,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 13,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 14,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 14,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 14,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 14,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 14,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 14,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 14,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 15,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 15,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 15,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 15,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 15,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 15,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 15,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 16,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 16,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 16,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 16,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 16,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 16,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 16,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 17,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 17,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 17,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 17,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 17,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 17,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 17,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 18,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 18,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 18,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 18,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 18,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 18,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 18,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 19,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 19,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 19,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 19,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 19,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 19,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 19,
-                            DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 20,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 20,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 20,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 20,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 20,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 20,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 20,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 21,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 21,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 21,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 21,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 21,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 21,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 21,
-                            DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 22,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 22,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 22,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 22,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 22,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 22,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 22,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 23,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 23,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 23,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 23,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 23,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 23,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 23,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 24,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 24,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 24,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 24,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 24,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 24,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 24,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 25,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 25,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 25,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 25,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 25,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 25,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 25,
-                            DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 26,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 26,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 26,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 26,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 26,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 26,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 26,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 27,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 27,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 27,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 27,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 27,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 27,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 27,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 28,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 28,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 28,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 28,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 28,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 28,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 28,
-                            DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 29,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 29,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 29,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 29,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 29,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 29,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 29,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 30,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 30,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 30,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 30,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 30,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 30,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 30,
-                            DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 31,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 31,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 31,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 31,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 31,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 31,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 31,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 32,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 32,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 32,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 32,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 32,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 32,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 32,
-                            DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 33,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 33,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 33,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 33,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 33,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 33,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 33,
-                            DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 34,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 34,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 34,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 34,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 34,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 34,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 34,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 35,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 35,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 35,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 35,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 35,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 35,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 35,
-                            DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 36,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 36,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 36,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 36,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 36,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 36,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 36,
-                            DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 37,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 37,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 37,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 37,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 37,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 37,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 37,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 38,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 38,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 38,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 38,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 38,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 38,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 38,
-                            DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 39,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 39,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 39,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 39,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 39,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 39,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 39,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 40,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 40,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 40,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 40,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 40,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 40,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 40,
-                            DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 41,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 41,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 41,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 41,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 41,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 41,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 41,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 42,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 42,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 42,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 42,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 42,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 42,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 42,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 43,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 43,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 43,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 43,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 43,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 43,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 43,
-                            DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 44,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 44,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 44,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 44,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 44,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 44,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 44,
-                            DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 45,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 45,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 45,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 45,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 45,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 45,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 45,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 46,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 46,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 46,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 46,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 46,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 46,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 46,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 47,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 47,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 47,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 47,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 47,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 47,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 47,
-                            DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 48,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 48,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 48,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 48,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 48,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 48,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 48,
-                            DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 49,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 49,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 49,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 49,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 49,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 49,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 49,
-                            DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 50,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 50,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 50,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 50,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 50,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 50,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 50,
-                            DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 51,
-                            DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 51,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 51,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 51,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 51,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 51,
-                            DayId = 6,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 51,
-                            DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 52,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 52,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 52,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 52,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 52,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 52,
-                            DayId = 6,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 2,
-                            WeekId = 52,
-                            DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 1,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 1,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 1,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 1,
-                            DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
                             WeekId = 1,
                             DayId = 5,
                             Available = false
                         },
                         new
                         {
+                            ConsultantId = 2,
+                            WeekId = 1,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 1,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 2,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 2,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 2,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 2,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 2,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 2,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 2,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 3,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 3,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 3,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 3,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 3,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 3,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 3,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 4,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 4,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 4,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 4,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 4,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 4,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 4,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 5,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 5,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 5,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 5,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 5,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 5,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 5,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 6,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 6,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 6,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 6,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 6,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 6,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 6,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 7,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 7,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 7,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 7,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 7,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 7,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 7,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 8,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 8,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 8,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 8,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 8,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 8,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 8,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 9,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 9,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 9,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 9,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 9,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 9,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 9,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 10,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 10,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 10,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 10,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 10,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 10,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 10,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 11,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 11,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 11,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 11,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 11,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 11,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 11,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 12,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 12,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 12,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 12,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 12,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 12,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 12,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 13,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 13,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 13,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 13,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 13,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 13,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 13,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 14,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 14,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 14,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 14,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 14,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 14,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 14,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 15,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 15,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 15,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 15,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 15,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 15,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 15,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 16,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 16,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 16,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 16,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 16,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 16,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 16,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 17,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 17,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 17,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 17,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 17,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 17,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 17,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 18,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 18,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 18,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 18,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 18,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 18,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 18,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 19,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 19,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 19,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 19,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 19,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 19,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 19,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 20,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 20,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 20,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 20,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 20,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 20,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 20,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 21,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 21,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 21,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 21,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 21,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 21,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 21,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 22,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 22,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 22,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 22,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 22,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 22,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 22,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 23,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 23,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 23,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 23,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 23,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 23,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 23,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 24,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 24,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 24,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 24,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 24,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 24,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 24,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 25,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 25,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 25,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 25,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 25,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 25,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 25,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 26,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 26,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 26,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 26,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 26,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 26,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 26,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 27,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 27,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 27,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 27,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 27,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 27,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 27,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 28,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 28,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 28,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 28,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 28,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 28,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 28,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 29,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 29,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 29,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 29,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 29,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 29,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 29,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 30,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 30,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 30,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 30,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 30,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 30,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 30,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 31,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 31,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 31,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 31,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 31,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 31,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 31,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 32,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 32,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 32,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 32,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 32,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 32,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 32,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 33,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 33,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 33,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 33,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 33,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 33,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 33,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 34,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 34,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 34,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 34,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 34,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 34,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 34,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 35,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 35,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 35,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 35,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 35,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 35,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 35,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 36,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 36,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 36,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 36,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 36,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 36,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 36,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 37,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 37,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 37,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 37,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 37,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 37,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 37,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 38,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 38,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 38,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 38,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 38,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 38,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 38,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 39,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 39,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 39,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 39,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 39,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 39,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 39,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 40,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 40,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 40,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 40,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 40,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 40,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 40,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 41,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 41,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 41,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 41,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 41,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 41,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 41,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 42,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 42,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 42,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 42,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 42,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 42,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 42,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 43,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 43,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 43,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 43,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 43,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 43,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 43,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 44,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 44,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 44,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 44,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 44,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 44,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 44,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 45,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 45,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 45,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 45,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 45,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 45,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 45,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 46,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 46,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 46,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 46,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 46,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 46,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 46,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 47,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 47,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 47,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 47,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 47,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 47,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 47,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 48,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 48,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 48,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 48,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 48,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 48,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 48,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 49,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 49,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 49,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 49,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 49,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 49,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 49,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 50,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 50,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 50,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 50,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 50,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 50,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 50,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 51,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 51,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 51,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 51,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 51,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 51,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 51,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 52,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 52,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 52,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 52,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 52,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 52,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 52,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 1,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 1,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 1,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 1,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 1,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
                             ConsultantId = 3,
                             WeekId = 1,
                             DayId = 6,
@@ -5339,19 +5342,19 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 2,
                             DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 2,
-                            DayId = 4,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 2,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 2,
                             DayId = 5,
                             Available = true
                         },
@@ -5360,7 +5363,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 2,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -5374,70 +5377,70 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 3,
                             DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 3,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 3,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 3,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 3,
-                            DayId = 5,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 3,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 3,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 3,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 3,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 3,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 3,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 4,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 4,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 4,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -5472,7 +5475,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 5,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -5486,14 +5489,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 5,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 5,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -5507,21 +5510,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 5,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 5,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 6,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -5542,14 +5545,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 6,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 6,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -5591,26 +5594,26 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 7,
                             DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 7,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 7,
-                            DayId = 6,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 7,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 7,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 7,
                             DayId = 7,
                             Available = false
                         },
@@ -5619,7 +5622,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 8,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -5633,7 +5636,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 8,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -5654,21 +5657,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 8,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 8,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 9,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -5710,14 +5713,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 9,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 10,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -5745,14 +5748,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 10,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 10,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -5780,21 +5783,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 11,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 11,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 11,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -5822,7 +5825,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 12,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -5836,7 +5839,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 12,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -5850,7 +5853,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 12,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -5864,21 +5867,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 13,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 13,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 13,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -5892,7 +5895,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 13,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -5906,7 +5909,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 13,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -5927,14 +5930,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 14,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 14,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -5955,7 +5958,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 14,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -5976,7 +5979,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 15,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -6011,14 +6014,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 16,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 16,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -6032,21 +6035,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 16,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 16,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 16,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -6060,21 +6063,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 17,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 17,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 17,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -6095,7 +6098,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 17,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -6116,14 +6119,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 18,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 18,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -6144,7 +6147,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 18,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -6165,77 +6168,77 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 19,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 19,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 19,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 19,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 19,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 19,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 20,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 20,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 20,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 20,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 20,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -6284,7 +6287,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 21,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -6319,19 +6322,19 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 22,
                             DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 22,
-                            DayId = 4,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 22,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 22,
                             DayId = 5,
                             Available = true
                         },
@@ -6347,14 +6350,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 22,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 23,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -6375,7 +6378,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 23,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -6403,21 +6406,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 24,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 24,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 24,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -6431,7 +6434,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 24,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -6445,14 +6448,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 24,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 25,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -6473,7 +6476,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 25,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -6501,7 +6504,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 26,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -6522,14 +6525,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 26,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 26,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -6543,14 +6546,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 26,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 27,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -6564,7 +6567,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 27,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -6578,7 +6581,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 27,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -6592,7 +6595,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 27,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -6606,21 +6609,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 28,
                             DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 28,
-                            DayId = 3,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 28,
-                            DayId = 4,
+                            DayId = 3,
                             Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 28,
+                            DayId = 4,
+                            Available = true
                         },
                         new
                         {
@@ -6648,21 +6651,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 29,
                             DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 29,
-                            DayId = 2,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 29,
-                            DayId = 3,
+                            DayId = 2,
                             Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 29,
+                            DayId = 3,
+                            Available = true
                         },
                         new
                         {
@@ -6704,49 +6707,49 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 30,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 30,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 30,
                             DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 30,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 30,
-                            DayId = 6,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 30,
-                            DayId = 7,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 30,
+                            DayId = 6,
                             Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 30,
+                            DayId = 7,
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 31,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -6767,7 +6770,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 31,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -6781,7 +6784,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 31,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -6795,21 +6798,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 32,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 32,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 32,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -6844,7 +6847,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 33,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -6858,7 +6861,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 33,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -6914,19 +6917,19 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 34,
                             DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 34,
-                            DayId = 5,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 34,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 34,
                             DayId = 6,
                             Available = true
                         },
@@ -6935,14 +6938,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 34,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 35,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -6956,21 +6959,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 35,
                             DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 35,
-                            DayId = 4,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 35,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 35,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -6984,28 +6987,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 35,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 36,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 36,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 36,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -7047,21 +7050,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 37,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 37,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 37,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -7082,35 +7085,35 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 37,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 38,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 38,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 38,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 38,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -7138,7 +7141,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 39,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -7159,7 +7162,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 39,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -7187,7 +7190,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 40,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -7201,7 +7204,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 40,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -7222,14 +7225,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 40,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 40,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -7306,26 +7309,26 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 42,
                             DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 42,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 42,
-                            DayId = 6,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 42,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 42,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 42,
                             DayId = 7,
                             Available = true
                         },
@@ -7355,28 +7358,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 43,
                             DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 43,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 43,
-                            DayId = 6,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 43,
-                            DayId = 7,
+                            DayId = 5,
                             Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 43,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 43,
+                            DayId = 7,
+                            Available = false
                         },
                         new
                         {
@@ -7397,7 +7400,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 44,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -7425,21 +7428,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 44,
                             DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 3,
-                            WeekId = 45,
-                            DayId = 1,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 45,
-                            DayId = 2,
+                            DayId = 1,
                             Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 45,
+                            DayId = 2,
+                            Available = false
                         },
                         new
                         {
@@ -7474,7 +7477,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 45,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -7488,7 +7491,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 46,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -7502,7 +7505,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 46,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -7516,7 +7519,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 46,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -7544,7 +7547,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 47,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -7558,21 +7561,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 47,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 47,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 47,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -7586,14 +7589,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 48,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 48,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -7607,14 +7610,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 48,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 48,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -7635,14 +7638,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 49,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 49,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -7656,14 +7659,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 49,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 49,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -7677,7 +7680,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 50,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -7705,14 +7708,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 50,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 50,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -7726,7 +7729,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 51,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -7740,7 +7743,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 51,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -7761,14 +7764,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 51,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 51,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -7782,14 +7785,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 52,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 3,
                             WeekId = 52,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -7803,7 +7806,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 3,
                             WeekId = 52,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -7845,14 +7848,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 1,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 1,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -7880,21 +7883,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 2,
                             DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 4,
-                            WeekId = 2,
-                            DayId = 3,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 2,
-                            DayId = 4,
+                            DayId = 3,
                             Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 2,
+                            DayId = 4,
+                            Available = true
                         },
                         new
                         {
@@ -7908,7 +7911,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 2,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -7929,19 +7932,19 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 3,
                             DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 4,
-                            WeekId = 3,
-                            DayId = 3,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 3,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 3,
                             DayId = 4,
                             Available = true
                         },
@@ -7950,28 +7953,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 3,
                             DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 4,
-                            WeekId = 3,
-                            DayId = 6,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 3,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 3,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 4,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -7985,14 +7988,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 4,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 4,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -8020,7 +8023,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 5,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -8055,7 +8058,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 5,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -8069,7 +8072,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 6,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -8097,7 +8100,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 6,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -8111,21 +8114,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 6,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 7,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 7,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -8188,19 +8191,19 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 8,
                             DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 4,
-                            WeekId = 8,
-                            DayId = 5,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 8,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 8,
                             DayId = 6,
                             Available = false
                         },
@@ -8209,7 +8212,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 8,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -8223,7 +8226,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 9,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -8237,14 +8240,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 9,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 9,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -8265,7 +8268,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 10,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -8279,7 +8282,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 10,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -8300,21 +8303,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 10,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 10,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 11,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -8328,14 +8331,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 11,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 11,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -8349,14 +8352,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 11,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 11,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -8377,7 +8380,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 12,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -8405,7 +8408,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 12,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -8433,14 +8436,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 13,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 13,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -8454,14 +8457,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 13,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 14,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -8475,7 +8478,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 14,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -8489,21 +8492,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 14,
                             DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 4,
-                            WeekId = 14,
-                            DayId = 6,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 14,
-                            DayId = 7,
+                            DayId = 6,
                             Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 14,
+                            DayId = 7,
+                            Available = true
                         },
                         new
                         {
@@ -8517,63 +8520,63 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 15,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 15,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 15,
                             DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 4,
-                            WeekId = 15,
-                            DayId = 5,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 15,
-                            DayId = 6,
+                            DayId = 5,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 15,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 15,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 16,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 16,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 16,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -8587,7 +8590,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 16,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -8608,7 +8611,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 17,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -8622,7 +8625,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 17,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -8636,7 +8639,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 17,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -8650,7 +8653,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 17,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -8685,14 +8688,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 18,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 18,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -8713,7 +8716,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 19,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -8727,7 +8730,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 19,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -8741,7 +8744,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 19,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -8755,7 +8758,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 20,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -8769,7 +8772,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 20,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -8811,40 +8814,40 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 21,
                             DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 4,
-                            WeekId = 21,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 4,
-                            WeekId = 21,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 4,
-                            WeekId = 21,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 4,
-                            WeekId = 21,
-                            DayId = 6,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 21,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 21,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 21,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 21,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 21,
                             DayId = 7,
                             Available = false
                         },
@@ -8867,21 +8870,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 22,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 22,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 22,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -8916,21 +8919,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 23,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 23,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 23,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -8958,14 +8961,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 24,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 24,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -8979,14 +8982,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 24,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 24,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -9000,7 +9003,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 25,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9014,14 +9017,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 25,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 25,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9035,21 +9038,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 25,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 25,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 26,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -9077,14 +9080,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 26,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 26,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9098,14 +9101,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 27,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 27,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9119,14 +9122,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 27,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 27,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9140,7 +9143,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 27,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9161,14 +9164,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 28,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 28,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -9182,7 +9185,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 28,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9224,21 +9227,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 29,
                             DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 4,
-                            WeekId = 29,
-                            DayId = 6,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 29,
-                            DayId = 7,
+                            DayId = 6,
                             Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 29,
+                            DayId = 7,
+                            Available = false
                         },
                         new
                         {
@@ -9259,7 +9262,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 30,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9273,21 +9276,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 30,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 30,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 30,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9301,14 +9304,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 31,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 31,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -9336,7 +9339,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 31,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -9350,14 +9353,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 32,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 32,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9371,21 +9374,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 32,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 32,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 32,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9399,21 +9402,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 33,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 33,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 33,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -9427,7 +9430,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 33,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9462,49 +9465,49 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 34,
                             DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 4,
-                            WeekId = 34,
-                            DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 4,
-                            WeekId = 34,
-                            DayId = 6,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 34,
-                            DayId = 7,
+                            DayId = 5,
                             Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 34,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 34,
+                            DayId = 7,
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 35,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 35,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 35,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9518,19 +9521,19 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 35,
                             DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 4,
-                            WeekId = 35,
-                            DayId = 6,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 35,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 35,
                             DayId = 7,
                             Available = true
                         },
@@ -9539,35 +9542,35 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 36,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 36,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 36,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 36,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 36,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9588,7 +9591,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 37,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9616,7 +9619,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 37,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9637,14 +9640,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 38,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 38,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -9658,7 +9661,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 38,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9686,14 +9689,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 39,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 39,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -9728,7 +9731,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 39,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9742,42 +9745,42 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 40,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 40,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 40,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 40,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 40,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 40,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9812,7 +9815,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 41,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9833,28 +9836,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 42,
                             DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 4,
-                            WeekId = 42,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 4,
-                            WeekId = 42,
-                            DayId = 3,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 42,
-                            DayId = 4,
+                            DayId = 2,
                             Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 42,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 42,
+                            DayId = 4,
+                            Available = true
                         },
                         new
                         {
@@ -9868,21 +9871,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 42,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 42,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 43,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -9896,7 +9899,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 43,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -9910,28 +9913,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 43,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 43,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 43,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 44,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9952,7 +9955,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 44,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -9973,14 +9976,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 44,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 45,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -10008,7 +10011,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 45,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -10029,21 +10032,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 46,
                             DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 4,
-                            WeekId = 46,
-                            DayId = 2,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 46,
-                            DayId = 3,
+                            DayId = 2,
                             Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 46,
+                            DayId = 3,
+                            Available = false
                         },
                         new
                         {
@@ -10057,28 +10060,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 46,
                             DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 4,
-                            WeekId = 46,
-                            DayId = 6,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 46,
-                            DayId = 7,
+                            DayId = 6,
                             Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 46,
+                            DayId = 7,
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 47,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -10106,28 +10109,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 47,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 47,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 47,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 48,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -10141,14 +10144,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 48,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 48,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -10169,28 +10172,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 48,
                             DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 4,
-                            WeekId = 49,
-                            DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 4,
-                            WeekId = 49,
-                            DayId = 2,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 49,
-                            DayId = 3,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 49,
+                            DayId = 2,
                             Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 49,
+                            DayId = 3,
+                            Available = false
                         },
                         new
                         {
@@ -10204,7 +10207,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 49,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -10218,49 +10221,49 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 49,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 50,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 50,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 50,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 50,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 50,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 50,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -10274,14 +10277,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 51,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 51,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -10295,7 +10298,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 51,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -10309,14 +10312,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 51,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 51,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -10330,21 +10333,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 52,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 52,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 4,
                             WeekId = 52,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -10365,7 +10368,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 4,
                             WeekId = 52,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -10379,19 +10382,19 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 1,
                             DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 5,
-                            WeekId = 1,
-                            DayId = 3,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 1,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 1,
                             DayId = 4,
                             Available = true
                         },
@@ -10400,28 +10403,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 1,
                             DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 5,
-                            WeekId = 1,
-                            DayId = 6,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 1,
-                            DayId = 7,
+                            DayId = 6,
                             Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 1,
+                            DayId = 7,
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 2,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -10435,14 +10438,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 2,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 2,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -10470,28 +10473,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 3,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 3,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 3,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 3,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -10519,14 +10522,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 4,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 4,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -10561,7 +10564,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 4,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -10603,21 +10606,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 5,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 5,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 6,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -10638,42 +10641,42 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 6,
                             DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 5,
-                            WeekId = 6,
-                            DayId = 5,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 6,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 6,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 6,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 7,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 7,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -10694,14 +10697,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 7,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 7,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -10722,14 +10725,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 8,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 8,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -10750,14 +10753,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 8,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 8,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -10771,7 +10774,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 9,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -10785,14 +10788,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 9,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 9,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -10806,7 +10809,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 9,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -10820,14 +10823,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 10,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 10,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -10869,21 +10872,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 11,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 11,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 11,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -10904,7 +10907,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 11,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -10932,21 +10935,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 12,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 12,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 12,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -10974,7 +10977,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 13,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -11023,21 +11026,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 14,
                             DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 5,
-                            WeekId = 14,
-                            DayId = 4,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 14,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 14,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -11051,42 +11054,42 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 14,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 15,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 15,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 15,
                             DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 5,
-                            WeekId = 15,
-                            DayId = 4,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 15,
-                            DayId = 5,
+                            DayId = 4,
                             Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 15,
+                            DayId = 5,
+                            Available = false
                         },
                         new
                         {
@@ -11100,7 +11103,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 15,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -11121,7 +11124,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 16,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -11135,35 +11138,35 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 16,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 16,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 16,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 17,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 17,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -11184,14 +11187,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 17,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 17,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -11205,21 +11208,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 18,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 18,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 18,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -11233,7 +11236,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 18,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -11268,14 +11271,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 19,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 19,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -11289,21 +11292,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 19,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 19,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 20,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -11331,21 +11334,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 20,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 20,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 20,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -11373,7 +11376,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 21,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -11387,28 +11390,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 21,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 21,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 22,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 22,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -11429,14 +11432,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 22,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 22,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -11457,14 +11460,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 23,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 23,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -11492,7 +11495,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 23,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -11513,14 +11516,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 24,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 24,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -11583,7 +11586,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 25,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -11597,47 +11600,47 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 26,
                             DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 5,
-                            WeekId = 26,
-                            DayId = 2,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 26,
-                            DayId = 3,
+                            DayId = 2,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 26,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 5,
-                            WeekId = 26,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 5,
-                            WeekId = 26,
-                            DayId = 6,
+                            DayId = 3,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 26,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 26,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 26,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 26,
                             DayId = 7,
                             Available = false
                         },
@@ -11653,14 +11656,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 27,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 27,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -11681,28 +11684,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 27,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 27,
                             DayId = 7,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 5,
-                            WeekId = 28,
-                            DayId = 1,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 28,
-                            DayId = 2,
+                            DayId = 1,
                             Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 28,
+                            DayId = 2,
+                            Available = false
                         },
                         new
                         {
@@ -11723,14 +11726,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 28,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 28,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -11744,14 +11747,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 29,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 29,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -11772,7 +11775,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 29,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -11786,14 +11789,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 29,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 30,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -11807,7 +11810,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 30,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -11835,7 +11838,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 30,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -11856,7 +11859,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 31,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -11870,70 +11873,70 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 31,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 31,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 31,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 32,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 32,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 32,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 32,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 32,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 32,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 32,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -11975,7 +11978,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 33,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -11989,19 +11992,19 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 34,
                             DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 5,
-                            WeekId = 34,
-                            DayId = 2,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 34,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 34,
                             DayId = 3,
                             Available = false
                         },
@@ -12017,19 +12020,19 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 34,
                             DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 5,
-                            WeekId = 34,
-                            DayId = 6,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 34,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 34,
                             DayId = 7,
                             Available = true
                         },
@@ -12038,21 +12041,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 35,
                             DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 5,
-                            WeekId = 35,
-                            DayId = 2,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 35,
-                            DayId = 3,
+                            DayId = 2,
                             Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 35,
+                            DayId = 3,
+                            Available = false
                         },
                         new
                         {
@@ -12066,7 +12069,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 35,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -12087,7 +12090,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 36,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -12101,14 +12104,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 36,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 36,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -12136,21 +12139,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 37,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 37,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 37,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -12192,19 +12195,19 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 38,
                             DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 5,
-                            WeekId = 38,
-                            DayId = 3,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 38,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 38,
                             DayId = 4,
                             Available = false
                         },
@@ -12213,7 +12216,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 38,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -12227,7 +12230,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 38,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -12241,14 +12244,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 39,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 39,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -12276,14 +12279,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 39,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 40,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -12304,21 +12307,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 40,
                             DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 5,
-                            WeekId = 40,
-                            DayId = 5,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 40,
-                            DayId = 6,
+                            DayId = 5,
                             Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 40,
+                            DayId = 6,
+                            Available = false
                         },
                         new
                         {
@@ -12339,7 +12342,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 41,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -12367,7 +12370,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 41,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -12388,7 +12391,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 42,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -12402,7 +12405,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 42,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -12416,7 +12419,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 42,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -12430,14 +12433,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 43,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 43,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -12451,7 +12454,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 43,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -12465,14 +12468,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 43,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 43,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -12486,21 +12489,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 44,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 44,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 44,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -12514,7 +12517,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 44,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -12528,7 +12531,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 45,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -12542,35 +12545,35 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 45,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 45,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 45,
                             DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 5,
-                            WeekId = 45,
-                            DayId = 6,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 45,
-                            DayId = 7,
+                            DayId = 6,
                             Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 45,
+                            DayId = 7,
+                            Available = true
                         },
                         new
                         {
@@ -12584,7 +12587,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 46,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -12598,21 +12601,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 46,
                             DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 5,
-                            WeekId = 46,
-                            DayId = 5,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 46,
-                            DayId = 6,
+                            DayId = 5,
                             Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 46,
+                            DayId = 6,
+                            Available = true
                         },
                         new
                         {
@@ -12633,7 +12636,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 47,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -12647,14 +12650,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 47,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 47,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -12682,7 +12685,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 48,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -12696,14 +12699,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 48,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 48,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -12724,21 +12727,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 49,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 49,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 49,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -12752,7 +12755,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 49,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -12766,21 +12769,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 49,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 50,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 50,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -12815,7 +12818,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 50,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -12836,14 +12839,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 51,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 51,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -12857,7 +12860,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 51,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -12878,14 +12881,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 52,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 52,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -12899,21 +12902,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 5,
                             WeekId = 52,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 52,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 5,
                             WeekId = 52,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -12927,26 +12930,26 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 1,
                             DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 1,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 1,
-                            DayId = 4,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 1,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 1,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 1,
                             DayId = 5,
                             Available = true
                         },
@@ -12955,7 +12958,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 1,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -12976,28 +12979,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 2,
                             DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 2,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 2,
-                            DayId = 4,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 2,
-                            DayId = 5,
+                            DayId = 3,
                             Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 2,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 2,
+                            DayId = 5,
+                            Available = true
                         },
                         new
                         {
@@ -13011,7 +13014,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 2,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -13032,7 +13035,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 3,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -13060,7 +13063,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 3,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -13081,21 +13084,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 4,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 4,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 4,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -13109,14 +13112,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 4,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 5,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -13137,14 +13140,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 5,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 5,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -13158,28 +13161,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 5,
                             DayId = 7,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 6,
-                            DayId = 1,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 6,
-                            DayId = 2,
+                            DayId = 1,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 6,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 6,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -13200,7 +13203,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 6,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -13221,35 +13224,35 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 7,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 7,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 7,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 7,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 7,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -13263,7 +13266,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 8,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -13284,7 +13287,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 8,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -13319,14 +13322,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 9,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 9,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -13340,7 +13343,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 9,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -13354,14 +13357,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 9,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 10,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -13375,14 +13378,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 10,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 10,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -13410,7 +13413,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 11,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -13431,49 +13434,49 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 11,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 11,
                             DayId = 5,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 11,
-                            DayId = 6,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 11,
-                            DayId = 7,
+                            DayId = 6,
                             Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 11,
+                            DayId = 7,
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 12,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 12,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 12,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -13487,7 +13490,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 12,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -13529,19 +13532,19 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 13,
                             DayId = 4,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 13,
-                            DayId = 5,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 13,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 13,
                             DayId = 6,
                             Available = true
                         },
@@ -13578,19 +13581,19 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 14,
                             DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 14,
-                            DayId = 5,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 14,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 14,
                             DayId = 6,
                             Available = true
                         },
@@ -13606,35 +13609,35 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 15,
                             DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 15,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 15,
-                            DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 15,
-                            DayId = 4,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 15,
-                            DayId = 5,
+                            DayId = 2,
                             Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 15,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 15,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 15,
+                            DayId = 5,
+                            Available = false
                         },
                         new
                         {
@@ -13655,33 +13658,33 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 16,
                             DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 16,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 16,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 16,
-                            DayId = 4,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 16,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 16,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 16,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 16,
                             DayId = 5,
                             Available = false
                         },
@@ -13697,7 +13700,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 16,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -13711,7 +13714,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 17,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -13725,7 +13728,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 17,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -13746,7 +13749,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 17,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -13760,7 +13763,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 18,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -13774,14 +13777,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 18,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 18,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -13823,7 +13826,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 19,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -13837,7 +13840,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 19,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -13851,28 +13854,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 20,
                             DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 20,
-                            DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 20,
-                            DayId = 3,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 20,
-                            DayId = 4,
+                            DayId = 2,
                             Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 20,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 20,
+                            DayId = 4,
+                            Available = true
                         },
                         new
                         {
@@ -13886,7 +13889,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 20,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -13914,19 +13917,19 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 21,
                             DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 21,
-                            DayId = 4,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 21,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 21,
                             DayId = 5,
                             Available = false
                         },
@@ -13935,21 +13938,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 21,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 21,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 22,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -13970,28 +13973,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 22,
                             DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 22,
-                            DayId = 5,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 22,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 22,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 22,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -14012,7 +14015,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 23,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -14040,7 +14043,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 23,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -14061,35 +14064,35 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 24,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 24,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 24,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 24,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 24,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -14110,7 +14113,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 25,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -14131,14 +14134,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 25,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 25,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -14159,7 +14162,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 26,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -14180,14 +14183,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 26,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 26,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -14208,14 +14211,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 27,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 27,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -14236,21 +14239,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 27,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 28,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 28,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -14313,19 +14316,19 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 29,
                             DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 29,
-                            DayId = 5,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 29,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 29,
                             DayId = 6,
                             Available = false
                         },
@@ -14348,21 +14351,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 30,
                             DayId = 2,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 30,
-                            DayId = 3,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 30,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 30,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -14383,14 +14386,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 30,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 31,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -14411,7 +14414,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 31,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -14425,7 +14428,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 31,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -14439,14 +14442,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 32,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 32,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -14467,21 +14470,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 32,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 32,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 32,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -14495,28 +14498,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 33,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 33,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 33,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 33,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -14544,40 +14547,40 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 34,
                             DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 34,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 34,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 34,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 34,
-                            DayId = 6,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 34,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 34,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 34,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 34,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 34,
                             DayId = 7,
                             Available = false
                         },
@@ -14586,28 +14589,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 35,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 35,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 35,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 35,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -14628,42 +14631,42 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 35,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 36,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 36,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 36,
                             DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 36,
-                            DayId = 4,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 36,
-                            DayId = 5,
+                            DayId = 4,
                             Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 36,
+                            DayId = 5,
+                            Available = true
                         },
                         new
                         {
@@ -14677,14 +14680,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 36,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 37,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -14719,7 +14722,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 37,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -14740,21 +14743,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 38,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 38,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 38,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -14768,7 +14771,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 38,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -14796,28 +14799,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 39,
                             DayId = 3,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 39,
-                            DayId = 4,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 39,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 39,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 39,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -14838,26 +14841,26 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 40,
                             DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 40,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 40,
-                            DayId = 4,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 40,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 40,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 40,
                             DayId = 5,
                             Available = false
                         },
@@ -14866,35 +14869,35 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 40,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 40,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 41,
                             DayId = 1,
-                            Available = true
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 41,
-                            DayId = 2,
                             Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 41,
-                            DayId = 3,
+                            DayId = 2,
                             Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 41,
+                            DayId = 3,
+                            Available = false
                         },
                         new
                         {
@@ -14922,7 +14925,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 41,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -14936,7 +14939,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 42,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -14950,7 +14953,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 42,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -14978,56 +14981,56 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 43,
                             DayId = 1,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 43,
-                            DayId = 2,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 43,
-                            DayId = 3,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 43,
-                            DayId = 4,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 43,
-                            DayId = 5,
-                            Available = false
-                        },
-                        new
-                        {
-                            ConsultantId = 6,
-                            WeekId = 43,
-                            DayId = 6,
                             Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 43,
-                            DayId = 7,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 43,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 43,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 43,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 43,
+                            DayId = 6,
                             Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 43,
+                            DayId = 7,
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 44,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -15048,7 +15051,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 44,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -15062,21 +15065,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 44,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 44,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 45,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -15097,49 +15100,49 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 45,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 45,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 45,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 45,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 46,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 46,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 46,
                             DayId = 3,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -15167,7 +15170,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 46,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -15181,7 +15184,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 47,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -15195,14 +15198,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 47,
                             DayId = 4,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 47,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
@@ -15223,28 +15226,28 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 48,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 48,
                             DayId = 2,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 48,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 48,
                             DayId = 4,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -15272,21 +15275,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 49,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 49,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 49,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -15300,7 +15303,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 49,
                             DayId = 5,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -15314,21 +15317,21 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 49,
                             DayId = 7,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 50,
                             DayId = 1,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 50,
                             DayId = 2,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -15349,14 +15352,14 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 50,
                             DayId = 5,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 50,
                             DayId = 6,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -15370,7 +15373,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 51,
                             DayId = 1,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -15412,7 +15415,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 51,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -15433,7 +15436,7 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 52,
                             DayId = 3,
-                            Available = false
+                            Available = true
                         },
                         new
                         {
@@ -15454,18 +15457,18 @@ namespace CalHealth.BookingService.Data.Migrations
                             ConsultantId = 6,
                             WeekId = 52,
                             DayId = 6,
-                            Available = true
+                            Available = false
                         },
                         new
                         {
                             ConsultantId = 6,
                             WeekId = 52,
                             DayId = 7,
-                            Available = false
+                            Available = true
                         });
                 });
 
-            modelBuilder.Entity("CalHealth.CalendarService.Models.Day", b =>
+            modelBuilder.Entity("CalHealth.BookingService.Models.Day", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -15520,7 +15523,7 @@ namespace CalHealth.BookingService.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CalHealth.CalendarService.Models.Gender", b =>
+            modelBuilder.Entity("CalHealth.BookingService.Models.Gender", b =>
                 {
                     b.Property<int>("Id")
                         .HasColumnType("int");
@@ -15547,7 +15550,7 @@ namespace CalHealth.BookingService.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CalHealth.CalendarService.Models.Note", b =>
+            modelBuilder.Entity("CalHealth.BookingService.Models.Note", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -15570,7 +15573,7 @@ namespace CalHealth.BookingService.Data.Migrations
                     b.ToTable("Note");
                 });
 
-            modelBuilder.Entity("CalHealth.CalendarService.Models.Specialty", b =>
+            modelBuilder.Entity("CalHealth.BookingService.Models.Specialty", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -15625,7 +15628,7 @@ namespace CalHealth.BookingService.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CalHealth.CalendarService.Models.TimeSlot", b =>
+            modelBuilder.Entity("CalHealth.BookingService.Models.TimeSlot", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -16005,7 +16008,7 @@ namespace CalHealth.BookingService.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CalHealth.CalendarService.Models.Week", b =>
+            modelBuilder.Entity("CalHealth.BookingService.Models.Week", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -16282,71 +16285,71 @@ namespace CalHealth.BookingService.Data.Migrations
                         });
                 });
 
-            modelBuilder.Entity("CalHealth.CalendarService.Models.Appointment", b =>
+            modelBuilder.Entity("CalHealth.BookingService.Models.Appointment", b =>
                 {
-                    b.HasOne("CalHealth.CalendarService.Models.Consultant", "Consultant")
+                    b.HasOne("CalHealth.BookingService.Models.Consultant", "Consultant")
                         .WithMany("Appointment")
                         .HasForeignKey("ConsultantId")
                         .HasConstraintName("FK_Appointment_Consultant")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CalHealth.CalendarService.Models.Day", "Day")
+                    b.HasOne("CalHealth.BookingService.Models.Day", "Day")
                         .WithMany("Appointment")
                         .HasForeignKey("DayId")
                         .HasConstraintName("FK_Appointment_Day")
                         .IsRequired();
 
-                    b.HasOne("CalHealth.CalendarService.Models.Note", "Note")
+                    b.HasOne("CalHealth.BookingService.Models.Note", "Note")
                         .WithMany("Appointment")
                         .HasForeignKey("NoteId")
                         .HasConstraintName("FK_Appointment_Note")
                         .OnDelete(DeleteBehavior.SetNull);
 
-                    b.HasOne("CalHealth.CalendarService.Models.TimeSlot", "TimeSlot")
+                    b.HasOne("CalHealth.BookingService.Models.TimeSlot", "TimeSlot")
                         .WithMany("Appointment")
                         .HasForeignKey("TimeSlotId")
                         .HasConstraintName("FK_Appointment_TimeSlot")
                         .IsRequired();
 
-                    b.HasOne("CalHealth.CalendarService.Models.Week", "Week")
+                    b.HasOne("CalHealth.BookingService.Models.Week", "Week")
                         .WithMany("Appointment")
                         .HasForeignKey("WeekId")
                         .HasConstraintName("FK_Appointment_Week")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CalHealth.CalendarService.Models.Consultant", b =>
+            modelBuilder.Entity("CalHealth.BookingService.Models.Consultant", b =>
                 {
-                    b.HasOne("CalHealth.CalendarService.Models.Gender", "Gender")
+                    b.HasOne("CalHealth.BookingService.Models.Gender", "Gender")
                         .WithMany("Consultant")
                         .HasForeignKey("GenderId")
                         .HasConstraintName("FK_Consultant_Gender")
                         .IsRequired();
 
-                    b.HasOne("CalHealth.CalendarService.Models.Specialty", "Specialty")
+                    b.HasOne("CalHealth.BookingService.Models.Specialty", "Specialty")
                         .WithMany("Consultant")
                         .HasForeignKey("SpecialtyId")
                         .HasConstraintName("FK_Consultant_Specialty")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CalHealth.CalendarService.Models.ConsultantAvailabilityPerWeek", b =>
+            modelBuilder.Entity("CalHealth.BookingService.Models.ConsultantAvailabilityPerWeek", b =>
                 {
-                    b.HasOne("CalHealth.CalendarService.Models.Consultant", "Consultant")
+                    b.HasOne("CalHealth.BookingService.Models.Consultant", "Consultant")
                         .WithMany("ConsultantAvailabilityPerWeek")
                         .HasForeignKey("ConsultantId")
                         .HasConstraintName("FK_ConsultantAvailabilityPerWeek_Consultant")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CalHealth.CalendarService.Models.Day", "Day")
+                    b.HasOne("CalHealth.BookingService.Models.Day", "Day")
                         .WithMany("ConsultantAvailabilityPerWeek")
                         .HasForeignKey("DayId")
                         .HasConstraintName("FK_ConsultantAvailabilityPerWeek_Day")
                         .IsRequired();
 
-                    b.HasOne("CalHealth.CalendarService.Models.Week", "Week")
+                    b.HasOne("CalHealth.BookingService.Models.Week", "Week")
                         .WithMany("ConsultantAvailabilityPerWeek")
                         .HasForeignKey("WeekId")
                         .HasConstraintName("FK_ConsultantAvailabilityPerWeek_Week")

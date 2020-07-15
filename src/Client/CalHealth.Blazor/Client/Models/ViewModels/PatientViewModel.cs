@@ -1,9 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace CalHealth.Blazor.Client.Models
 {
-    public class PatientDTO
+    public class PatientViewModel
     {
         public string FirstName { get; set; }
         

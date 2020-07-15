@@ -28,12 +28,20 @@ namespace CalHealth.PatientService.Infrastructure
                 .AddTransient<IGenderService, GenderService>()
                 .AddTransient<IReligionService, ReligionService>()
                 .AddTransient<IAllergyService, AllergyService>()
+                .AddTransient<IPatientService, Services.PatientService>();
+
+            return services;
+        }
+
+        internal static IServiceCollection AddMessagingLayer(this IServiceCollection services)
+        {
+            services
                 .AddSingleton<IAppointmentSubscriber, AppointmentSubscriber>()
                 .AddSingleton<IPatientPublisher, PatientPublisher>();
 
             return services;
         }
-
+        
         internal static IServiceCollection ConfigureCors(this IServiceCollection services)
         {
             services.AddCors(options =>

@@ -1,70 +1,78 @@
 ﻿using System;
 using System.Text;
-using CalHealth.BookingService.Messaging.Interfaces;
-using CalHealth.BookingService.Models;
-using CalHealth.BookingService.Services;
+using CalHealth.Blazor.Server.Hubs;
+using CalHealth.Blazor.Server.Messaging.Messages;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Serilog;
+using CalHealth.Blazor.Server.Models;
 
-namespace CalHealth.BookingService.Messaging
+namespace CalHealth.Blazor.Server.Messaging
 {
-    public class PatientSubscriber : IPatientSubscriber
+    public class AppointmentSubscriber : IAppointmentSubscriber
     {
         private readonly IServiceScopeFactory _scopeFactory;
         private ConnectionFactory Factory { get; }
-        private IConnection Connection { get; set; }
+        private IConnection Connection { get; }
         private IModel Channel { get; }
+        private readonly IHubContext<AppointmentHub> _hubContext;
 
-        public PatientSubscriber(IServiceScopeFactory scopeFactory)
+        public AppointmentSubscriber(IServiceScopeFactory scopeFactory, IHubContext<AppointmentHub> hubContext)
         {
             _scopeFactory = scopeFactory;
+            _hubContext = hubContext;
             Factory = new ConnectionFactory { HostName = "rabbitmq" };
             Connection = Factory.CreateConnection();
             Channel = Connection.CreateModel();
         }
-        
+
         public void Register()
         {
-            Channel.ExchangeDeclare(exchange: "patient", type: ExchangeType.Fanout);
+            Channel.ExchangeDeclare(exchange: "appointment", type: ExchangeType.Fanout);
 
             var queueName = Channel.QueueDeclare().QueueName;
             Channel.QueueBind(queue: queueName,
-                exchange: "patient",
+                exchange: "appointment",
                 routingKey: "");
-            
+
             var consumer = new EventingBasicConsumer(Channel);
             consumer.Received += async (sender, ea) =>
             {
                 var body = ea.Body.ToArray();
-                var message = JsonConvert.DeserializeObject<PatientMessage>(Encoding.UTF8.GetString(body));
+                var message = JsonConvert.DeserializeObject<AppointmentMessage>(Encoding.UTF8.GetString(body));
 
                 try
                 {
-                    using (var scope = _scopeFactory.CreateScope())
-                    using (var service = scope.ServiceProvider.GetRequiredService<IAppointmentService>())
+                    var dto = new AppointmentDTO
                     {
-                        await service.UpdatePatientIdAsync(message.AppointmentId, message.PatientId);
-                    }
+                        AppointmentId = message.AppointmentId,
+                        ConsultantId = message.ConsultantId,
+                        TimeSlotId = message.TimeSlotId,
+                        Date = message.Date
+                    };
+
+                    // ReSharper disable once MethodHasAsyncOverload
+                    var payload = JsonConvert.SerializeObject(dto);
+                    
+                    await _hubContext.Clients.All.SendAsync("Appointment", dto);
 
                     Channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
                 }
                 catch (Exception e)
                 {
-                    Log.Error("An error has occurred: {@error}", e);
+                    Log.Error(e.Message);
                     Channel.BasicNack(ea.DeliveryTag, false, false);
                     throw;
                 }
-                
-                // TODO: handle Blazor update
             };
 
             Channel.BasicQos(0, 100, false);
             Channel.BasicConsume(queue: queueName, autoAck: false, consumer: consumer);
         }
-        
+
         public void Deregister()
         {
             Connection.Close();

@@ -6,6 +6,7 @@ using CalHealth.BookingService.Messaging;
 using CalHealth.BookingService.Messaging.Interfaces;
 using CalHealth.BookingService.Models;
 using CalHealth.BookingService.Repositories;
+using Serilog;
 
 namespace CalHealth.BookingService.Services
 {
@@ -59,6 +60,35 @@ namespace CalHealth.BookingService.Services
             }
         }
 
+        public async Task<Appointment> UpdatePatientIdAsync(int appointmentId, int patientId)
+        {
+            if (appointmentId < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(appointmentId));
+            }
+
+            var appointment = await _unitOfWork.AppointmentRepository.GetByIdAsync(appointmentId);
+
+            if (appointment == null)
+            {
+                throw new Exception($"Received an unexpected null attempting to retrieve a {typeof(Appointment)} entity by the Id <{appointmentId}>");
+            }
+
+            try
+            {
+                appointment.PatientId = patientId;
+                _unitOfWork.AppointmentRepository.Update(appointment);
+                await _unitOfWork.CommitAsync();
+
+                return appointment;
+            }
+            catch (Exception e)
+            {
+                Log.Error("An error has occurred: {@error}", e);
+                throw;
+            }
+        }
+
         /// <summary>
         /// Verify that there doesn't exist a duplicate <see cref="Appointment"/> entity.
         /// </summary>
@@ -90,6 +120,7 @@ namespace CalHealth.BookingService.Services
             var entity = new Appointment
             {
                 ConsultantId = model.ConsultantId,
+                Date = model.Date,
                 WeekId = _calendar.GetWeekOfYear(model.Date, _cultureInfo.DateTimeFormat.CalendarWeekRule,
                     _cultureInfo.DateTimeFormat.FirstDayOfWeek),
                 DayId = (int) _calendar.GetDayOfWeek(model.Date),
@@ -109,14 +140,18 @@ namespace CalHealth.BookingService.Services
             var message = new AppointmentMessage
             {
                 AppointmentId = entity.Id,
+                ConsultantId = entity.ConsultantId,
+                TimeSlotId = entity.TimeSlotId,
+                Date = entity.Date,
                 FirstName = model.Patient.FirstName,
                 LastName = model.Patient.LastName,
-                ReligionId = model.Patient.ReligionId,
-                GenderId = model.Patient.GenderId,
-                DateOfBirth = model.Patient.DateOfBirth,
-                AllergyList = model.Patient.AllergyList
+                DateOfBirth = model.Patient.DateOfBirth
             };
             return message;
+        }
+
+        public void Dispose()
+        {
         }
     }
 }

@@ -30,20 +30,30 @@ namespace CalHealth.BookingService.Repositories
             return results;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        public async Task<IEnumerable<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            var result = await _context.Set<TEntity>().ToListAsync();
+            var query = _context.Set<TEntity>().AsQueryable();
+            
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+            
+            var result = await query.ToListAsync();
 
             return result;
         }
-
-        public async Task<TEntity> GetByIdAsync(int id)
+        
+        public async Task<TEntity> GetByIdAsync(int id, params Expression<Func<TEntity, object>>[] includeProperties)
         {
-            var result = await 
-                _context
-                    .Set<TEntity>()
-                    .Where(e => e.Id == id)
-                    .FirstOrDefaultAsync();
+            var query = _context.Set<TEntity>().AsQueryable();
+
+            foreach (var includeProperty in includeProperties)
+            {
+                query = query.Include(includeProperty);
+            }
+            
+            var result = await query.FirstOrDefaultAsync(e => e.Id == id);
 
             return result;
         }
@@ -56,6 +66,16 @@ namespace CalHealth.BookingService.Repositories
             }
             
             await _context.Set<TEntity>().AddAsync(entity);
+        }
+
+        public void Update(TEntity entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            _context.Set<TEntity>().Update(entity);
         }
     }
 }

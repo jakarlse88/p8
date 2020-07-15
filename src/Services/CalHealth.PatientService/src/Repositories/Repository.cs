@@ -57,5 +57,15 @@ namespace CalHealth.PatientService.Repositories
             
             await _context.Set<TEntity>().AddAsync(entity);
         }
+        
+        public void Update(TEntity entity)
+        {
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+
+            _context.Set<TEntity>().Update(entity);
+        }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 
-namespace CalHealth.BookingService.Messaging
+namespace CalHealth.Blazor.Client.Models
 {
     public class AppointmentMessage
     {
@@ -9,8 +8,5 @@ namespace CalHealth.BookingService.Messaging
         public int ConsultantId { get; set; }
         public int TimeSlotId { get; set; }
         public DateTime Date { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public DateTime DateOfBirth { get; set; }
     }
 }

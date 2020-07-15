@@ -9,8 +9,9 @@ namespace CalHealth.BookingService.Repositories
     public interface IRepository<TEntity> where TEntity : class, IEntityBase
     {
         Task<IEnumerable<TEntity>> GetByConditionAsync(Expression<Func<TEntity, bool>> predicate);
-        Task<IEnumerable<TEntity>> GetAllAsync();
-        Task<TEntity> GetByIdAsync(int id);
+        Task<IEnumerable<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] includeProperties);
+        Task<TEntity> GetByIdAsync(int id, params Expression<Func<TEntity, object>>[] includeProperties);
         Task InsertAsync(TEntity entity);
+        void Update(TEntity entity);
     }
 }

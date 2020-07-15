@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CalHealth.BookingService.Models;
 using CalHealth.BookingService.Repositories;
+using Serilog;
 
 namespace CalHealth.BookingService.Services
 {
@@ -19,8 +21,11 @@ namespace CalHealth.BookingService.Services
 
         public async Task<IEnumerable<ConsultantDTO>> GetAllAsDTOAsync()
         {
-            var result = await _unitOfWork.ConsultantRepository.GetAllAsync();
+            var result = await _unitOfWork.ConsultantRepository.GetAllAsync(
+                c => c.Specialty,
+                c => c.Gender);
 
+            Log.Information("Result: {@consultant}", result.First());
             var mappedResult = _mapper.Map<IEnumerable<ConsultantDTO>>(result);
 
             return mappedResult;

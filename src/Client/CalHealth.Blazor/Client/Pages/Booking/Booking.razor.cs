@@ -1,10 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
+using Blazored.Toast.Services;
 using CalHealth.Blazor.Client.Models;
 using CalHealth.Blazor.Client.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.SignalR.Client;
 
 namespace CalHealth.Blazor.Client.Pages.Booking
 {
@@ -12,6 +13,8 @@ namespace CalHealth.Blazor.Client.Pages.Booking
     {
         [Inject] private IApiRequestService ApiRequestService { get; set; }
         [Inject] private NavigationManager NavigationManager { get; set; }
+        [Inject] public IToastService ToastService { get; set; }
+        private HubConnection _hubConnection;
         private BookingFormViewModel FormModel { get; set; }
         private BookingViewModel ViewModel { get; set; }
         private EditContext ScheduleEditContext { get; set; }
@@ -20,9 +23,14 @@ namespace CalHealth.Blazor.Client.Pages.Booking
         private bool DateIsValid { get; set; }
         private bool PatientIsValid { get; set; }
         private APIOperationStatus Status { get; set; }
-        private bool FormIsValid => ConsultantIsValid 
-                                    && DateIsValid 
-                                    && PatientIsValid;
+
+        public bool IsConnected =>
+            _hubConnection.State == HubConnectionState.Connected;
+
+        private bool FormIsValid =>
+            ConsultantIsValid
+            && DateIsValid
+            && PatientIsValid;
 
         /// <summary>
         /// Component initialization logic.
@@ -31,6 +39,18 @@ namespace CalHealth.Blazor.Client.Pages.Booking
         protected override async Task OnInitializedAsync()
         {
             Status = APIOperationStatus.GET_Pending;
+
+            _hubConnection =
+                new HubConnectionBuilder()
+                    .WithUrl(NavigationManager.ToAbsoluteUri("/appointment"))
+                    .Build();
+
+            _hubConnection.On<AppointmentMessage>("Appointment", msg =>
+            {
+                ToastService.ShowSuccess($"Appointment with ID <{msg.AppointmentId}> was successfully received.");
+            });
+
+            await _hubConnection.StartAsync();
 
             ViewModel = new BookingViewModel();
             FormModel = new BookingFormViewModel();
@@ -67,13 +87,23 @@ namespace CalHealth.Blazor.Client.Pages.Booking
         private async Task HandleSubmit()
         {
             const string requestUrl = "https://localhost:8088/client-gw/appointment";
+
             Status = APIOperationStatus.POST_Pending;
             StateHasChanged();
+
+            if (!PatientInApprovedList())
+            {
+                ToastService.ShowError(
+                    "Patient not found. Please check the personal details entered are correct and try again.");
+                Status = APIOperationStatus.GET_Success;
+                StateHasChanged();
+                return;
+            }
 
             try
             {
                 var dto = CreateDTO();
-                
+
                 var result = await ApiRequestService.HandlePostRequest(requestUrl, dto);
 
                 Status = APIOperationStatus.POST_Success;
@@ -89,6 +119,23 @@ namespace CalHealth.Blazor.Client.Pages.Booking
             }
         }
 
+        private bool PatientInApprovedList()
+        {
+            var result = false;
+
+            foreach (var patient in ViewModel.PatientList)
+            {
+                if (patient.FirstName.Contains(FormModel.Patient.FirstName, StringComparison.OrdinalIgnoreCase)
+                    && patient.LastName.Contains(FormModel.Patient.LastName, StringComparison.OrdinalIgnoreCase)
+                    && patient.DateOfBirth.Date == FormModel.Patient.DateOfBirth.Date)
+                {
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Create the data transfer object for form submission.
         /// </summary>
@@ -102,35 +149,13 @@ namespace CalHealth.Blazor.Client.Pages.Booking
                 TimeSlotId = FormModel.Schedule.TimeSlotId,
                 Patient = new PatientDTO
                 {
-                    GenderId = FormModel.Patient.GenderId,
-                    ReligionId = FormModel.Patient.ReligionId == 0 ? null : (int?) FormModel.Patient.ReligionId,
                     FirstName = FormModel.Patient.FirstName,
                     LastName = FormModel.Patient.LastName,
-                    DateOfBirth = FormModel.Patient.DateOfBirth,
-                    AllergyList = GenerateAllergyList()
+                    DateOfBirth = FormModel.Patient.DateOfBirth
                 }
             };
-            
+
             return dto;
-        }
-
-        /// <summary>
-        /// Generate a list containing the id of each selected allergy.
-        /// </summary>
-        /// <returns></returns>
-        private IEnumerable<int> GenerateAllergyList()
-        {
-            var selectedAllergies = new List<int>();
-
-            foreach (var model in ViewModel.AllergyList)
-            {
-                if (model.Selected)
-                {
-                    selectedAllergies.Add(model.Id);
-                }
-            }
-
-            return selectedAllergies;
         }
 
         /// <summary>
@@ -157,7 +182,7 @@ namespace CalHealth.Blazor.Client.Pages.Booking
             Console.WriteLine("asd");
             // TODO: We will likely have to perform some validation on the selected date against consultant availability here at some point.
             DateIsValid = true;
-            
+
             StateHasChanged();
         }
 
@@ -170,7 +195,7 @@ namespace CalHealth.Blazor.Client.Pages.Booking
         {
             ConsultantIsValid = !string.IsNullOrWhiteSpace(FormModel.Schedule.ConsultantIdProxy)
                                 && FormModel.Schedule.ConsultantIdProxy != "0";
-            
+
             StateHasChanged();
         }
 
@@ -193,6 +218,7 @@ namespace CalHealth.Blazor.Client.Pages.Booking
             ScheduleEditContext.OnFieldChanged -= HandleDateEditContextFieldChanged;
             PatientEditContext.OnFieldChanged -= HandlePatientEditContextFieldChanged;
             ScheduleEditContext.OnFieldChanged -= HandleConsultantFieldChanged;
+            _ = _hubConnection.DisposeAsync();
         }
     }
 }

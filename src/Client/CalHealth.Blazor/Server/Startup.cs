@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Linq;
+using CalHealth.Blazor.Server.Hubs;
+using CalHealth.Blazor.Server.Messaging;
 
 namespace CalHealth.Blazor.Server
 {
@@ -22,11 +24,11 @@ namespace CalHealth.Blazor.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllersWithViews();
             services.AddRazorPages();
             services.AddSignalR();
             services.AddControllersWithViews();
+            services.AddSingleton<IAppointmentSubscriber, AppointmentSubscriber>();
             services.AddResponseCompression(opts =>
             {
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
@@ -37,6 +39,8 @@ namespace CalHealth.Blazor.Server
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseResponseCompression();
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -53,12 +57,15 @@ namespace CalHealth.Blazor.Server
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
 
+            app.UseAppointmentSubscriber();
+            
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
                 endpoints.MapControllers();
+                endpoints.MapHub<AppointmentHub>("/appointment");
                 endpoints.MapFallbackToFile("index.html");
             });
         }

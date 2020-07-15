@@ -12,5 +12,6 @@ namespace CalHealth.PatientService.Repositories
         Task<IEnumerable<TEntity>> GetAllAsync();
         Task<TEntity> GetByIdAsync(int id);
         Task InsertAsync(TEntity entity);
+        void Update(TEntity entity);
     }
 }

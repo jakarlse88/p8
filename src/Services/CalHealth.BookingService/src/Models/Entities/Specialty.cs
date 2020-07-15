@@ -2,7 +2,7 @@
 
 namespace CalHealth.BookingService.Models
 {
-    public partial class Specialty : IEntityBase
+    public class Specialty : IEntityBase
     {
         public Specialty()
         {
@@ -12,6 +12,6 @@ namespace CalHealth.BookingService.Models
         public int Id { get; set; }
         public string Type { get; set; }
 
-        public virtual ICollection<Consultant> Consultant { get; set; }
+        public ICollection<Consultant> Consultant { get; }
     }
 }

@@ -27,7 +27,14 @@ namespace CalHealth.BookingService.Infrastructure.Extensions
             services
                 .AddTransient<IAppointmentService, AppointmentService>()
                 .AddTransient<ITimeSlotService, TimeSlotService>()
-                .AddTransient<IConsultantService, ConsultantService>()
+                .AddTransient<IConsultantService, ConsultantService>();
+
+            return services;
+        }
+
+        internal static IServiceCollection AddMessagingLayer(this IServiceCollection services)
+        {
+            services
                 .AddSingleton<IAppointmentPublisher, AppointmentPublisher>()
                 .AddSingleton<IPatientSubscriber, PatientSubscriber>();
 

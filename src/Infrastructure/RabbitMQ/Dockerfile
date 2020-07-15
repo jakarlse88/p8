@@ -1,4 +1,4 @@
-FROM rabbitmq:3.7
+FROM rabbitmq:3
 
 WORKDIR /usr/local/bin/
 COPY Infrastructure/RabbitMQ/init.sh .

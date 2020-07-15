@@ -1,19 +1,22 @@
-﻿namespace CalHealth.BookingService.Models
+﻿using System;
+
+namespace CalHealth.BookingService.Models
 {
     public class Appointment : IEntityBase
     {
         public int Id { get; set; }
         public int ConsultantId { get; set; }
+        public DateTime Date { get; set; }
         public int WeekId { get; set; }
         public int DayId { get; set; }
         public int TimeSlotId { get; set; }
         public int? NoteId { get; set; }
         public int PatientId { get; set; }
 
-        public virtual Consultant Consultant { get; set; }
-        public virtual Day Day { get; set; }
-        public virtual Note Note { get; set; }
-        public virtual TimeSlot TimeSlot { get; set; }
-        public virtual Week Week { get; set; }
+        public Consultant Consultant { get; set; }
+        public Day Day { get; set; }
+        public Note Note { get; set; }
+        public TimeSlot TimeSlot { get; set; }
+        public Week Week { get; set; }
     }
 }

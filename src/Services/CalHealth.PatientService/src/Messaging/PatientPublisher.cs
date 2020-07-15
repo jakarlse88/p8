@@ -1,6 +1,5 @@
 using System;
 using System.Text;
-using System.Threading;
 using CalHealth.PatientService.Messaging.Interfaces;
 using CalHealth.PatientService.Messaging.Messages;
 using Newtonsoft.Json;

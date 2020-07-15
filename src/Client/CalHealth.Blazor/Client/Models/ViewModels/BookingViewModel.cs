@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace CalHealth.Blazor.Client.Models
 {
@@ -8,15 +9,17 @@ namespace CalHealth.Blazor.Client.Models
         {
             ConsultantList = new List<ConsultantViewModel>();
             TimeSlotList = new List<TimeSlotViewModel>();
-            GenderList = new List<GenderViewModel>();
-            AllergyList = new List<AllergyViewModel>();
-            ReligionList = new List<ReligionViewModel>();
+            PatientList = new List<PatientViewModel>();
         }
 
+        [JsonProperty("Consultant")]
         public IEnumerable<ConsultantViewModel> ConsultantList { get; }
+        
+        [JsonProperty("TimeSlot")]
         public IEnumerable<TimeSlotViewModel> TimeSlotList { get; }
-        public IEnumerable<GenderViewModel> GenderList { get; }
-        public IEnumerable<AllergyViewModel> AllergyList { get; }
-        public IEnumerable<ReligionViewModel> ReligionList { get; }
+
+        [JsonProperty("Patient")]
+        public IEnumerable<PatientViewModel> PatientList { get; set; }
+        
     }
 }

@@ -28,6 +28,7 @@ namespace CalHealth.BookingService
                 .ConfigureDbContext(Configuration)
                 .AddRepositoryLayer()
                 .AddServiceLayer()
+                .AddMessagingLayer()
                 .ConfigureSwagger()
                 .ConfigureCors();
         }

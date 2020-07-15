@@ -57,6 +57,30 @@ namespace CalHealth.BookingService.Test.RepositoryTests
             Assert.Equal(6, result.Count());
         }
 
+        [Fact]
+        public async Task TestGetAllInclude()
+        {
+            // Arrange
+            var consultants = GenerateConsultants();
+            var mockDbSet = consultants.AsQueryable().BuildMockDbSet();
+
+            var mockContext = new Mock<BookingContext>();
+            mockContext
+                .Setup(x => x.Set<Consultant>())
+                .Returns(mockDbSet.Object);
+
+            var repository = new Repository<Consultant>(mockContext.Object);
+
+            // Act
+            var result = await repository.GetAllAsync();
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.Equal(6, result.Count());
+            Assert.NotNull(result.First().Specialty);
+        }
+
+
         /**
          * ============================
          * Internal helper methods
@@ -74,7 +98,12 @@ namespace CalHealth.BookingService.Test.RepositoryTests
                     SpecialtyId = 2,
                     FirstName = "Sophie",
                     LastName = "Harrington",
-                    DateOfBirth = new DateTime(1985, 5, 24)
+                    DateOfBirth = new DateTime(1985, 5, 24),
+                    Specialty = new Specialty
+                    {
+                        Id = 1,
+                        Type = "Test"
+                    }
                 },
                 new Consultant
                 {
@@ -83,7 +112,12 @@ namespace CalHealth.BookingService.Test.RepositoryTests
                     SpecialtyId = 5,
                     FirstName = "Kilian",
                     LastName = "Lopez",
-                    DateOfBirth = new DateTime(1967, 2, 5)
+                    DateOfBirth = new DateTime(1967, 2, 5),
+                    Specialty = new Specialty
+                    {
+                        Id = 1,
+                        Type = "Test"
+                    }
                 },
                 new Consultant
                 {
@@ -92,7 +126,12 @@ namespace CalHealth.BookingService.Test.RepositoryTests
                     SpecialtyId = 1,
                     FirstName = "Aya",
                     LastName = "Ahmed",
-                    DateOfBirth = new DateTime(1990, 1, 9)
+                    DateOfBirth = new DateTime(1990, 1, 9),
+                    Specialty = new Specialty
+                    {
+                        Id = 1,
+                        Type = "Test"
+                    }
                 },
                 new Consultant
                 {
@@ -101,7 +140,12 @@ namespace CalHealth.BookingService.Test.RepositoryTests
                     SpecialtyId = 2,
                     FirstName = "Hyeo-jin",
                     LastName = "Lim",
-                    DateOfBirth = new DateTime(1980, 2, 29)
+                    DateOfBirth = new DateTime(1980, 2, 29),
+                    Specialty = new Specialty
+                    {
+                        Id = 1,
+                        Type = "Test"
+                    }
                 },
                 new Consultant
                 {
@@ -110,7 +154,12 @@ namespace CalHealth.BookingService.Test.RepositoryTests
                     SpecialtyId = 7,
                     FirstName = "Lasse",
                     LastName = "Hansson",
-                    DateOfBirth = new DateTime(1977, 12, 7)
+                    DateOfBirth = new DateTime(1977, 12, 7),
+                    Specialty = new Specialty
+                    {
+                        Id = 1,
+                        Type = "Test"
+                    }
                 },
                 new Consultant
                 {
@@ -119,7 +168,12 @@ namespace CalHealth.BookingService.Test.RepositoryTests
                     SpecialtyId = 4,
                     FirstName = "Abe",
                     LastName = "Shiraishi",
-                    DateOfBirth = new DateTime(1973, 9, 5)
+                    DateOfBirth = new DateTime(1973, 9, 5),
+                    Specialty = new Specialty
+                    {
+                        Id = 1,
+                        Type = "Test"
+                    }
                 }
             };
 

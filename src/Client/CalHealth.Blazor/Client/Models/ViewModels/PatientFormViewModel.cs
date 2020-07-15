@@ -8,16 +8,8 @@ namespace CalHealth.Blazor.Client.Models
     {
         public PatientFormViewModel()
         {
-            ReligionId = 0;
-            AllergyIdList = new List<int>();
             DateOfBirth = DateTime.Today;
         }
-        
-        [Required(ErrorMessage = "Required.")]
-        public int GenderId { get; set; }
-        
-        public int ReligionId { get; set; }
-        public IEnumerable<int> AllergyIdList { get; set; }
         
         [Required(ErrorMessage = "Required.")]
         [MaxLength(50, ErrorMessage = "Maximum length is 50 characters.")]

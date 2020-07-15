@@ -15,7 +15,7 @@
       ]
     },
     {
-      "Key": "ConsultantList",
+      "Key": "Consultant",
       "UpstreamPathTemplate": "/client-gw/consultant",
       "UpstreamHttpMethod": [
         "GET"
@@ -34,7 +34,7 @@
       }
     },
     {
-      "Key": "TimeSlotList",
+      "Key": "TimeSlot",
       "UpstreamPathTemplate": "/client-gw/timeslot",
       "UpstreamHttpMethod": [
         "GET"
@@ -53,7 +53,7 @@
       }
     },
     {
-      "Key": "ReligionList",
+      "Key": "Religion",
       "UpstreamPathTemplate": "/client-gw/religion",
       "UpstreamHttpMethod": [
         "GET"
@@ -72,7 +72,7 @@
       }
     },
     {
-      "Key": "AllergyList",
+      "Key": "Allergy",
       "UpstreamPathTemplate": "/client-gw/allergy",
       "UpstreamHttpMethod": [
         "GET"
@@ -91,7 +91,7 @@
       }
     },
     {
-      "Key": "GenderList",
+      "Key": "Gender",
       "UpstreamPathTemplate": "/client-gw/gender",
       "UpstreamHttpMethod": [
         "GET"
@@ -126,18 +126,16 @@
       ],
       "FileCacheOptions": {
         "TtlSeconds": 15,
-        "Region": "booking"
+        "Region": "patient"
       }
     }
   ],
   "Aggregates": [
     {
       "RouteKeys": [
-        "ConsultantList",
-        "TimeSlotList",
-        "ReligionList",
-        "AllergyList",
-        "GenderList"
+        "Consultant",
+        "TimeSlot",
+        "Patient"
       ],
       "UpstreamPathTemplate": "/client-gw/aggregate"
     }

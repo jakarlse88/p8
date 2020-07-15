@@ -14,7 +14,7 @@ namespace CalHealth.Blazor.Server.Hubs
                 throw new ArgumentNullException(nameof(model));
             }
             
-            await Clients.All.SendAsync("ReceiveAppointment", model);
+            await Clients.All.SendAsync("Appointment", model);
         }
     }
 }

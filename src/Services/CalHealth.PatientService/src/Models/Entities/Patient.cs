@@ -22,7 +22,7 @@ namespace CalHealth.PatientService.Models
         public Gender Gender { get; set; }
         public Religion Religion { get; set; }
         public ICollection<PatientAddress> PatientAddress { get; }
-        public ICollection<PatientAllergy> PatientAllergy { get; }
+        public ICollection<PatientAllergy> PatientAllergy { get; set; }
         public ICollection<PatientPhoneNumber> PatientPhoneNumber { get; }
     }
 }

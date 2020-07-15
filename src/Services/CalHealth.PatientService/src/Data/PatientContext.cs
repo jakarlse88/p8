@@ -1,4 +1,5 @@
-﻿using CalHealth.PatientService.Models;
+﻿using System;
+using CalHealth.PatientService.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace CalHealth.PatientService.Data
@@ -14,15 +15,15 @@ namespace CalHealth.PatientService.Data
         {
         }
 
-        public virtual DbSet<Address> Address { get; set; }
-        public virtual DbSet<Allergy> Allergy { get; set; }
-        public virtual DbSet<Gender> Gender { get; set; }
-        public virtual DbSet<Patient> Patient { get; set; }
-        public virtual DbSet<PatientAddress> PatientAddress { get; set; }
-        public virtual DbSet<PatientAllergy> PatientAllergy { get; set; }
-        public virtual DbSet<PatientPhoneNumber> PatientPhoneNumber { get; set; }
-        public virtual DbSet<PhoneNumber> PhoneNumber { get; set; }
-        public virtual DbSet<Religion> Religion { get; set; }
+        public DbSet<Address> Address { get; set; }
+        public DbSet<Allergy> Allergy { get; set; }
+        public DbSet<Gender> Gender { get; set; }
+        public DbSet<Patient> Patient { get; set; }
+        public DbSet<PatientAddress> PatientAddress { get; set; }
+        public DbSet<PatientAllergy> PatientAllergy { get; set; }
+        public DbSet<PatientPhoneNumber> PatientPhoneNumber { get; set; }
+        public DbSet<PhoneNumber> PhoneNumber { get; set; }
+        public DbSet<Religion> Religion { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -176,8 +177,14 @@ namespace CalHealth.PatientService.Data
             PopulateAllergy(modelBuilder);
             PopulateReligion(modelBuilder);
             PopulateGender(modelBuilder);
+            PopulatePatient(modelBuilder);    
         }
 
+        /**
+         *
+         * Private helper methods
+         * 
+         */
         private static void PopulateGender(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Gender>().HasData(
@@ -289,6 +296,92 @@ namespace CalHealth.PatientService.Data
                     Type = "Antibiotics"
                 }
             );
+        }
+
+        private static void PopulatePatient(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Patient>()
+                .HasData(
+                    new Patient
+                    {
+                        Id = 1,
+                        FirstName = "Alima",
+                        LastName = "Rankin",
+                        GenderId = 2,
+                        DateOfBirth = new DateTime(2000, 1, 1)
+                    },
+                    new Patient
+                    {
+                        Id = 2,
+                        FirstName = "Chelsie",
+                        LastName = "Regan",
+                        GenderId = 2,
+                        DateOfBirth = new DateTime(1980, 7, 17)
+                    },
+                    new Patient
+                    {
+                        Id = 3,
+                        FirstName = "Michalina",
+                        LastName = "Dejesus",
+                        GenderId = 2,
+                        DateOfBirth = new DateTime(1997, 3, 12)
+                    },
+                    new Patient
+                    {
+                        Id = 4,
+                        FirstName = "Daniaal",
+                        LastName = "Hill",
+                        GenderId = 1,
+                        DateOfBirth = new DateTime(2007, 5, 27)
+                    },
+                    new Patient
+                    {
+                        Id = 5,
+                        FirstName = "Adele",
+                        LastName = "Benjamin",
+                        GenderId = 2,
+                        DateOfBirth = new DateTime(1989, 11, 29)
+                    },
+                    new Patient
+                    {
+                        Id = 6,
+                        FirstName = "Rhodri",
+                        LastName = "Ellis",
+                        GenderId = 1,
+                        DateOfBirth = new DateTime(1977, 9, 9)
+                    },
+                    new Patient
+                    {
+                        Id = 7,
+                        FirstName = "Hakeem",
+                        LastName = "Conner",
+                        GenderId = 1,
+                        DateOfBirth = new DateTime(2001, 4, 11)
+                    },
+                    new Patient
+                    {
+                        Id = 8,
+                        FirstName = "Nur",
+                        LastName = "Lim",
+                        GenderId = 1,
+                        DateOfBirth = new DateTime(1963, 02, 19)
+                    },
+                    new Patient
+                    {
+                        Id = 9,
+                        FirstName = "Kenzo",
+                        LastName = "Traynor",
+                        GenderId = 1,
+                        DateOfBirth = new DateTime(1990, 10, 30)
+                    },
+                    new Patient
+                    {
+                        Id = 10,
+                        FirstName = "Nyla",
+                        LastName = "Davey",
+                        GenderId = 2,
+                        DateOfBirth = new DateTime(2007, 06, 13)
+                    });
         }
     }
 }

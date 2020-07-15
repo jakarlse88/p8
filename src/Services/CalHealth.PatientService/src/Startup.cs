@@ -25,6 +25,7 @@ namespace CalHealth.PatientService
                 .ConfigureDbContext(Configuration)
                 .AddRepositoryLayer()
                 .AddServiceLayer()
+                .AddMessagingLayer()
                 .ConfigureCors()
                 .ConfigureSwagger()
                 .AddAutoMapper(typeof(Startup));
