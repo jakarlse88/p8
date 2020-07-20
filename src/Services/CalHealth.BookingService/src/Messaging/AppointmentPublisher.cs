@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Text;
-using System.Threading;
+using CalHealth.BookingService.Infrastructure;
 using CalHealth.BookingService.Messaging.Interfaces;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using Serilog;
@@ -10,13 +11,13 @@ namespace CalHealth.BookingService.Messaging
 {
     public class AppointmentPublisher : IAppointmentPublisher
     {
-        private ConnectionFactory Factory { get; }
+        private ConnectionFactory Factory { get; set; }
         private IConnection Connection { get; }
         private IModel Channel { get; }
 
-        public AppointmentPublisher()
+        public AppointmentPublisher(IOptions<RabbitMqOptions> options)
         {
-            Factory = new ConnectionFactory { HostName = "rabbitmq" };
+            Factory = new ConnectionFactory { HostName = options.Value.HostName };
             Connection = Factory.CreateConnection();
             Channel = Connection.CreateModel();
         }

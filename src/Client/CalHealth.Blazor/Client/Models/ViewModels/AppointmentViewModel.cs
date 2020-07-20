@@ -1,4 +1,6 @@
-﻿namespace CalHealth.Blazor.Client.Models
+﻿using System;
+
+namespace CalHealth.Blazor.Client.Models
 {
     public class AppointmentViewModel
     {
@@ -8,5 +10,6 @@
         public int DayId { get; set; }
         public int TimeSlotId { get; set; }
         public int? NoteId { get; set; }
+        public DateTime Date { get; set; }
     }
 }

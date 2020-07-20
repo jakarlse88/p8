@@ -2,6 +2,7 @@
 using System.IO;
 using System.Reflection;
 using CalHealth.PatientService.Data;
+using CalHealth.PatientService.Infrastructure.OptionsObjects;
 using CalHealth.PatientService.Messaging;
 using CalHealth.PatientService.Messaging.Interfaces;
 using CalHealth.PatientService.Repositories;
@@ -15,6 +16,13 @@ namespace CalHealth.PatientService.Infrastructure
 {
     internal static class ServiceCollectionExtensions
     {
+        internal static IServiceCollection AddOptionsObjects(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<RabbitMqOptions>(configuration.GetSection(RabbitMqOptions.RabbitMq));
+            
+            return services;
+        }
+        
         internal static IServiceCollection AddRepositoryLayer(this IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -91,7 +99,7 @@ namespace CalHealth.PatientService.Infrastructure
             {
                 config.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Booking Service",
+                    Title = "Patient Service",
                     Version = "v1",
                     Description = "Californian Health Patient Service API",
                     Contact = new OpenApiContact

@@ -1,12 +1,16 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Globalization;
 using System.Threading.Tasks;
+using AutoMapper;
 using CalHealth.BookingService.Messaging;
 using CalHealth.BookingService.Messaging.Interfaces;
 using CalHealth.BookingService.Models;
 using CalHealth.BookingService.Repositories;
+using Microsoft.Extensions.Logging;
 using Serilog;
+using ILogger = Serilog.ILogger;
 
 namespace CalHealth.BookingService.Services
 {
@@ -14,13 +18,15 @@ namespace CalHealth.BookingService.Services
     {
         private readonly IAppointmentPublisher _appointmentPublisher;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
         private readonly Calendar _calendar;
         private readonly CultureInfo _cultureInfo;
-
-        public AppointmentService(IUnitOfWork unitOfWork, IAppointmentPublisher appointmentPublisher)
+        
+        public AppointmentService(IUnitOfWork unitOfWork, IAppointmentPublisher appointmentPublisher, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _appointmentPublisher = appointmentPublisher;
+            _mapper = mapper;
             _cultureInfo = new CultureInfo("");
             _calendar = _cultureInfo.Calendar;
         }
@@ -38,9 +44,9 @@ namespace CalHealth.BookingService.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var entity = GenerateEntity(model);
+            var entity = await GenerateEntity(model);
 
-            await CheckDuplicate(model, entity);
+            await CheckDuplicate(entity);
 
             try
             {
@@ -48,9 +54,9 @@ namespace CalHealth.BookingService.Services
                 await _unitOfWork.CommitAsync();
 
                 var message = GenerateMessage(model, entity);
-                
+
                 _appointmentPublisher.PushMessageToQueue(message);
-                
+
                 return entity;
             }
             catch (Exception)
@@ -60,6 +66,12 @@ namespace CalHealth.BookingService.Services
             }
         }
 
+        /// <summary>
+        /// Update an <see cref="Appointment"/> entity with a PatientId.
+        /// </summary>
+        /// <param name="appointmentId"></param>
+        /// <param name="patientId"></param>
+        /// <returns></returns>
         public async Task<Appointment> UpdatePatientIdAsync(int appointmentId, int patientId)
         {
             if (appointmentId < 1)
@@ -71,7 +83,8 @@ namespace CalHealth.BookingService.Services
 
             if (appointment == null)
             {
-                throw new Exception($"Received an unexpected null attempting to retrieve a {typeof(Appointment)} entity by the Id <{appointmentId}>");
+                throw new Exception(
+                    $"Received an unexpected null attempting to retrieve a {typeof(Appointment)} entity by the Id <{appointmentId}>");
             }
 
             try
@@ -90,21 +103,73 @@ namespace CalHealth.BookingService.Services
         }
 
         /// <summary>
+        ///  Asynchronously get a single <see cref="Appointment"/> entity by its ID.
+        /// </summary>
+        /// <param name="appointmentId"></param>
+        /// <returns></returns>
+        public async Task<AppointmentDTO> GetByIdAsync(int appointmentId)
+        {
+            if (appointmentId < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(appointmentId));
+            }
+
+            var result = await _unitOfWork.AppointmentRepository.GetByIdAsync(appointmentId);
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            var mappedResult = _mapper.Map<AppointmentDTO>(result);
+
+            return mappedResult;
+        }
+
+        /// <summary>
+        /// Asynchronously get all <see cref="Appointment"/> entities by their associated <seealso cref="Consultant"/>.
+        /// </summary>
+        /// <param name="consultantId">The ID of the <seealso cref="Consultant"/> entity by which to query.</param>
+        /// <returns></returns>
+        public async Task<IEnumerable<AppointmentDTO>> GetByConsultantAsync(int consultantId)
+        {
+            if (consultantId < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(consultantId));
+            }
+
+            var results = await _unitOfWork
+                .AppointmentRepository
+                .GetByConditionAsync(a => a.ConsultantId == consultantId);
+
+            var mappedResults = _mapper.Map<IEnumerable<AppointmentDTO>>(results);
+
+            return mappedResults;
+        }
+
+        /// <summary>
         /// Verify that there doesn't exist a duplicate <see cref="Appointment"/> entity.
         /// </summary>
-        /// <param name="model"></param>
         /// <param name="entity"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        private async Task CheckDuplicate(AppointmentDTO model, Appointment entity)
+        private async Task CheckDuplicate(Appointment entity)
         {
-            var result = await _unitOfWork.AppointmentRepository.GetByConditionAsync(a =>
-                a.ConsultantId == model.ConsultantId
-                && a.WeekId == entity.WeekId
-                && a.TimeSlotId == entity.TimeSlotId
-                && a.DayId == entity.DayId);
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+            
+            var results = await _unitOfWork.AppointmentRepository.GetByConditionAsync(a =>
+                a.ConsultantId == entity.Consultant.Id
+                && a.WeekId == entity.Week.Id
+                && a.TimeSlotId == entity.TimeSlot.Id
+                && a.DayId == entity.Day.Id);
+            
+            // Log.Error("Results: {@results}", results);
 
-            if (result.Any())
+            if (results.Any())
+            // if (results.Any(a => a.Date.ToString("MM/dd/yyyy").Equals(entity.Date.ToString("MM/dd/yyyy"))))
             {
                 throw new Exception("There already exists an appointment for this consultant at the specified time.");
             }
@@ -115,18 +180,42 @@ namespace CalHealth.BookingService.Services
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private Appointment GenerateEntity(AppointmentDTO model)
+        private async Task<Appointment> GenerateEntity(AppointmentDTO model)
         {
             var entity = new Appointment
             {
-                ConsultantId = model.ConsultantId,
+                Consultant = await GetConsultant(model),
                 Date = model.Date,
-                WeekId = _calendar.GetWeekOfYear(model.Date, _cultureInfo.DateTimeFormat.CalendarWeekRule,
-                    _cultureInfo.DateTimeFormat.FirstDayOfWeek),
-                DayId = (int) _calendar.GetDayOfWeek(model.Date),
-                TimeSlotId = model.TimeSlotId,
+                Week = await GetWeek(model),
+                Day = await GetDayEntity(model),
+                TimeSlot = await GetTimeSlot(model)
             };
+
             return entity;
+        }
+
+        private async Task<TimeSlot> GetTimeSlot(AppointmentDTO model)
+        {
+            return await _unitOfWork.TimeSlotRepository.GetByIdAsync(model.TimeSlotId);
+        }
+
+        private async Task<Week> GetWeek(AppointmentDTO model)
+        {
+            return await _unitOfWork.WeekRepository.GetByIdAsync(_calendar.GetWeekOfYear(model.Date,
+                _cultureInfo.DateTimeFormat.CalendarWeekRule,
+                _cultureInfo.DateTimeFormat.FirstDayOfWeek));
+        }
+
+        private async Task<Consultant> GetConsultant(AppointmentDTO model)
+        {
+            return await _unitOfWork.ConsultantRepository.GetByIdAsync(model.ConsultantId);
+        }
+
+        private async Task<Day> GetDayEntity(AppointmentDTO model)
+        {
+            var days = await _unitOfWork.DayRepository.GetByConditionAsync(d => d.Name == model.Date.ToString("dddd"));
+            var day = days.FirstOrDefault();
+            return day;
         }
 
         /// <summary>

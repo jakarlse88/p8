@@ -10,6 +10,8 @@ namespace CalHealth.BookingService.Repositories
         private IRepository<TimeSlot> _timeSlotRepository;
         private IRepository<Consultant> _consultantRepository;
         private IRepository<Appointment> _appointmentRepository;
+        private IRepository<Day> _dayRepository;
+        private IRepository<Week> _weekRepository;
 
         public UnitOfWork(BookingContext context)
         {
@@ -24,6 +26,12 @@ namespace CalHealth.BookingService.Repositories
 
         public IRepository<Appointment> AppointmentRepository =>
             _appointmentRepository ??= new Repository<Appointment>(_context);
+
+        public IRepository<Day> DayRepository =>
+            _dayRepository ??= new Repository<Day>(_context);
+
+        public IRepository<Week> WeekRepository =>
+            _weekRepository ??= new Repository<Week>(_context);
 
         public async Task CommitAsync()
         {

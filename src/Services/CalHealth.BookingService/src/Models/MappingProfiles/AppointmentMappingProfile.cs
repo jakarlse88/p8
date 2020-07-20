@@ -7,7 +7,6 @@ namespace CalHealth.BookingService.Models.MappingProfiles
         public AppointmentMappingProfile()
         {
             CreateMap<Appointment, AppointmentDTO>();
-            CreateMap<AppointmentDTO, Appointment>();
         }
     }
 }

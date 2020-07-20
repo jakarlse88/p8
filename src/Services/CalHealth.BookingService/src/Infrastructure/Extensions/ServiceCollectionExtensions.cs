@@ -15,6 +15,13 @@ namespace CalHealth.BookingService.Infrastructure.Extensions
 {
     internal static class ServiceCollectionExtensions
     {
+        internal static IServiceCollection AddOptionsObjects(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<RabbitMqOptions>(configuration.GetSection(RabbitMqOptions.RabbitMq));
+            
+            return services;
+        }
+        
         internal static IServiceCollection AddRepositoryLayer(this IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();

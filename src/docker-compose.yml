@@ -5,6 +5,9 @@ services:
     build:
       context: .
       dockerfile: Infrastructure/CalHealth.Ocelot/Dockerfile
+    depends_on:
+      - patient-service
+      - booking-service
   
   patient-service:
     build:
@@ -23,15 +26,17 @@ services:
       - rabbitmq
 
   booking-db:
-    image: "mcr.microsoft.com/mssql/server:2017-CU20-ubuntu-16.04"
+    image: "mcr.microsoft.com/mssql/server:2017-latest"
 
   patient-db:
-    image: "mcr.microsoft.com/mssql/server:2017-CU20-ubuntu-16.04"
+    image: "mcr.microsoft.com/mssql/server:2017-latest"
 
   blazor-server:
     build:
       context: .
       dockerfile: Client/CalHealth.Blazor/Server/Dockerfile
+    depends_on:
+      - rabbitmq
 
   rabbitmq:
     build: 

@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Blazored.Toast.Services;
 using CalHealth.Blazor.Client.Models;
@@ -9,11 +12,12 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace CalHealth.Blazor.Client.Pages.Booking
 {
+    // ReSharper disable once ClassNeverInstantiated.Global
     public partial class Booking : IDisposable
     {
         [Inject] private IApiRequestService ApiRequestService { get; set; }
         [Inject] private NavigationManager NavigationManager { get; set; }
-        [Inject] public IToastService ToastService { get; set; }
+        [Inject] private IToastService ToastService { get; set; }
         private HubConnection _hubConnection;
         private BookingFormViewModel FormModel { get; set; }
         private BookingViewModel ViewModel { get; set; }
@@ -47,7 +51,21 @@ namespace CalHealth.Blazor.Client.Pages.Booking
 
             _hubConnection.On<AppointmentMessage>("Appointment", msg =>
             {
-                ToastService.ShowSuccess($"Appointment with ID <{msg.AppointmentId}> was successfully received.");
+                var consultant =
+                    ViewModel.ConsultantList
+                        .FirstOrDefault(c => c.Id == msg.ConsultantId);
+
+                var viewModel = new AppointmentViewModel
+                {
+                    Id = msg.AppointmentId,
+                    ConsultantId = msg.ConsultantId,
+                    Date = msg.Date,
+                    TimeSlotId = msg.TimeSlotId
+                };
+
+                consultant?.Appointment.Add(viewModel);
+
+                StateHasChanged();
             });
 
             await _hubConnection.StartAsync();
@@ -100,6 +118,15 @@ namespace CalHealth.Blazor.Client.Pages.Booking
                 return;
             }
 
+            if (AppointmentAlreadySubmitted())
+            {
+                ToastService.ShowError(
+                    "There selected consultant already has an appointment scheduled at the selected time.");
+                Status = APIOperationStatus.GET_Success;
+                StateHasChanged();
+                return;
+            }
+
             try
             {
                 var dto = CreateDTO();
@@ -107,18 +134,49 @@ namespace CalHealth.Blazor.Client.Pages.Booking
                 var result = await ApiRequestService.HandlePostRequest(requestUrl, dto);
 
                 Status = APIOperationStatus.POST_Success;
-                StateHasChanged();
+
+                ToastService.ShowSuccess("Appointment successfully scheduled!");
+
+                NavigationManager.NavigateTo("/Booking");
 
                 // TODO: /Appointment/Id page?
                 // NavigationManager.NavigateTo(result.ConsultantId);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                ToastService.ShowError(
+                    "There was an error submitting your request. Please check your entered data and retry.");
                 throw;
             }
         }
 
+        /// <summary>
+        /// Verify appointment data against cache.
+        /// </summary>
+        /// <returns></returns>
+        private bool AppointmentAlreadySubmitted()
+        {
+            var relevantAppointments =
+                ViewModel
+                    .ConsultantList
+                    .FirstOrDefault(c => c.Id == FormModel.Schedule.ConsultantId)
+                    ?.Appointment;
+
+            if (relevantAppointments != null)
+            {
+                return (relevantAppointments.Any(a =>
+                    a.Date.ToString(CultureInfo.InvariantCulture)
+                        .Equals(FormModel.Schedule.Date.ToString(CultureInfo.InvariantCulture))
+                    && a.TimeSlotId == FormModel.Schedule.TimeSlotId));
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Verify that the Patient data is valid.
+        /// </summary>
+        /// <returns></returns>
         private bool PatientInApprovedList()
         {
             var result = false;
@@ -168,6 +226,15 @@ namespace CalHealth.Blazor.Client.Pages.Booking
 
             var result =
                 await ApiRequestService.HandleGetRequest<BookingViewModel>(requestUrl);
+
+            return result;
+        }
+
+        private async Task<ICollection<AppointmentViewModel>> FetchAppointmentsByConsultant(int consultantId)
+        {
+            const string requestUrl = "https://localhost:8088/client-gw/aggregate";
+
+            var result = await ApiRequestService.HandleGetRequest<ICollection<AppointmentViewModel>>(requestUrl);
 
             return result;
         }

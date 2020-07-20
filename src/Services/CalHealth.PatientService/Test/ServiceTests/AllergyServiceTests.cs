@@ -30,7 +30,7 @@ namespace CalHealth.PatientService.Test.ServiceTests
 
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork
-                .Setup(x => x.AllergyRepository.GetAllAsync())
+                .Setup(x => x.AllergyRepository.GetAllAsync(It.IsAny<bool>()))
                 .ReturnsAsync(allergies);
 
             var service = new AllergyService(mockUnitOfWork.Object, _mapper);
@@ -52,7 +52,7 @@ namespace CalHealth.PatientService.Test.ServiceTests
 
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork
-                .Setup(x => x.AllergyRepository.GetAllAsync())
+                .Setup(x => x.AllergyRepository.GetAllAsync(It.IsAny<bool>()))
                 .ReturnsAsync(allergies);
 
             var service = new AllergyService(mockUnitOfWork.Object, _mapper);

@@ -1,30 +1,29 @@
 ﻿using System;
 using System.Text;
 using CalHealth.Blazor.Server.Hubs;
+using CalHealth.Blazor.Server.Infrastructure.OptionsObjects;
 using CalHealth.Blazor.Server.Messaging.Messages;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Serilog;
 using CalHealth.Blazor.Server.Models;
+using Microsoft.Extensions.Options;
 
 namespace CalHealth.Blazor.Server.Messaging
 {
     public class AppointmentSubscriber : IAppointmentSubscriber
     {
-        private readonly IServiceScopeFactory _scopeFactory;
         private ConnectionFactory Factory { get; }
         private IConnection Connection { get; }
         private IModel Channel { get; }
         private readonly IHubContext<AppointmentHub> _hubContext;
 
-        public AppointmentSubscriber(IServiceScopeFactory scopeFactory, IHubContext<AppointmentHub> hubContext)
+        public AppointmentSubscriber(IHubContext<AppointmentHub> hubContext, IOptions<RabbitMqOptions> options)
         {
-            _scopeFactory = scopeFactory;
             _hubContext = hubContext;
-            Factory = new ConnectionFactory { HostName = "rabbitmq" };
+            Factory = new ConnectionFactory { HostName = options.Value.HostName };
             Connection = Factory.CreateConnection();
             Channel = Connection.CreateModel();
         }

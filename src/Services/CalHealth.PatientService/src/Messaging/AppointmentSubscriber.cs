@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Text;
-using System.Threading;
+using CalHealth.PatientService.Infrastructure.OptionsObjects;
 using CalHealth.PatientService.Messaging.Interfaces;
 using CalHealth.PatientService.Messaging.Messages;
 using CalHealth.PatientService.Services;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -19,10 +20,10 @@ namespace CalHealth.PatientService.Messaging
         private IConnection Connection { get; }
         private IModel Channel { get; }
 
-        public AppointmentSubscriber(IServiceScopeFactory scopeFactory)
+        public AppointmentSubscriber(IServiceScopeFactory scopeFactory, IOptions<RabbitMqOptions> options)
         {
             _scopeFactory = scopeFactory;
-            Factory = new ConnectionFactory { HostName = "rabbitmq" };
+            Factory = new ConnectionFactory { HostName = options.Value.HostName };
             Connection = Factory.CreateConnection();
             Channel = Connection.CreateModel();
         }
@@ -37,7 +38,16 @@ namespace CalHealth.PatientService.Messaging
                 routingKey: "");
 
             var consumer = new EventingBasicConsumer(Channel);
-            consumer.Received += async (sender, ea) =>
+            
+            consumer.Received += ConsumerOnReceived();
+
+            Channel.BasicQos(0, 100, false);
+            Channel.BasicConsume(queue: queueName, autoAck: false, consumer: consumer);
+        }
+
+        private EventHandler<BasicDeliverEventArgs> ConsumerOnReceived()
+        {
+            return async (sender, ea) =>
             {
                 var body = ea.Body.ToArray();
                 var message = JsonConvert.DeserializeObject<AppointmentMessage>(Encoding.UTF8.GetString(body));
@@ -47,7 +57,7 @@ namespace CalHealth.PatientService.Messaging
                     using (var scope = _scopeFactory.CreateScope())
                     using (var service = scope.ServiceProvider.GetRequiredService<IPatientService>())
                     {
-                        await service.HandleIncomingPatientData(message);    
+                        await service.HandleIncomingPatientData(message);
                     }
 
                     Channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
@@ -59,9 +69,6 @@ namespace CalHealth.PatientService.Messaging
                     throw;
                 }
             };
-
-            Channel.BasicQos(0, 100, false);
-            Channel.BasicConsume(queue: queueName, autoAck: false, consumer: consumer);
         }
 
         public void Deregister()

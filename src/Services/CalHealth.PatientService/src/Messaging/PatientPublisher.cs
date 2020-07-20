@@ -1,9 +1,13 @@
 using System;
 using System.Text;
+using CalHealth.PatientService.Infrastructure.OptionsObjects;
 using CalHealth.PatientService.Messaging.Interfaces;
 using CalHealth.PatientService.Messaging.Messages;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Polly;
 using RabbitMQ.Client;
+using RabbitMQ.Client.Exceptions;
 using Serilog;
 
 namespace CalHealth.PatientService.Messaging
@@ -11,12 +15,12 @@ namespace CalHealth.PatientService.Messaging
     public class PatientPublisher : IPatientPublisher
     {
         private ConnectionFactory Factory { get; }
-        private IConnection Connection { get; set; }
+        private IConnection Connection { get; }
         private IModel Channel { get; }
 
-        public PatientPublisher()
+        public PatientPublisher(IOptions<RabbitMqOptions> options)
         {
-            Factory = new ConnectionFactory { HostName = "rabbitmq" };
+            Factory = new ConnectionFactory { HostName = options.Value.HostName };
             Connection = Factory.CreateConnection();
             Channel = Connection.CreateModel();
         }

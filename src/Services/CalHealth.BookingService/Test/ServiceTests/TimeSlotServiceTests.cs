@@ -31,7 +31,7 @@ namespace CalHealth.BookingService.Test.ServiceTests
             
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork
-                .Setup(x => x.TimeSlotRepository.GetAllAsync())
+                .Setup(x => x.TimeSlotRepository.GetAllAsync(It.IsAny<bool>()))
                 .ReturnsAsync(timeSlots);
 
             var service = new TimeSlotService(mockUnitOfWork.Object, _mapper);
@@ -52,7 +52,7 @@ namespace CalHealth.BookingService.Test.ServiceTests
             
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork
-                .Setup(x => x.TimeSlotRepository.GetAllAsync())
+                .Setup(x => x.TimeSlotRepository.GetAllAsync(It.IsAny<bool>()))
                 .ReturnsAsync(timeSlots);
 
             var service = new TimeSlotService(mockUnitOfWork.Object, _mapper);

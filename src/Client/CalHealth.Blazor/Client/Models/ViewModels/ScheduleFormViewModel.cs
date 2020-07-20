@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace CalHealth.Blazor.Client.Models
 {
@@ -9,6 +10,7 @@ namespace CalHealth.Blazor.Client.Models
             ConsultantId = 0;
             TimeSlotId = 0;
             Date = DateTime.Today;
+            Appointments = new HashSet<AppointmentViewModel>();
         }
         
         public int ConsultantId;
@@ -32,5 +34,7 @@ namespace CalHealth.Blazor.Client.Models
                 }
             } 
         }
+
+        public ICollection<AppointmentViewModel> Appointments { get; set; }
     }
 }

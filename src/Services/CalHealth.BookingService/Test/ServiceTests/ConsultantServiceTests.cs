@@ -31,7 +31,7 @@ namespace CalHealth.BookingService.Test.ServiceTests
             
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork
-                .Setup(x => x.ConsultantRepository.GetAllAsync())
+                .Setup(x => x.ConsultantRepository.GetAllAsync(It.IsAny<bool>()))
                 .ReturnsAsync(consultants);
 
             var service = new ConsultantService(mockUnitOfWork.Object, _mapper);
@@ -48,14 +48,14 @@ namespace CalHealth.BookingService.Test.ServiceTests
         public async Task TestGetAllNoResults()
         {
             // Arrange
-            var timeSlots = new List<TimeSlot>();
+            var consultants = new List<Consultant>();
             
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork
-                .Setup(x => x.TimeSlotRepository.GetAllAsync())
-                .ReturnsAsync(timeSlots);
+                .Setup(x => x.ConsultantRepository.GetAllAsync(It.IsAny<bool>()))
+                .ReturnsAsync(consultants);
 
-            var service = new TimeSlotService(mockUnitOfWork.Object, _mapper);
+            var service = new ConsultantService(mockUnitOfWork.Object, _mapper);
             
             // Act
             var result = await service.GetAllAsDTOAsync();

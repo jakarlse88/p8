@@ -1,12 +1,16 @@
 ﻿using System;
 using System.Text;
+using CalHealth.BookingService.Infrastructure;
 using CalHealth.BookingService.Messaging.Interfaces;
-using CalHealth.BookingService.Models;
 using CalHealth.BookingService.Services;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
+using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
+using RabbitMQ.Client.Exceptions;
 using Serilog;
 
 namespace CalHealth.BookingService.Messaging
@@ -15,13 +19,13 @@ namespace CalHealth.BookingService.Messaging
     {
         private readonly IServiceScopeFactory _scopeFactory;
         private ConnectionFactory Factory { get; }
-        private IConnection Connection { get; set; }
+        private IConnection Connection { get; }
         private IModel Channel { get; }
 
-        public PatientSubscriber(IServiceScopeFactory scopeFactory)
+        public PatientSubscriber(IServiceScopeFactory scopeFactory, IOptions<RabbitMqOptions> options)
         {
             _scopeFactory = scopeFactory;
-            Factory = new ConnectionFactory { HostName = "rabbitmq" };
+            Factory = new ConnectionFactory { HostName = options.Value.HostName };
             Connection = Factory.CreateConnection();
             Channel = Connection.CreateModel();
         }

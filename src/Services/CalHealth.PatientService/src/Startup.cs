@@ -1,3 +1,4 @@
+using System;
 using AutoMapper;
 using CalHealth.PatientService.Infrastructure;
 using Microsoft.AspNetCore.Builder;
@@ -5,6 +6,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using RabbitMQ.Client;
 
 namespace CalHealth.PatientService
 {
@@ -20,9 +22,14 @@ namespace CalHealth.PatientService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services
+                .AddControllers()
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            
             services
                 .ConfigureDbContext(Configuration)
+                .AddOptionsObjects(Configuration)
                 .AddRepositoryLayer()
                 .AddServiceLayer()
                 .AddMessagingLayer()

@@ -30,7 +30,7 @@ namespace CalHealth.PatientService.Test.ServiceTests
 
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork
-                .Setup(x => x.ReligionRepository.GetAllAsync())
+                .Setup(x => x.ReligionRepository.GetAllAsync(It.IsAny<bool>()))
                 .ReturnsAsync(religions);
 
             var service = new ReligionService(mockUnitOfWork.Object, _mapper);
@@ -52,7 +52,7 @@ namespace CalHealth.PatientService.Test.ServiceTests
 
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork
-                .Setup(x => x.ReligionRepository.GetAllAsync())
+                .Setup(x => x.ReligionRepository.GetAllAsync(It.IsAny<bool>()))
                 .ReturnsAsync(religions);
 
             var service = new ReligionService(mockUnitOfWork.Object, _mapper);

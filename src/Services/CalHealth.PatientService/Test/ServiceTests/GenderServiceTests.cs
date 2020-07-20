@@ -30,7 +30,7 @@ namespace CalHealth.PatientService.Test.ServiceTests
             
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork
-                .Setup(x => x.GenderRepository.GetAllAsync())
+                .Setup(x => x.GenderRepository.GetAllAsync(It.IsAny<bool>()))
                 .ReturnsAsync(consultants);
 
             var service = new GenderService(_mapper, mockUnitOfWork.Object);
@@ -52,7 +52,7 @@ namespace CalHealth.PatientService.Test.ServiceTests
             
             var mockUnitOfWork = new Mock<IUnitOfWork>();
             mockUnitOfWork
-                .Setup(x => x.GenderRepository.GetAllAsync())
+                .Setup(x => x.GenderRepository.GetAllAsync(It.IsAny<bool>()))
                 .ReturnsAsync(timeSlots);
 
             var service = new GenderService(_mapper, mockUnitOfWork.Object);

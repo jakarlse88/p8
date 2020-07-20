@@ -1,4 +1,3 @@
-using CalHealth.BookingService.Infrastructure;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -21,11 +20,15 @@ namespace CalHealth.BookingService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services
+                .AddControllers()
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services
                 .AddAutoMapper(typeof(Startup))
                 .ConfigureDbContext(Configuration)
+                .AddOptionsObjects(Configuration)
                 .AddRepositoryLayer()
                 .AddServiceLayer()
                 .AddMessagingLayer()

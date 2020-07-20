@@ -1,8 +1,11 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS base
-RUN apt-get update
-RUN ["apt-get","install","-y","dos2unix"]
+RUN apt-get update && apt-get install -y wget
+ENV DOCKERIZE_VERSION v0.6.1
+RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
+    && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
@@ -21,8 +24,7 @@ RUN dotnet publish "CalHealth.PatientService.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-COPY Services/CalHealth.PatientService/src/wait-for-it.sh ./wait-for-it.sh
-RUN dos2unix ./wait-for-it.sh && apt-get --purge remove -y dos2unix && rm -rf /var/lib/apt/lists/*
-RUN chmod +x ./wait-for-it.sh
-ENTRYPOINT ["./wait-for-it.sh", "booking-db:1435", "-t", "40", "--", "dotnet", "CalHealth.PatientService.dll"]
-
+CMD dockerize \
+    -wait http://rabbitmq:15672 -wait-retry-interval 30s -timeout 240s \
+    -wait tcp://patient-db:1433 -wait-retry-interval 30s -timeout 240s \
+    dotnet CalHealth.PatientService.dll

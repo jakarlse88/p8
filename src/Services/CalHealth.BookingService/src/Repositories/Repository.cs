@@ -19,45 +19,99 @@ namespace CalHealth.BookingService.Repositories
             _context = context;
         }
 
-        public async Task<IEnumerable<TEntity>> GetByConditionAsync(Expression<Func<TEntity, bool>> predicate)
+        /// <summary>
+        /// Gets the subset of <typeparamref name="TEntity"/> entities corresponding to the predicate <paramref name="predicate"/>.
+        /// </summary>
+        /// <param name="predicate">Filter which entities are returned.</param>
+        /// <param name="eager">Indicates whether or not to eagerly load navigation properties.</param>
+        /// <returns></returns>
+        public async Task<IEnumerable<TEntity>> GetByConditionAsync(Expression<Func<TEntity, bool>> predicate, bool eager = false)
         {
-            var results = 
-                await _context
-                    .Set<TEntity>()
-                    .Where(predicate)
-                    .ToListAsync();
+            var query = _context.Set<TEntity>().AsQueryable();
+
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            if (eager)
+            {
+                var navigations = _context.Model.FindEntityType(typeof(TEntity))
+                    .GetDerivedTypesInclusive()
+                    .SelectMany(type => type.GetNavigations())
+                    .Distinct();
+
+                foreach (var property in navigations)
+                {
+                    query = query.Include(property.Name);
+                }
+            }
+
+            var results = await query.ToListAsync();
 
             return results;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllAsync(params Expression<Func<TEntity, object>>[] includeProperties)
+        /// <summary>
+        /// Get all <typeparamref name="TEntity"/> entities.
+        /// </summary>
+        /// <param name="eager">Indicates whether or not to eagerly load navigation properties.</param>
+        /// <returns></returns>
+        public async Task<IEnumerable<TEntity>> GetAllAsync(bool eager = false)
         {
             var query = _context.Set<TEntity>().AsQueryable();
             
-            foreach (var includeProperty in includeProperties)
+            if (eager)
             {
-                query = query.Include(includeProperty);
+                var navigations = _context.Model.FindEntityType(typeof(TEntity))
+                    .GetDerivedTypesInclusive()
+                    .SelectMany(type => type.GetNavigations())
+                    .Distinct();
+
+                foreach (var property in navigations)
+                {
+                    query = query.Include(property.Name);
+                }
             }
             
             var result = await query.ToListAsync();
 
             return result;
         }
-        
-        public async Task<TEntity> GetByIdAsync(int id, params Expression<Func<TEntity, object>>[] includeProperties)
+
+        /// <summary>
+        /// Get a <typeparamref name="TEntity"/> entity by its ID.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="eager">Indicates whether or not to eagerly load navigation properties.</param>
+        /// <returns></returns>
+        public async Task<TEntity> GetByIdAsync(int id, bool eager = false)
         {
             var query = _context.Set<TEntity>().AsQueryable();
 
-            foreach (var includeProperty in includeProperties)
+            if (eager)
             {
-                query = query.Include(includeProperty);
+                var navigations = _context.Model.FindEntityType(typeof(TEntity))
+                    .GetDerivedTypesInclusive()
+                    .SelectMany(type => type.GetNavigations())
+                    .Distinct();
+
+                foreach (var property in navigations)
+                {
+                    query = query.Include(property.Name);
+                }
             }
-            
+
             var result = await query.FirstOrDefaultAsync(e => e.Id == id);
 
             return result;
         }
 
+        /// <summary>
+        /// Begins tracking a <typeparamref name="TEntity"/> entity in the "Added" state.
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public async Task InsertAsync(TEntity entity)
         {
             if (entity == null)
@@ -68,6 +122,10 @@ namespace CalHealth.BookingService.Repositories
             await _context.Set<TEntity>().AddAsync(entity);
         }
 
+        /// <summary>
+        /// Begins tracking a <typeparamref name="TEntity"/> entity in the "Modified" state.
+        /// </summary>
+        /// <param name="entity"></param>
         public void Update(TEntity entity)
         {
             if (entity == null)

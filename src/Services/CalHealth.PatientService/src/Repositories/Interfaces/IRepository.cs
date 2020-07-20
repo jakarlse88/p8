@@ -8,10 +8,9 @@ namespace CalHealth.PatientService.Repositories
 {
     public interface IRepository<TEntity> where TEntity : class, IEntityBase
     {
-        Task<IEnumerable<TEntity>> GetByConditionAsync(Expression<Func<TEntity, bool>> predicate);
-        Task<IEnumerable<TEntity>> GetAllAsync();
-        Task<TEntity> GetByIdAsync(int id);
-        Task InsertAsync(TEntity entity);
+        Task<IEnumerable<TEntity>> GetByConditionAsync(Expression<Func<TEntity, bool>> predicate, bool eager = false);
+        Task<IEnumerable<TEntity>> GetAllAsync(bool eager = false);
+        void Insert(TEntity entity);
         void Update(TEntity entity);
     }
 }

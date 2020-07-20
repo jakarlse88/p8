@@ -48,6 +48,15 @@ namespace CalHealth.Blazor.Client.Services
             }
         }
 
+        /// <summary>
+        /// Handles a POST request.
+        /// </summary>
+        /// <param name="requestUrl"></param>
+        /// <param name="dto"></param>
+        /// <typeparam name="TEntity"></typeparam>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        /// <exception cref="ApiException"></exception>
         public async Task<TEntity> HandlePostRequest<TEntity>(string requestUrl, TEntity dto)
         {
             if (string.IsNullOrWhiteSpace(requestUrl))

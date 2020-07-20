@@ -42,18 +42,26 @@ namespace CalHealth.PatientService.Services
                 throw new ArgumentNullException();
             }
 
-            var patient = await GetPatientByPersonalDetailsAsync(message);
-
-            if (patient == null)
+            try
             {
-                throw new Exception($"No {typeof(Patient)} entity matching the specified criteria exists.");
+                var patient = await GetPatientByPersonalDetailsAsync(message);
+
+                if (patient == null)
+                {
+                    throw new Exception($"No {typeof(Patient)} entity matching the specified criteria exists.");
+                }
+
+                _patientPublisher.PushMessageToQueue(new PatientMessage
+                {
+                    AppointmentId = message.AppointmentId,
+                    PatientId = patient.Id
+                });
             }
-
-            _patientPublisher.PushMessageToQueue(new PatientMessage
+            catch (Exception e)
             {
-                AppointmentId = message.AppointmentId,
-                PatientId = patient.Id
-            });
+                Log.Error("An exception was raised: {@e}", e);
+                throw;
+            }
         }
 
         /// <summary>
@@ -75,31 +83,31 @@ namespace CalHealth.PatientService.Services
          * Internal helper methods
          * 
          */
-        private async Task<Patient> GetPatientByPersonalDetailsAsync(AppointmentMessage dto)
+        private async Task<Patient> GetPatientByPersonalDetailsAsync(AppointmentMessage message)
         {
-            if (dto == null)
+            if (message == null)
             {
-                throw new ArgumentNullException(nameof(dto));
+                throw new ArgumentNullException(nameof(message));
             }
 
-            if (string.IsNullOrWhiteSpace(dto.FirstName))
+            if (string.IsNullOrWhiteSpace(message.FirstName))
             {
-                throw new ArgumentNullException(nameof(dto.FirstName));
+                throw new ArgumentNullException(nameof(message.FirstName));
             }
 
-            if (string.IsNullOrWhiteSpace(dto.LastName))
+            if (string.IsNullOrWhiteSpace(message.LastName))
             {
-                throw new ArgumentNullException(nameof(dto.LastName));
+                throw new ArgumentNullException(nameof(message.LastName));
             }
 
             var result =
                 await _unitOfWork
                     .PatientRepository
                     .GetByConditionAsync(p =>
-                        p.LastName.Contains(dto.LastName)
-                        && p.FirstName.Contains(dto.FirstName));
+                        p.LastName.Contains(message.LastName)
+                        && p.FirstName.Contains(message.FirstName));
 
-            var patient = result.FirstOrDefault(p =>p.DateOfBirth.Date == dto.DateOfBirth.Date);
+            var patient = result.FirstOrDefault(p =>p.DateOfBirth.Date == message.DateOfBirth.Date);
 
             return patient;
         }
