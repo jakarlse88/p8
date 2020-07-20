@@ -19,134 +19,50 @@ namespace CalHealth.BookingService.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("CalHealth.BookingService.Models.Address", b =>
+            modelBuilder.Entity("CalHealth.BookingService.Models.Appointment", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<string>("HouseNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)")
-                        .HasMaxLength(10);
+                    b.Property<int>("ConsultantId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(60)")
-                        .HasMaxLength(60);
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
 
-                    b.Property<string>("StreetName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                    b.Property<int>("DayId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Town")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(100)")
-                        .HasMaxLength(100);
+                    b.Property<int?>("NoteId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("ZipCode")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(10)")
-                        .HasMaxLength(10);
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TimeSlotId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("WeekId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Address");
+                    b.HasIndex("ConsultantId");
+
+                    b.HasIndex("DayId");
+
+                    b.HasIndex("NoteId");
+
+                    b.HasIndex("TimeSlotId");
+
+                    b.HasIndex("WeekId");
+
+                    b.ToTable("Appointment");
                 });
 
-            modelBuilder.Entity("CalHealth.BookingService.Models.Allergy", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("varchar(50)")
-                        .HasMaxLength(50)
-                        .IsUnicode(false);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Allergy");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Type = "Latex"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Type = "Nuts"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Type = "Fruit"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Type = "Shellfish"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Type = "Egg"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Type = "Lactose"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Type = "Mould"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Type = "Antibiotics"
-                        });
-                });
-
-            modelBuilder.Entity("CalHealth.BookingService.Models.Gender", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasColumnType("varchar(10)")
-                        .HasMaxLength(10)
-                        .IsUnicode(false);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Gender");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Type = "Male"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Type = "Female"
-                        });
-                });
-
-            modelBuilder.Entity("CalHealth.BookingService.Models.Patient", b =>
+            modelBuilder.Entity("CalHealth.BookingService.Models.Consultant", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -169,82 +85,15388 @@ namespace CalHealth.BookingService.Data.Migrations
                         .HasColumnType("nvarchar(100)")
                         .HasMaxLength(100);
 
-                    b.Property<int?>("ReligionId")
+                    b.Property<int>("SpecialtyId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("GenderId");
 
-                    b.HasIndex("ReligionId");
+                    b.HasIndex("SpecialtyId");
 
-                    b.ToTable("Patient");
+                    b.ToTable("Consultant");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DateOfBirth = new DateTime(1985, 5, 24, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Sophie",
+                            GenderId = 2,
+                            LastName = "Harrington",
+                            SpecialtyId = 2
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DateOfBirth = new DateTime(1967, 2, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Kilian",
+                            GenderId = 1,
+                            LastName = "Lopez",
+                            SpecialtyId = 5
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DateOfBirth = new DateTime(1990, 1, 9, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Aya",
+                            GenderId = 2,
+                            LastName = "Ahmed",
+                            SpecialtyId = 1
+                        },
+                        new
+                        {
+                            Id = 4,
+                            DateOfBirth = new DateTime(1980, 2, 29, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Hyeo-jin",
+                            GenderId = 2,
+                            LastName = "Lim",
+                            SpecialtyId = 2
+                        },
+                        new
+                        {
+                            Id = 5,
+                            DateOfBirth = new DateTime(1977, 12, 7, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Lasse",
+                            GenderId = 1,
+                            LastName = "Hansson",
+                            SpecialtyId = 7
+                        },
+                        new
+                        {
+                            Id = 6,
+                            DateOfBirth = new DateTime(1973, 9, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            FirstName = "Abe",
+                            GenderId = 1,
+                            LastName = "Shiraishi",
+                            SpecialtyId = 4
+                        });
                 });
 
-            modelBuilder.Entity("CalHealth.BookingService.Models.PatientAddress", b =>
+            modelBuilder.Entity("CalHealth.BookingService.Models.ConsultantAvailabilityPerWeek", b =>
                 {
-                    b.Property<int>("PatientId")
+                    b.Property<int>("ConsultantId")
                         .HasColumnType("int");
 
-                    b.Property<int>("AddressId")
+                    b.Property<int>("WeekId")
                         .HasColumnType("int");
 
-                    b.HasKey("PatientId", "AddressId");
+                    b.Property<int>("DayId")
+                        .HasColumnType("int");
 
-                    b.HasIndex("AddressId");
+                    b.Property<bool>("Available")
+                        .HasColumnType("bit");
 
-                    b.ToTable("PatientAddress");
+                    b.HasKey("ConsultantId", "WeekId", "DayId");
+
+                    b.HasIndex("DayId");
+
+                    b.HasIndex("WeekId");
+
+                    b.ToTable("ConsultantAvailabilityPerWeek");
+
+                    b.HasData(
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 1,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 1,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 1,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 1,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 1,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 1,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 1,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 2,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 2,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 2,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 2,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 2,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 2,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 2,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 3,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 3,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 3,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 3,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 3,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 3,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 3,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 4,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 4,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 4,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 4,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 4,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 4,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 4,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 5,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 5,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 5,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 5,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 5,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 5,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 5,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 6,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 6,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 6,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 6,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 6,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 6,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 6,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 7,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 7,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 7,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 7,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 7,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 7,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 7,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 8,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 8,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 8,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 8,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 8,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 8,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 8,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 9,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 9,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 9,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 9,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 9,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 9,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 9,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 10,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 10,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 10,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 10,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 10,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 10,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 10,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 11,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 11,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 11,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 11,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 11,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 11,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 11,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 12,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 12,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 12,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 12,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 12,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 12,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 12,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 13,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 13,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 13,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 13,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 13,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 13,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 13,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 14,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 14,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 14,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 14,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 14,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 14,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 14,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 15,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 15,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 15,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 15,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 15,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 15,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 15,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 16,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 16,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 16,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 16,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 16,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 16,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 16,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 17,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 17,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 17,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 17,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 17,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 17,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 17,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 18,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 18,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 18,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 18,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 18,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 18,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 18,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 19,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 19,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 19,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 19,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 19,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 19,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 19,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 20,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 20,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 20,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 20,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 20,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 20,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 20,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 21,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 21,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 21,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 21,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 21,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 21,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 21,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 22,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 22,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 22,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 22,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 22,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 22,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 22,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 23,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 23,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 23,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 23,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 23,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 23,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 23,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 24,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 24,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 24,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 24,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 24,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 24,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 24,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 25,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 25,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 25,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 25,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 25,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 25,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 25,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 26,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 26,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 26,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 26,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 26,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 26,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 26,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 27,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 27,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 27,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 27,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 27,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 27,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 27,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 28,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 28,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 28,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 28,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 28,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 28,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 28,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 29,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 29,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 29,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 29,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 29,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 29,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 29,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 30,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 30,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 30,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 30,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 30,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 30,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 30,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 31,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 31,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 31,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 31,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 31,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 31,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 31,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 32,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 32,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 32,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 32,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 32,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 32,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 32,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 33,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 33,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 33,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 33,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 33,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 33,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 33,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 34,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 34,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 34,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 34,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 34,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 34,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 34,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 35,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 35,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 35,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 35,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 35,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 35,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 35,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 36,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 36,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 36,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 36,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 36,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 36,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 36,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 37,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 37,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 37,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 37,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 37,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 37,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 37,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 38,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 38,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 38,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 38,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 38,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 38,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 38,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 39,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 39,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 39,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 39,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 39,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 39,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 39,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 40,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 40,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 40,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 40,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 40,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 40,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 40,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 41,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 41,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 41,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 41,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 41,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 41,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 41,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 42,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 42,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 42,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 42,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 42,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 42,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 42,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 43,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 43,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 43,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 43,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 43,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 43,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 43,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 44,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 44,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 44,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 44,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 44,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 44,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 44,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 45,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 45,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 45,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 45,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 45,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 45,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 45,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 46,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 46,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 46,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 46,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 46,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 46,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 46,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 47,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 47,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 47,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 47,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 47,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 47,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 47,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 48,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 48,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 48,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 48,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 48,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 48,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 48,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 49,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 49,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 49,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 49,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 49,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 49,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 49,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 50,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 50,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 50,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 50,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 50,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 50,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 50,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 51,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 51,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 51,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 51,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 51,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 51,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 51,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 52,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 52,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 52,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 52,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 52,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 52,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 1,
+                            WeekId = 52,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 1,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 1,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 1,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 1,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 1,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 1,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 1,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 2,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 2,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 2,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 2,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 2,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 2,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 2,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 3,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 3,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 3,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 3,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 3,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 3,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 3,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 4,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 4,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 4,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 4,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 4,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 4,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 4,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 5,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 5,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 5,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 5,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 5,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 5,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 5,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 6,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 6,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 6,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 6,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 6,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 6,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 6,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 7,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 7,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 7,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 7,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 7,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 7,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 7,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 8,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 8,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 8,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 8,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 8,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 8,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 8,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 9,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 9,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 9,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 9,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 9,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 9,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 9,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 10,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 10,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 10,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 10,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 10,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 10,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 10,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 11,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 11,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 11,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 11,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 11,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 11,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 11,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 12,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 12,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 12,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 12,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 12,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 12,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 12,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 13,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 13,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 13,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 13,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 13,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 13,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 13,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 14,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 14,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 14,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 14,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 14,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 14,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 14,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 15,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 15,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 15,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 15,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 15,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 15,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 15,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 16,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 16,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 16,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 16,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 16,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 16,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 16,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 17,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 17,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 17,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 17,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 17,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 17,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 17,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 18,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 18,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 18,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 18,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 18,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 18,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 18,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 19,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 19,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 19,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 19,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 19,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 19,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 19,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 20,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 20,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 20,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 20,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 20,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 20,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 20,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 21,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 21,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 21,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 21,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 21,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 21,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 21,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 22,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 22,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 22,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 22,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 22,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 22,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 22,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 23,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 23,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 23,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 23,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 23,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 23,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 23,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 24,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 24,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 24,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 24,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 24,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 24,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 24,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 25,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 25,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 25,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 25,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 25,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 25,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 25,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 26,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 26,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 26,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 26,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 26,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 26,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 26,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 27,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 27,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 27,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 27,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 27,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 27,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 27,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 28,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 28,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 28,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 28,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 28,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 28,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 28,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 29,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 29,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 29,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 29,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 29,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 29,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 29,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 30,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 30,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 30,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 30,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 30,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 30,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 30,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 31,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 31,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 31,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 31,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 31,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 31,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 31,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 32,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 32,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 32,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 32,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 32,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 32,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 32,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 33,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 33,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 33,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 33,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 33,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 33,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 33,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 34,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 34,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 34,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 34,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 34,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 34,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 34,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 35,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 35,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 35,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 35,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 35,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 35,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 35,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 36,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 36,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 36,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 36,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 36,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 36,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 36,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 37,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 37,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 37,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 37,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 37,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 37,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 37,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 38,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 38,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 38,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 38,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 38,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 38,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 38,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 39,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 39,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 39,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 39,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 39,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 39,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 39,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 40,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 40,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 40,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 40,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 40,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 40,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 40,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 41,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 41,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 41,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 41,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 41,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 41,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 41,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 42,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 42,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 42,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 42,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 42,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 42,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 42,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 43,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 43,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 43,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 43,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 43,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 43,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 43,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 44,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 44,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 44,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 44,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 44,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 44,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 44,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 45,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 45,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 45,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 45,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 45,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 45,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 45,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 46,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 46,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 46,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 46,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 46,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 46,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 46,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 47,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 47,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 47,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 47,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 47,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 47,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 47,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 48,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 48,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 48,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 48,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 48,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 48,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 48,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 49,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 49,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 49,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 49,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 49,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 49,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 49,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 50,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 50,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 50,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 50,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 50,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 50,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 50,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 51,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 51,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 51,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 51,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 51,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 51,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 51,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 52,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 52,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 52,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 52,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 52,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 52,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 2,
+                            WeekId = 52,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 1,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 1,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 1,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 1,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 1,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 1,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 1,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 2,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 2,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 2,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 2,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 2,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 2,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 2,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 3,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 3,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 3,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 3,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 3,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 3,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 3,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 4,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 4,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 4,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 4,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 4,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 4,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 4,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 5,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 5,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 5,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 5,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 5,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 5,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 5,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 6,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 6,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 6,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 6,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 6,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 6,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 6,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 7,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 7,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 7,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 7,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 7,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 7,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 7,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 8,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 8,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 8,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 8,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 8,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 8,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 8,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 9,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 9,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 9,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 9,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 9,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 9,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 9,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 10,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 10,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 10,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 10,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 10,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 10,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 10,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 11,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 11,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 11,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 11,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 11,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 11,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 11,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 12,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 12,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 12,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 12,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 12,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 12,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 12,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 13,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 13,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 13,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 13,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 13,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 13,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 13,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 14,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 14,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 14,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 14,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 14,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 14,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 14,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 15,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 15,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 15,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 15,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 15,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 15,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 15,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 16,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 16,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 16,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 16,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 16,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 16,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 16,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 17,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 17,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 17,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 17,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 17,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 17,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 17,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 18,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 18,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 18,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 18,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 18,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 18,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 18,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 19,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 19,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 19,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 19,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 19,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 19,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 19,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 20,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 20,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 20,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 20,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 20,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 20,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 20,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 21,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 21,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 21,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 21,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 21,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 21,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 21,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 22,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 22,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 22,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 22,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 22,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 22,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 22,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 23,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 23,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 23,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 23,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 23,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 23,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 23,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 24,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 24,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 24,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 24,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 24,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 24,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 24,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 25,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 25,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 25,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 25,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 25,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 25,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 25,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 26,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 26,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 26,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 26,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 26,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 26,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 26,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 27,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 27,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 27,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 27,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 27,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 27,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 27,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 28,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 28,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 28,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 28,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 28,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 28,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 28,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 29,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 29,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 29,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 29,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 29,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 29,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 29,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 30,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 30,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 30,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 30,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 30,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 30,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 30,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 31,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 31,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 31,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 31,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 31,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 31,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 31,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 32,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 32,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 32,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 32,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 32,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 32,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 32,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 33,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 33,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 33,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 33,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 33,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 33,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 33,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 34,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 34,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 34,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 34,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 34,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 34,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 34,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 35,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 35,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 35,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 35,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 35,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 35,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 35,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 36,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 36,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 36,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 36,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 36,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 36,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 36,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 37,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 37,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 37,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 37,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 37,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 37,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 37,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 38,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 38,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 38,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 38,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 38,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 38,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 38,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 39,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 39,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 39,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 39,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 39,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 39,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 39,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 40,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 40,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 40,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 40,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 40,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 40,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 40,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 41,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 41,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 41,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 41,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 41,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 41,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 41,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 42,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 42,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 42,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 42,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 42,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 42,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 42,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 43,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 43,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 43,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 43,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 43,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 43,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 43,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 44,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 44,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 44,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 44,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 44,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 44,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 44,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 45,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 45,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 45,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 45,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 45,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 45,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 45,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 46,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 46,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 46,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 46,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 46,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 46,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 46,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 47,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 47,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 47,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 47,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 47,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 47,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 47,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 48,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 48,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 48,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 48,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 48,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 48,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 48,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 49,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 49,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 49,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 49,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 49,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 49,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 49,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 50,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 50,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 50,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 50,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 50,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 50,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 50,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 51,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 51,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 51,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 51,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 51,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 51,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 51,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 52,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 52,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 52,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 52,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 52,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 52,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 3,
+                            WeekId = 52,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 1,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 1,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 1,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 1,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 1,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 1,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 1,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 2,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 2,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 2,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 2,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 2,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 2,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 2,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 3,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 3,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 3,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 3,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 3,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 3,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 3,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 4,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 4,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 4,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 4,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 4,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 4,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 4,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 5,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 5,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 5,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 5,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 5,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 5,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 5,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 6,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 6,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 6,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 6,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 6,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 6,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 6,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 7,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 7,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 7,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 7,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 7,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 7,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 7,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 8,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 8,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 8,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 8,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 8,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 8,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 8,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 9,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 9,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 9,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 9,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 9,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 9,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 9,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 10,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 10,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 10,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 10,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 10,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 10,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 10,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 11,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 11,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 11,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 11,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 11,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 11,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 11,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 12,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 12,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 12,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 12,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 12,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 12,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 12,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 13,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 13,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 13,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 13,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 13,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 13,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 13,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 14,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 14,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 14,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 14,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 14,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 14,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 14,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 15,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 15,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 15,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 15,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 15,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 15,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 15,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 16,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 16,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 16,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 16,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 16,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 16,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 16,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 17,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 17,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 17,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 17,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 17,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 17,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 17,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 18,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 18,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 18,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 18,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 18,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 18,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 18,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 19,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 19,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 19,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 19,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 19,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 19,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 19,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 20,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 20,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 20,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 20,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 20,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 20,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 20,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 21,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 21,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 21,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 21,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 21,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 21,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 21,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 22,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 22,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 22,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 22,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 22,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 22,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 22,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 23,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 23,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 23,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 23,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 23,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 23,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 23,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 24,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 24,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 24,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 24,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 24,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 24,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 24,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 25,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 25,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 25,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 25,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 25,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 25,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 25,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 26,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 26,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 26,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 26,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 26,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 26,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 26,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 27,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 27,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 27,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 27,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 27,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 27,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 27,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 28,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 28,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 28,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 28,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 28,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 28,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 28,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 29,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 29,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 29,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 29,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 29,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 29,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 29,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 30,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 30,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 30,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 30,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 30,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 30,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 30,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 31,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 31,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 31,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 31,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 31,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 31,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 31,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 32,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 32,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 32,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 32,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 32,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 32,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 32,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 33,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 33,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 33,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 33,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 33,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 33,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 33,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 34,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 34,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 34,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 34,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 34,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 34,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 34,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 35,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 35,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 35,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 35,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 35,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 35,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 35,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 36,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 36,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 36,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 36,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 36,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 36,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 36,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 37,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 37,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 37,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 37,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 37,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 37,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 37,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 38,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 38,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 38,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 38,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 38,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 38,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 38,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 39,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 39,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 39,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 39,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 39,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 39,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 39,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 40,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 40,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 40,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 40,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 40,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 40,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 40,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 41,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 41,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 41,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 41,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 41,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 41,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 41,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 42,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 42,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 42,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 42,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 42,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 42,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 42,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 43,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 43,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 43,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 43,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 43,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 43,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 43,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 44,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 44,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 44,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 44,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 44,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 44,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 44,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 45,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 45,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 45,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 45,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 45,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 45,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 45,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 46,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 46,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 46,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 46,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 46,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 46,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 46,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 47,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 47,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 47,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 47,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 47,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 47,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 47,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 48,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 48,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 48,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 48,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 48,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 48,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 48,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 49,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 49,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 49,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 49,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 49,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 49,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 49,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 50,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 50,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 50,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 50,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 50,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 50,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 50,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 51,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 51,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 51,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 51,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 51,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 51,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 51,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 52,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 52,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 52,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 52,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 52,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 52,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 4,
+                            WeekId = 52,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 1,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 1,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 1,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 1,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 1,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 1,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 1,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 2,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 2,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 2,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 2,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 2,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 2,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 2,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 3,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 3,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 3,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 3,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 3,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 3,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 3,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 4,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 4,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 4,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 4,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 4,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 4,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 4,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 5,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 5,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 5,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 5,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 5,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 5,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 5,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 6,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 6,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 6,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 6,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 6,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 6,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 6,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 7,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 7,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 7,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 7,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 7,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 7,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 7,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 8,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 8,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 8,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 8,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 8,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 8,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 8,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 9,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 9,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 9,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 9,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 9,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 9,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 9,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 10,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 10,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 10,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 10,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 10,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 10,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 10,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 11,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 11,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 11,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 11,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 11,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 11,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 11,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 12,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 12,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 12,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 12,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 12,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 12,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 12,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 13,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 13,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 13,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 13,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 13,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 13,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 13,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 14,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 14,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 14,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 14,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 14,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 14,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 14,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 15,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 15,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 15,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 15,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 15,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 15,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 15,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 16,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 16,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 16,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 16,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 16,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 16,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 16,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 17,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 17,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 17,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 17,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 17,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 17,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 17,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 18,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 18,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 18,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 18,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 18,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 18,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 18,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 19,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 19,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 19,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 19,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 19,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 19,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 19,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 20,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 20,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 20,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 20,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 20,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 20,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 20,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 21,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 21,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 21,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 21,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 21,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 21,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 21,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 22,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 22,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 22,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 22,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 22,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 22,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 22,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 23,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 23,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 23,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 23,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 23,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 23,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 23,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 24,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 24,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 24,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 24,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 24,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 24,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 24,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 25,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 25,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 25,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 25,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 25,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 25,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 25,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 26,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 26,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 26,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 26,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 26,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 26,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 26,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 27,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 27,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 27,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 27,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 27,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 27,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 27,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 28,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 28,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 28,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 28,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 28,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 28,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 28,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 29,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 29,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 29,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 29,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 29,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 29,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 29,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 30,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 30,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 30,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 30,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 30,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 30,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 30,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 31,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 31,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 31,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 31,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 31,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 31,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 31,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 32,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 32,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 32,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 32,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 32,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 32,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 32,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 33,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 33,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 33,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 33,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 33,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 33,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 33,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 34,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 34,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 34,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 34,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 34,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 34,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 34,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 35,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 35,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 35,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 35,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 35,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 35,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 35,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 36,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 36,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 36,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 36,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 36,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 36,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 36,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 37,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 37,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 37,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 37,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 37,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 37,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 37,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 38,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 38,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 38,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 38,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 38,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 38,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 38,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 39,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 39,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 39,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 39,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 39,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 39,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 39,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 40,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 40,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 40,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 40,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 40,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 40,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 40,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 41,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 41,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 41,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 41,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 41,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 41,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 41,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 42,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 42,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 42,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 42,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 42,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 42,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 42,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 43,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 43,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 43,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 43,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 43,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 43,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 43,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 44,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 44,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 44,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 44,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 44,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 44,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 44,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 45,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 45,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 45,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 45,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 45,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 45,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 45,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 46,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 46,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 46,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 46,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 46,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 46,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 46,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 47,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 47,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 47,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 47,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 47,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 47,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 47,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 48,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 48,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 48,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 48,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 48,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 48,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 48,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 49,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 49,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 49,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 49,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 49,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 49,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 49,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 50,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 50,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 50,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 50,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 50,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 50,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 50,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 51,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 51,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 51,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 51,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 51,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 51,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 51,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 52,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 52,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 52,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 52,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 52,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 52,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 5,
+                            WeekId = 52,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 1,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 1,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 1,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 1,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 1,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 1,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 1,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 2,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 2,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 2,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 2,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 2,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 2,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 2,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 3,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 3,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 3,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 3,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 3,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 3,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 3,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 4,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 4,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 4,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 4,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 4,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 4,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 4,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 5,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 5,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 5,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 5,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 5,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 5,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 5,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 6,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 6,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 6,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 6,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 6,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 6,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 6,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 7,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 7,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 7,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 7,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 7,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 7,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 7,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 8,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 8,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 8,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 8,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 8,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 8,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 8,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 9,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 9,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 9,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 9,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 9,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 9,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 9,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 10,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 10,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 10,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 10,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 10,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 10,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 10,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 11,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 11,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 11,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 11,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 11,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 11,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 11,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 12,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 12,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 12,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 12,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 12,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 12,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 12,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 13,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 13,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 13,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 13,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 13,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 13,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 13,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 14,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 14,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 14,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 14,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 14,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 14,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 14,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 15,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 15,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 15,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 15,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 15,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 15,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 15,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 16,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 16,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 16,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 16,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 16,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 16,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 16,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 17,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 17,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 17,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 17,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 17,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 17,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 17,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 18,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 18,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 18,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 18,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 18,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 18,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 18,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 19,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 19,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 19,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 19,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 19,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 19,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 19,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 20,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 20,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 20,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 20,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 20,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 20,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 20,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 21,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 21,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 21,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 21,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 21,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 21,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 21,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 22,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 22,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 22,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 22,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 22,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 22,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 22,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 23,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 23,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 23,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 23,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 23,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 23,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 23,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 24,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 24,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 24,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 24,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 24,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 24,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 24,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 25,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 25,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 25,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 25,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 25,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 25,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 25,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 26,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 26,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 26,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 26,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 26,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 26,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 26,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 27,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 27,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 27,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 27,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 27,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 27,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 27,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 28,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 28,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 28,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 28,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 28,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 28,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 28,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 29,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 29,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 29,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 29,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 29,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 29,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 29,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 30,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 30,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 30,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 30,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 30,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 30,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 30,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 31,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 31,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 31,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 31,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 31,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 31,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 31,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 32,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 32,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 32,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 32,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 32,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 32,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 32,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 33,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 33,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 33,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 33,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 33,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 33,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 33,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 34,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 34,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 34,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 34,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 34,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 34,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 34,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 35,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 35,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 35,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 35,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 35,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 35,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 35,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 36,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 36,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 36,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 36,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 36,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 36,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 36,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 37,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 37,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 37,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 37,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 37,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 37,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 37,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 38,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 38,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 38,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 38,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 38,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 38,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 38,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 39,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 39,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 39,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 39,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 39,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 39,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 39,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 40,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 40,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 40,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 40,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 40,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 40,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 40,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 41,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 41,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 41,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 41,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 41,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 41,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 41,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 42,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 42,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 42,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 42,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 42,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 42,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 42,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 43,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 43,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 43,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 43,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 43,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 43,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 43,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 44,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 44,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 44,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 44,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 44,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 44,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 44,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 45,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 45,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 45,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 45,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 45,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 45,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 45,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 46,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 46,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 46,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 46,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 46,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 46,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 46,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 47,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 47,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 47,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 47,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 47,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 47,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 47,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 48,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 48,
+                            DayId = 2,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 48,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 48,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 48,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 48,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 48,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 49,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 49,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 49,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 49,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 49,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 49,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 49,
+                            DayId = 7,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 50,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 50,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 50,
+                            DayId = 3,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 50,
+                            DayId = 4,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 50,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 50,
+                            DayId = 6,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 50,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 51,
+                            DayId = 1,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 51,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 51,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 51,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 51,
+                            DayId = 5,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 51,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 51,
+                            DayId = 7,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 52,
+                            DayId = 1,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 52,
+                            DayId = 2,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 52,
+                            DayId = 3,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 52,
+                            DayId = 4,
+                            Available = true
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 52,
+                            DayId = 5,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 52,
+                            DayId = 6,
+                            Available = false
+                        },
+                        new
+                        {
+                            ConsultantId = 6,
+                            WeekId = 52,
+                            DayId = 7,
+                            Available = true
+                        });
                 });
 
-            modelBuilder.Entity("CalHealth.BookingService.Models.PatientAllergy", b =>
-                {
-                    b.Property<int>("PatientId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("AllergyId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PatientId", "AllergyId");
-
-                    b.HasIndex("AllergyId");
-
-                    b.ToTable("PatientAllergy");
-                });
-
-            modelBuilder.Entity("CalHealth.BookingService.Models.PatientPhoneNumber", b =>
-                {
-                    b.Property<int>("PatientId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PhoneNumberId")
-                        .HasColumnType("int");
-
-                    b.HasKey("PatientId", "PhoneNumberId");
-
-                    b.HasIndex("PhoneNumberId");
-
-                    b.ToTable("PatientPhoneNumber");
-                });
-
-            modelBuilder.Entity("CalHealth.BookingService.Models.PhoneNumber", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Number")
-                        .IsRequired()
-                        .HasColumnType("varchar(12)")
-                        .HasMaxLength(12)
-                        .IsUnicode(false);
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PhoneNumber");
-                });
-
-            modelBuilder.Entity("CalHealth.BookingService.Models.Religion", b =>
+            modelBuilder.Entity("CalHealth.BookingService.Models.Day", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -253,125 +15475,882 @@ namespace CalHealth.BookingService.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("varchar(60)")
-                        .HasMaxLength(60)
+                        .HasColumnType("varchar(20)")
+                        .HasMaxLength(20)
                         .IsUnicode(false);
 
                     b.HasKey("Id");
 
-                    b.ToTable("Religion");
+                    b.ToTable("Day");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
-                            Name = "Christianity (Protestant)"
+                            Name = "Monday"
                         },
                         new
                         {
                             Id = 2,
-                            Name = "Christianity (Roman Catholic)"
+                            Name = "Tuesday"
                         },
                         new
                         {
                             Id = 3,
-                            Name = "Christianity (Orthodox)"
+                            Name = "Wednesday"
                         },
                         new
                         {
                             Id = 4,
-                            Name = "Islam (Shia)"
+                            Name = "Thursday"
                         },
                         new
                         {
                             Id = 5,
-                            Name = "Islam (Sunni)"
+                            Name = "Friday"
                         },
                         new
                         {
                             Id = 6,
-                            Name = "Judaism"
+                            Name = "Saturday"
                         },
                         new
                         {
                             Id = 7,
-                            Name = "Buddhism"
+                            Name = "Sunday"
+                        });
+                });
+
+            modelBuilder.Entity("CalHealth.BookingService.Models.Gender", b =>
+                {
+                    b.Property<int>("Id")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(20)")
+                        .HasMaxLength(20);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Gender");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Type = "Male"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Type = "Female"
+                        });
+                });
+
+            modelBuilder.Entity("CalHealth.BookingService.Models.Note", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(500)")
+                        .HasMaxLength(500);
+
+                    b.Property<DateTime>("TimeCreated")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("TimeLastUpdated")
+                        .HasColumnType("datetime");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Note");
+                });
+
+            modelBuilder.Entity("CalHealth.BookingService.Models.Specialty", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("varchar(50)")
+                        .HasMaxLength(50)
+                        .IsUnicode(false);
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Specialty");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Type = "Dermatology"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Type = "Neurology"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Type = "Pediatrics"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Type = "Urology"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Type = "Psychiatry"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Type = "Obstetrics and Gynecology"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Type = "Cardiology"
+                        });
+                });
+
+            modelBuilder.Entity("CalHealth.BookingService.Models.TimeSlot", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("EndTime")
+                        .HasColumnType("datetime");
+
+                    b.Property<DateTime>("StartTime")
+                        .HasColumnType("datetime");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TimeSlot");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EndTime = new DateTime(2020, 1, 1, 8, 10, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 8, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            EndTime = new DateTime(2020, 1, 1, 8, 20, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 8, 10, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 3,
+                            EndTime = new DateTime(2020, 1, 1, 8, 30, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 8, 20, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 4,
+                            EndTime = new DateTime(2020, 1, 1, 8, 40, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 8, 30, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 5,
+                            EndTime = new DateTime(2020, 1, 1, 8, 50, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 8, 40, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 6,
+                            EndTime = new DateTime(2020, 1, 1, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 8, 50, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 7,
+                            EndTime = new DateTime(2020, 1, 1, 9, 10, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 9, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 8,
-                            Name = "Hinduism"
+                            EndTime = new DateTime(2020, 1, 1, 9, 20, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 9, 10, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
                             Id = 9,
-                            Name = "Scientology"
+                            EndTime = new DateTime(2020, 1, 1, 9, 30, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 9, 20, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 10,
+                            EndTime = new DateTime(2020, 1, 1, 9, 40, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 9, 30, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 11,
+                            EndTime = new DateTime(2020, 1, 1, 9, 50, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 9, 40, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 12,
+                            EndTime = new DateTime(2020, 1, 1, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 9, 50, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 13,
+                            EndTime = new DateTime(2020, 1, 1, 10, 10, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 10, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 14,
+                            EndTime = new DateTime(2020, 1, 1, 10, 20, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 10, 10, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 15,
+                            EndTime = new DateTime(2020, 1, 1, 10, 30, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 10, 20, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 16,
+                            EndTime = new DateTime(2020, 1, 1, 10, 40, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 10, 30, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 17,
+                            EndTime = new DateTime(2020, 1, 1, 10, 50, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 10, 40, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 18,
+                            EndTime = new DateTime(2020, 1, 1, 11, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 10, 50, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 19,
+                            EndTime = new DateTime(2020, 1, 1, 11, 10, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 11, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 20,
+                            EndTime = new DateTime(2020, 1, 1, 11, 20, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 11, 10, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 21,
+                            EndTime = new DateTime(2020, 1, 1, 11, 30, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 11, 20, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 22,
+                            EndTime = new DateTime(2020, 1, 1, 11, 40, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 11, 30, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 23,
+                            EndTime = new DateTime(2020, 1, 1, 11, 50, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 11, 40, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 24,
+                            EndTime = new DateTime(2020, 1, 1, 12, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 11, 50, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 25,
+                            EndTime = new DateTime(2020, 1, 1, 12, 10, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 12, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 26,
+                            EndTime = new DateTime(2020, 1, 1, 12, 20, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 12, 10, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 27,
+                            EndTime = new DateTime(2020, 1, 1, 12, 30, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 12, 20, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 28,
+                            EndTime = new DateTime(2020, 1, 1, 12, 40, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 12, 30, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 29,
+                            EndTime = new DateTime(2020, 1, 1, 12, 50, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 12, 40, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 30,
+                            EndTime = new DateTime(2020, 1, 1, 13, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 12, 50, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 31,
+                            EndTime = new DateTime(2020, 1, 1, 13, 10, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 13, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 32,
+                            EndTime = new DateTime(2020, 1, 1, 13, 20, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 13, 10, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 33,
+                            EndTime = new DateTime(2020, 1, 1, 13, 30, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 13, 20, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 34,
+                            EndTime = new DateTime(2020, 1, 1, 13, 40, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 13, 30, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 35,
+                            EndTime = new DateTime(2020, 1, 1, 13, 50, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 13, 40, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 36,
+                            EndTime = new DateTime(2020, 1, 1, 14, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 13, 50, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 37,
+                            EndTime = new DateTime(2020, 1, 1, 14, 10, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 14, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 38,
+                            EndTime = new DateTime(2020, 1, 1, 14, 20, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 14, 10, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 39,
+                            EndTime = new DateTime(2020, 1, 1, 14, 30, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 14, 20, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 40,
+                            EndTime = new DateTime(2020, 1, 1, 14, 40, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 14, 30, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 41,
+                            EndTime = new DateTime(2020, 1, 1, 14, 50, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 14, 40, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 42,
+                            EndTime = new DateTime(2020, 1, 1, 15, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 14, 50, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 43,
+                            EndTime = new DateTime(2020, 1, 1, 15, 10, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 15, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 44,
+                            EndTime = new DateTime(2020, 1, 1, 15, 20, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 15, 10, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 45,
+                            EndTime = new DateTime(2020, 1, 1, 15, 30, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 15, 20, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 46,
+                            EndTime = new DateTime(2020, 1, 1, 15, 40, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 15, 30, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 47,
+                            EndTime = new DateTime(2020, 1, 1, 15, 50, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 15, 40, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 48,
+                            EndTime = new DateTime(2020, 1, 1, 16, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 15, 50, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 49,
+                            EndTime = new DateTime(2020, 1, 1, 16, 10, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 16, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 50,
+                            EndTime = new DateTime(2020, 1, 1, 16, 20, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 16, 10, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 51,
+                            EndTime = new DateTime(2020, 1, 1, 16, 30, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 16, 20, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 52,
+                            EndTime = new DateTime(2020, 1, 1, 16, 40, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 16, 30, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 53,
+                            EndTime = new DateTime(2020, 1, 1, 16, 50, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 16, 40, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 54,
+                            EndTime = new DateTime(2020, 1, 1, 17, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 16, 50, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 55,
+                            EndTime = new DateTime(2020, 1, 1, 17, 10, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 17, 0, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 56,
+                            EndTime = new DateTime(2020, 1, 1, 17, 20, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 17, 10, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 57,
+                            EndTime = new DateTime(2020, 1, 1, 17, 30, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 17, 20, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 58,
+                            EndTime = new DateTime(2020, 1, 1, 17, 40, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 17, 30, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 59,
+                            EndTime = new DateTime(2020, 1, 1, 17, 50, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 17, 40, 0, 0, DateTimeKind.Unspecified)
+                        },
+                        new
+                        {
+                            Id = 60,
+                            EndTime = new DateTime(2020, 1, 1, 18, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartTime = new DateTime(2020, 1, 1, 17, 50, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
-            modelBuilder.Entity("CalHealth.BookingService.Models.Patient", b =>
+            modelBuilder.Entity("CalHealth.BookingService.Models.Week", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<byte>("Number")
+                        .HasColumnType("tinyint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Week");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Number = (byte)1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Number = (byte)2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Number = (byte)3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Number = (byte)4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Number = (byte)5
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Number = (byte)6
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Number = (byte)7
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Number = (byte)8
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Number = (byte)9
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Number = (byte)10
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Number = (byte)11
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Number = (byte)12
+                        },
+                        new
+                        {
+                            Id = 13,
+                            Number = (byte)13
+                        },
+                        new
+                        {
+                            Id = 14,
+                            Number = (byte)14
+                        },
+                        new
+                        {
+                            Id = 15,
+                            Number = (byte)15
+                        },
+                        new
+                        {
+                            Id = 16,
+                            Number = (byte)16
+                        },
+                        new
+                        {
+                            Id = 17,
+                            Number = (byte)17
+                        },
+                        new
+                        {
+                            Id = 18,
+                            Number = (byte)18
+                        },
+                        new
+                        {
+                            Id = 19,
+                            Number = (byte)19
+                        },
+                        new
+                        {
+                            Id = 20,
+                            Number = (byte)20
+                        },
+                        new
+                        {
+                            Id = 21,
+                            Number = (byte)21
+                        },
+                        new
+                        {
+                            Id = 22,
+                            Number = (byte)22
+                        },
+                        new
+                        {
+                            Id = 23,
+                            Number = (byte)23
+                        },
+                        new
+                        {
+                            Id = 24,
+                            Number = (byte)24
+                        },
+                        new
+                        {
+                            Id = 25,
+                            Number = (byte)25
+                        },
+                        new
+                        {
+                            Id = 26,
+                            Number = (byte)26
+                        },
+                        new
+                        {
+                            Id = 27,
+                            Number = (byte)27
+                        },
+                        new
+                        {
+                            Id = 28,
+                            Number = (byte)28
+                        },
+                        new
+                        {
+                            Id = 29,
+                            Number = (byte)29
+                        },
+                        new
+                        {
+                            Id = 30,
+                            Number = (byte)30
+                        },
+                        new
+                        {
+                            Id = 31,
+                            Number = (byte)31
+                        },
+                        new
+                        {
+                            Id = 32,
+                            Number = (byte)32
+                        },
+                        new
+                        {
+                            Id = 33,
+                            Number = (byte)33
+                        },
+                        new
+                        {
+                            Id = 34,
+                            Number = (byte)34
+                        },
+                        new
+                        {
+                            Id = 35,
+                            Number = (byte)35
+                        },
+                        new
+                        {
+                            Id = 36,
+                            Number = (byte)36
+                        },
+                        new
+                        {
+                            Id = 37,
+                            Number = (byte)37
+                        },
+                        new
+                        {
+                            Id = 38,
+                            Number = (byte)38
+                        },
+                        new
+                        {
+                            Id = 39,
+                            Number = (byte)39
+                        },
+                        new
+                        {
+                            Id = 40,
+                            Number = (byte)40
+                        },
+                        new
+                        {
+                            Id = 41,
+                            Number = (byte)41
+                        },
+                        new
+                        {
+                            Id = 42,
+                            Number = (byte)42
+                        },
+                        new
+                        {
+                            Id = 43,
+                            Number = (byte)43
+                        },
+                        new
+                        {
+                            Id = 44,
+                            Number = (byte)44
+                        },
+                        new
+                        {
+                            Id = 45,
+                            Number = (byte)45
+                        },
+                        new
+                        {
+                            Id = 46,
+                            Number = (byte)46
+                        },
+                        new
+                        {
+                            Id = 47,
+                            Number = (byte)47
+                        },
+                        new
+                        {
+                            Id = 48,
+                            Number = (byte)48
+                        },
+                        new
+                        {
+                            Id = 49,
+                            Number = (byte)49
+                        },
+                        new
+                        {
+                            Id = 50,
+                            Number = (byte)50
+                        },
+                        new
+                        {
+                            Id = 51,
+                            Number = (byte)51
+                        },
+                        new
+                        {
+                            Id = 52,
+                            Number = (byte)52
+                        });
+                });
+
+            modelBuilder.Entity("CalHealth.BookingService.Models.Appointment", b =>
+                {
+                    b.HasOne("CalHealth.BookingService.Models.Consultant", "Consultant")
+                        .WithMany("Appointment")
+                        .HasForeignKey("ConsultantId")
+                        .HasConstraintName("FK_Appointment_Consultant")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CalHealth.BookingService.Models.Day", "Day")
+                        .WithMany("Appointment")
+                        .HasForeignKey("DayId")
+                        .HasConstraintName("FK_Appointment_Day")
+                        .IsRequired();
+
+                    b.HasOne("CalHealth.BookingService.Models.Note", "Note")
+                        .WithMany("Appointment")
+                        .HasForeignKey("NoteId")
+                        .HasConstraintName("FK_Appointment_Note")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.HasOne("CalHealth.BookingService.Models.TimeSlot", "TimeSlot")
+                        .WithMany("Appointment")
+                        .HasForeignKey("TimeSlotId")
+                        .HasConstraintName("FK_Appointment_TimeSlot")
+                        .IsRequired();
+
+                    b.HasOne("CalHealth.BookingService.Models.Week", "Week")
+                        .WithMany("Appointment")
+                        .HasForeignKey("WeekId")
+                        .HasConstraintName("FK_Appointment_Week")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("CalHealth.BookingService.Models.Consultant", b =>
                 {
                     b.HasOne("CalHealth.BookingService.Models.Gender", "Gender")
-                        .WithMany("Patient")
+                        .WithMany("Consultant")
                         .HasForeignKey("GenderId")
-                        .HasConstraintName("FK_Patient_Gender")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("FK_Consultant_Gender")
                         .IsRequired();
 
-                    b.HasOne("CalHealth.BookingService.Models.Religion", "Religion")
-                        .WithMany("Patient")
-                        .HasForeignKey("ReligionId")
-                        .HasConstraintName("FK_Patient_Religion")
-                        .OnDelete(DeleteBehavior.SetNull);
-                });
-
-            modelBuilder.Entity("CalHealth.BookingService.Models.PatientAddress", b =>
-                {
-                    b.HasOne("CalHealth.BookingService.Models.Address", "Address")
-                        .WithMany("PatientAddress")
-                        .HasForeignKey("AddressId")
-                        .HasConstraintName("FK_PatientAddress_Address")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CalHealth.BookingService.Models.Patient", "Patient")
-                        .WithMany("PatientAddress")
-                        .HasForeignKey("PatientId")
-                        .HasConstraintName("FK_PatientAddress_Patient")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("CalHealth.BookingService.Models.Specialty", "Specialty")
+                        .WithMany("Consultant")
+                        .HasForeignKey("SpecialtyId")
+                        .HasConstraintName("FK_Consultant_Specialty")
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("CalHealth.BookingService.Models.PatientAllergy", b =>
+            modelBuilder.Entity("CalHealth.BookingService.Models.ConsultantAvailabilityPerWeek", b =>
                 {
-                    b.HasOne("CalHealth.BookingService.Models.Allergy", "Allergy")
-                        .WithMany("PatientAllergy")
-                        .HasForeignKey("AllergyId")
-                        .HasConstraintName("FK_PatientAllergy_Allergy")
+                    b.HasOne("CalHealth.BookingService.Models.Consultant", "Consultant")
+                        .WithMany("ConsultantAvailabilityPerWeek")
+                        .HasForeignKey("ConsultantId")
+                        .HasConstraintName("FK_ConsultantAvailabilityPerWeek_Consultant")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CalHealth.BookingService.Models.Patient", "Patient")
-                        .WithMany("PatientAllergy")
-                        .HasForeignKey("PatientId")
-                        .HasConstraintName("FK_PatientAllergy_Patient")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("CalHealth.BookingService.Models.PatientPhoneNumber", b =>
-                {
-                    b.HasOne("CalHealth.BookingService.Models.Patient", "Patient")
-                        .WithMany("PatientPhoneNumber")
-                        .HasForeignKey("PatientId")
-                        .HasConstraintName("FK_PatientPhoneNumber_Patient")
-                        .OnDelete(DeleteBehavior.Cascade)
+                    b.HasOne("CalHealth.BookingService.Models.Day", "Day")
+                        .WithMany("ConsultantAvailabilityPerWeek")
+                        .HasForeignKey("DayId")
+                        .HasConstraintName("FK_ConsultantAvailabilityPerWeek_Day")
                         .IsRequired();
 
-                    b.HasOne("CalHealth.BookingService.Models.PhoneNumber", "PhoneNumber")
-                        .WithMany("PatientPhoneNumber")
-                        .HasForeignKey("PhoneNumberId")
-                        .HasConstraintName("FK_PatientPhoneNumber_PhoneNumber")
+                    b.HasOne("CalHealth.BookingService.Models.Week", "Week")
+                        .WithMany("ConsultantAvailabilityPerWeek")
+                        .HasForeignKey("WeekId")
+                        .HasConstraintName("FK_ConsultantAvailabilityPerWeek_Week")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

@@ -1,0 +1,35 @@
+﻿@namespace CalHealth.Blazor.Client.Pages.ConsultantOverview
+@page "/Consultants"
+
+<section id="doctor-team" class="section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="ser-title">Meet our consultants!</h2>
+                <hr class="botm-line">
+            </div>
+            @if (Consultants != null)
+            {
+                var i = 0;
+                foreach (var consultant in Consultants)
+                {
+                    i++;
+                    <div class="col-md-3 col-sm-3 col-xs-6">
+                        <div class="thumbnail">
+                            <img src=@($"img/doctor{i}.jpg") alt="..." class="team-img">
+                            <div class="caption">
+                                <h3>@consultant.FirstName</h3>
+                                <p>@consultant.Specialty</p>
+                                <ul class="list-inline">
+                                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</section>

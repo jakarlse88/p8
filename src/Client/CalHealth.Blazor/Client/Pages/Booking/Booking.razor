@@ -1,0 +1,198 @@
+﻿@using CalHealth.Blazor.Client.Shared
+@using System.Globalization
+@namespace CalHealth.Blazor.Client.Pages.Booking
+@page "/Booking"
+
+<section class="section-padding">
+
+    <div class="container">
+
+        <div class="row d-flex flex-column justify-content-center align-content-center mb-4">
+            <h2 class="ser-title">Book an Appointment</h2>
+            <hr class="botm-line">
+        </div>
+
+        @{
+            if (Status == APIOperationStatus.GET_Pending)
+            {
+                <div class="row d-flex flex-column justify-content-center m-auto">
+                    <div class="col-12 d-flex justify-content-center mb-2">
+                        <p class="text-muted">
+                            <i class="fas fa-spinner fa-lg fa-spin"></i>
+                        </p>
+                    </div>
+                </div>
+            }
+        }
+
+        @{
+            if (Status == APIOperationStatus.GET_Error)
+            {
+                <div class="row d-flex flex-column justify-content-center mb-4">
+                    <p class="text-muted text-center">There was an error loading data from the server. Please refresh the page to try again.</p>
+                </div>
+            }
+        }
+
+        @{
+            if (Status == APIOperationStatus.GET_Success || Status == APIOperationStatus.POST_Pending)
+            {
+                <EditForm EditContext="@ScheduleEditContext">
+                    <div class="form-row d-flex justify-content-center align-items-end mb-2">
+
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="consultant-select">Consultant</label>
+                                <InputSelect id="consultant-select" @bind-Value="@FormModel.Schedule.ConsultantIdProxy" class="form-control">
+                                    <option value="0" disabled>Select a consultant</option>
+                                    @{
+                                        foreach (var consultant in ViewModel.ConsultantList)
+                                        {
+                                            <option value="@consultant.Id.ToString()">@consultant.FirstName @consultant.LastName, @consultant.Specialty</option>
+                                        }
+                                    }
+                                </InputSelect>
+                            </div>
+                        </div>
+
+                        <div class="col-2">
+                            @{
+                                var minYear = DateTime.Today.ToString("yyyy-MM-dd").Split(" ")[0];
+                                var formattedMinYear = minYear.Replace('/', '-');
+
+                                var maxYear = DateTime.Today.AddYears(1).ToString("yyyy-MM-dd").Split(" ")[0];
+                                var formattedMaxYear = maxYear.Replace('/', '-');
+
+                                <div class="form-group">
+                                    <label for="date-select">Appointment date</label>
+                                    <InputDate id="date-select"
+                                               disabled="@(!ConsultantIsValid)"
+                                               min="@formattedMinYear"
+                                               max="@formattedMaxYear"
+                                               @bind-Value="@FormModel.Schedule.Date"
+                                               placeholder="DD/MM/YYYY"
+                                               class="form-control"/>
+                                </div>
+                            }
+
+                        </div>
+
+                        <div class="col-2">
+                            @{
+                                var date = FormModel.Schedule.Date;
+                                var relevantConsultant =
+                                    ViewModel
+                                        .ConsultantList
+                                        .FirstOrDefault(c => c.Id == FormModel.Schedule.ConsultantId);
+
+                                var relevantAppointments =
+                                    relevantConsultant != null
+                                        ? relevantConsultant.Appointment
+                                        : new List<AppointmentViewModel>();
+
+                                <div class="form-group">
+                                    <label for="date-select">Appointment time</label>
+                                    <select
+                                        disabled="@(!ConsultantIsValid)"
+                                        id="date-select"
+                                        class="form-control"
+                                        @bind="@FormModel.Schedule.TimeSlotId">
+                                        <option value="0" disabled>Select a time</option>
+                                        @foreach (var timeSlot in ViewModel.TimeSlotList)
+                                        {
+                                            var disabled = relevantAppointments.Any(a =>
+                                            {
+                                                Console.WriteLine($"Appointment timeSlot: {a.TimeSlotId.ToString()}, loop timeslot {timeSlot.Id.ToString()}");
+                                                Console.WriteLine($"Appointment date :{a.Date.Date.ToString()}, selected date: {date.Date.ToString()}");
+
+                                                return a.TimeSlotId == timeSlot.Id
+                                                       && a.Date.Date.ToString(CultureInfo.InvariantCulture).Equals(date.Date.ToString(CultureInfo.InvariantCulture));
+                                            });
+
+                                            <option value="@timeSlot.Id" disabled="@disabled">
+                                                @timeSlot.StartTime.ToString("HH:mm") - @timeSlot.EndTime.ToString("HH:mm")
+                                            </option>
+                                        }
+                                    </select>
+                                </div>
+                            }
+                        </div>
+
+                    </div>
+                </EditForm>
+
+                <EditForm EditContext="@PatientEditContext">
+
+                    <DataAnnotationsValidator/>
+
+                    <div class="form-row d-flex justify-content-center">
+
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="first-name-input">First Name</label>
+                                <InputText id="first-name-input" @bind-Value="@FormModel.Patient.FirstName" placeholder="Given Name" class="form-control"/>
+                                <ValidationMessage For="@(() => FormModel.Patient.FirstName)"/>
+                            </div>
+                        </div>
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="family-name-input">Last Name</label>
+                                <InputText id="family-name-input" @bind-Value="@FormModel.Patient.LastName" placeholder="Family Name" class="form-control"/>
+                                <ValidationMessage For="@(() => FormModel.Patient.LastName)"/>
+                            </div>
+                        </div>
+
+                        <div class="col-2">
+                            <div class="form-group">
+                                <label for="date-of-birth-input">Date of Birth</label>
+                                <InputDate id="date-of-birth-input" @bind-Value="@FormModel.Patient.DateOfBirth" placeholder="DD/MM/YYYY" class="form-control" aria-describedby="date-of-birth-input-help"/>
+                                <ValidationMessage For="@(() => FormModel.Patient.DateOfBirth)"/>
+                            </div>
+                        </div>
+
+                    </div>
+
+                </EditForm>
+
+                <div class="form-row d-flex justify-content-between align-items-end mb-3">
+                    <div class="col-12 text-center">
+                        <button class="btn btn-success" @onclick="@HandleSubmit" disabled="@(Status == APIOperationStatus.POST_Pending || !FormIsValid)">
+                            Submit
+                            @{
+                                if (Status == APIOperationStatus.POST_Pending)
+                                {
+                                    <i class="fas fa-spinner fa-spin"></i>
+                                }
+                                else
+                                {
+                                    <i class="fas fa-paper-plane"></i>
+                                }
+                            }
+                        </button>
+                    </div>
+                </div>
+            }
+        }
+
+        @{
+            if (Status == APIOperationStatus.POST_Success)
+            {
+                <div class="row d-flex flex-column justify-content-center mb-4">
+                    <p class="text-success">POST successful.</p>
+                </div>
+            }
+        }
+
+        @{
+            if (Status == APIOperationStatus.POST_Error)
+            {
+                <div class="row d-flex flex-column justify-content-center mb-4">
+                    <h2 class="ser-title">Error</h2>
+                    <hr class="botm-line">
+                    <p class="text-muted">There was an error submitting the form. Please refresh the page to try again.</p>
+                </div>
+            }
+        }
+    </div>
+
+</section>

@@ -1,4 +1,6 @@
-FROM rabbitmq:3.7
+FROM rabbitmq:3
+
+EXPOSE 5672
 
 WORKDIR /usr/local/bin/
 COPY Infrastructure/RabbitMQ/init.sh .
