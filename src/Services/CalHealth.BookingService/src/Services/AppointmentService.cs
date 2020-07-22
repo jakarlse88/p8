@@ -8,9 +8,7 @@ using CalHealth.BookingService.Messaging;
 using CalHealth.BookingService.Messaging.Interfaces;
 using CalHealth.BookingService.Models;
 using CalHealth.BookingService.Repositories;
-using Microsoft.Extensions.Logging;
 using Serilog;
-using ILogger = Serilog.ILogger;
 
 namespace CalHealth.BookingService.Services
 {
@@ -21,13 +19,13 @@ namespace CalHealth.BookingService.Services
         private readonly IMapper _mapper;
         private readonly Calendar _calendar;
         private readonly CultureInfo _cultureInfo;
-        
+
         public AppointmentService(IUnitOfWork unitOfWork, IAppointmentPublisher appointmentPublisher, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
             _appointmentPublisher = appointmentPublisher;
             _mapper = mapper;
-            _cultureInfo = new CultureInfo("");
+            _cultureInfo = new CultureInfo("en-US");
             _calendar = _cultureInfo.Calendar;
         }
 
@@ -37,7 +35,7 @@ namespace CalHealth.BookingService.Services
         /// <param name="model"></param>
         /// <returns></returns>
         /// <exception cref="ArgumentNullException"></exception>
-        public async Task<Appointment> CreateAsync(AppointmentDTO model)
+        public async Task<AppointmentDTO> CreateAsync(AppointmentDTO model)
         {
             if (model?.Patient == null)
             {
@@ -50,14 +48,16 @@ namespace CalHealth.BookingService.Services
 
             try
             {
-                await _unitOfWork.AppointmentRepository.InsertAsync(entity);
+                _unitOfWork.AppointmentRepository.Add(entity);
                 await _unitOfWork.CommitAsync();
 
                 var message = GenerateMessage(model, entity);
 
                 _appointmentPublisher.PushMessageToQueue(message);
 
-                return entity;
+                var mappedEntity = _mapper.Map<AppointmentDTO>(entity);
+
+                return mappedEntity;
             }
             catch (Exception)
             {
@@ -97,6 +97,7 @@ namespace CalHealth.BookingService.Services
             }
             catch (Exception e)
             {
+                await _unitOfWork.RollbackAsync();
                 Log.Error("An error has occurred: {@error}", e);
                 throw;
             }
@@ -159,17 +160,13 @@ namespace CalHealth.BookingService.Services
             {
                 throw new ArgumentNullException(nameof(entity));
             }
-            
-            var results = await _unitOfWork.AppointmentRepository.GetByConditionAsync(a =>
-                a.ConsultantId == entity.Consultant.Id
-                && a.WeekId == entity.Week.Id
-                && a.TimeSlotId == entity.TimeSlot.Id
-                && a.DayId == entity.Day.Id);
-            
-            // Log.Error("Results: {@results}", results);
 
-            if (results.Any())
-            // if (results.Any(a => a.Date.ToString("MM/dd/yyyy").Equals(entity.Date.ToString("MM/dd/yyyy"))))
+            var results = await _unitOfWork.AppointmentRepository.GetByConditionAsync(a =>
+                a.ConsultantId == entity.Consultant.Id);
+
+            if (results.Any(a => a.WeekId == entity.Week.Id
+                                 && a.TimeSlotId == entity.TimeSlot.Id
+                                 && a.DayId == entity.Day.Id))
             {
                 throw new Exception("There already exists an appointment for this consultant at the specified time.");
             }
@@ -182,39 +179,77 @@ namespace CalHealth.BookingService.Services
         /// <returns></returns>
         private async Task<Appointment> GenerateEntity(AppointmentDTO model)
         {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            var consultant = await GetConsultantEntityAsync(model);
+            var week = await GetWeekEntityAsync(model);
+            var day = await GetDayEntityAsync(model);
+            var timeslot = await GetTimeSlotEntityAsync(model);
+            
             var entity = new Appointment
             {
-                Consultant = await GetConsultant(model),
+                Consultant = consultant,
                 Date = model.Date,
-                Week = await GetWeek(model),
-                Day = await GetDayEntity(model),
-                TimeSlot = await GetTimeSlot(model)
+                Week = week,
+                Day = day,
+                TimeSlot = timeslot 
             };
-
+ 
             return entity;
         }
 
-        private async Task<TimeSlot> GetTimeSlot(AppointmentDTO model)
+        private async Task<TimeSlot> GetTimeSlotEntityAsync(AppointmentDTO model)
         {
-            return await _unitOfWork.TimeSlotRepository.GetByIdAsync(model.TimeSlotId);
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            var result = await _unitOfWork.TimeSlotRepository.GetByIdAsync(model.TimeSlotId);
+            
+            return result;
         }
 
-        private async Task<Week> GetWeek(AppointmentDTO model)
+        private async Task<Week> GetWeekEntityAsync(AppointmentDTO model)
         {
-            return await _unitOfWork.WeekRepository.GetByIdAsync(_calendar.GetWeekOfYear(model.Date,
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            var result =  await _unitOfWork.WeekRepository.GetByIdAsync(_calendar.GetWeekOfYear(model.Date,
                 _cultureInfo.DateTimeFormat.CalendarWeekRule,
                 _cultureInfo.DateTimeFormat.FirstDayOfWeek));
+
+            return result;
         }
 
-        private async Task<Consultant> GetConsultant(AppointmentDTO model)
+        private async Task<Consultant> GetConsultantEntityAsync(AppointmentDTO model)
         {
-            return await _unitOfWork.ConsultantRepository.GetByIdAsync(model.ConsultantId);
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+            
+            var result = await _unitOfWork.ConsultantRepository.GetByIdAsync(model.ConsultantId);
+            
+            return result;
         }
 
-        private async Task<Day> GetDayEntity(AppointmentDTO model)
+        private async Task<Day> GetDayEntityAsync(AppointmentDTO model)
         {
-            var days = await _unitOfWork.DayRepository.GetByConditionAsync(d => d.Name == model.Date.ToString("dddd"));
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+            
+            var days = await _unitOfWork.DayRepository.GetByConditionAsync(d =>
+                d.Name == model.Date.ToString("dddd", CultureInfo.CreateSpecificCulture("en-US")));
             var day = days.FirstOrDefault();
+            
             return day;
         }
 
@@ -226,6 +261,16 @@ namespace CalHealth.BookingService.Services
         /// <returns></returns>
         private static AppointmentMessage GenerateMessage(AppointmentDTO model, Appointment entity)
         {
+            if (model == null)
+            {
+                throw new ArgumentNullException(nameof(model));
+            }
+
+            if (entity == null)
+            {
+                throw new ArgumentNullException(nameof(entity));
+            }
+            
             var message = new AppointmentMessage
             {
                 AppointmentId = entity.Id,
@@ -236,6 +281,7 @@ namespace CalHealth.BookingService.Services
                 LastName = model.Patient.LastName,
                 DateOfBirth = model.Patient.DateOfBirth
             };
+            
             return message;
         }
 

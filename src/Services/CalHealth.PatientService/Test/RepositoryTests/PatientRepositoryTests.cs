@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using CalHealth.PatientService.Data;
 using CalHealth.PatientService.Models;
 using CalHealth.PatientService.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using MockQueryable.Moq;
 using Moq;
 using Xunit;
@@ -13,6 +15,66 @@ namespace CalHealth.PatientService.Test.RepositoryTests
 {
     public class PatientRepositoryTests
     {
+        [Fact]
+        public async Task TestGetAllAsyncEagerLoading()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<PatientContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString(), new InMemoryDatabaseRoot())
+                .Options;
+
+            IEnumerable<Patient> results;
+
+            await using (var context = new PatientContext(options))
+            {
+                await context.Database.EnsureCreatedAsync();
+                
+                var repository = new Repository<Patient>(context);
+                
+                // Act
+                results = await repository.GetAllAsync(eager: true);
+
+                await context.Database.EnsureDeletedAsync();
+            }
+
+            // Assert
+            Assert.NotNull(results);
+            Assert.IsAssignableFrom<IEnumerable<Patient>>(results);
+            Assert.Equal(10, results.Count());
+            Assert.NotNull(results.First().Gender);
+        }
+
+        
+        [Fact]
+        public async Task TestGetByConditionEagerLoading()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<PatientContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString(), new InMemoryDatabaseRoot())
+                .Options;
+
+            IEnumerable<Patient> results;
+
+            await using (var context = new PatientContext(options))
+            {
+                await context.Database.EnsureCreatedAsync();
+                
+                var repository = new Repository<Patient>(context);
+                
+                // Act
+                results = await repository.GetByConditionAsync(_ => true, eager: true);
+
+                await context.Database.EnsureDeletedAsync();
+            }
+
+            // Assert
+            Assert.NotNull(results);
+            Assert.IsAssignableFrom<IEnumerable<Patient>>(results);
+            Assert.Equal(10, results.Count());
+            Assert.NotNull(results.First().Gender);
+        }
+
+        
         [Fact]
         public async Task TestGetByConditionPredicateNull()
         {

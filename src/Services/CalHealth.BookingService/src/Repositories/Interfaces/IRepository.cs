@@ -11,7 +11,7 @@ namespace CalHealth.BookingService.Repositories
         Task<IEnumerable<TEntity>> GetByConditionAsync(Expression<Func<TEntity, bool>> predicate, bool eager = false);
         Task<IEnumerable<TEntity>> GetAllAsync(bool eager = false);
         Task<TEntity> GetByIdAsync(int id, bool eager = false);
-        Task InsertAsync(TEntity entity);
+        void Add(TEntity entity);
         void Update(TEntity entity);
     }
 }

@@ -3,14 +3,11 @@ using System.Text;
 using CalHealth.BookingService.Infrastructure;
 using CalHealth.BookingService.Messaging.Interfaces;
 using CalHealth.BookingService.Services;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Polly;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
-using RabbitMQ.Client.Exceptions;
 using Serilog;
 
 namespace CalHealth.BookingService.Messaging

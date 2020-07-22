@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using CalHealth.BookingService.Data;
 using CalHealth.BookingService.Models;
 using CalHealth.BookingService.Repositories;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using MockQueryable.Moq;
 using Moq;
 using Xunit;
@@ -13,6 +15,96 @@ namespace CalHealth.BookingService.Test.RepositoryTests
 {
     public class ConsultantRepositoryTests
     {
+        [Fact]
+        public async Task TestGetAllAsyncEagerLoading()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<BookingContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString(), new InMemoryDatabaseRoot())
+                .Options;
+
+            IEnumerable<Consultant> results;
+
+            await using (var context = new BookingContext(options))
+            {
+                await context.Database.EnsureCreatedAsync();
+                
+                var repository = new Repository<Consultant>(context);
+                
+                // Act
+                results = await repository.GetAllAsync(eager: true);
+
+                await context.Database.EnsureDeletedAsync();
+            }
+
+            // Assert
+            Assert.NotNull(results);
+            Assert.IsAssignableFrom<IEnumerable<Consultant>>(results);
+            Assert.Equal(6, results.Count());
+            Assert.NotNull(results.First().Gender);
+        }
+
+        [Fact]
+        public async Task TestGetByIdEager()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<BookingContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString(), new InMemoryDatabaseRoot())
+                .Options;
+
+            Consultant result;
+
+            await using (var context = new BookingContext(options))
+            {
+                await context.Database.EnsureCreatedAsync();
+                
+                var repository = new Repository<Consultant>(context);
+                
+                // Act
+                result = await repository.GetByIdAsync(1, eager: true);
+
+                await context.Database.EnsureDeletedAsync();
+            }
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsAssignableFrom<Consultant>(result);
+            Assert.Equal(1, result.Id);
+            Assert.NotNull(result.Gender);
+            Assert.NotNull(result.Specialty);
+            Assert.NotNull(result.Appointment);
+        }
+
+        
+        [Fact]
+        public async Task TestGetByConditionEagerLoading()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<BookingContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString(), new InMemoryDatabaseRoot())
+                .Options;
+
+            IEnumerable<Consultant> results;
+
+            await using (var context = new BookingContext(options))
+            {
+                await context.Database.EnsureCreatedAsync();
+                
+                var repository = new Repository<Consultant>(context);
+                
+                // Act
+                results = await repository.GetByConditionAsync(_ => true, eager: true);
+
+                await context.Database.EnsureDeletedAsync();
+            }
+
+            // Assert
+            Assert.NotNull(results);
+            Assert.IsAssignableFrom<IEnumerable<Consultant>>(results);
+            Assert.Equal(6, results.Count());
+            Assert.NotNull(results.First().Gender);
+        }
+        
         [Fact]
         public async Task TestGetAllNoResults()
         {
@@ -80,6 +172,75 @@ namespace CalHealth.BookingService.Test.RepositoryTests
             Assert.NotNull(result.First().Specialty);
         }
 
+        [Fact]
+        public void TestInsertEntityNull()
+        {
+            // Arrange
+            var repository = new Repository<Consultant>(null);
+
+            // Act
+            void TestAction() => repository.Add(null);
+
+            // Assert
+            var ex = Assert.Throws<ArgumentNullException>(TestAction);
+            Assert.Equal("entity", ex.ParamName);
+        }
+
+        [Fact]
+        public void TestUpdateEntityNull()
+        {
+            // Arrange
+            var repository = new Repository<Consultant>(null);
+
+            // Act
+            void TestAction() => repository.Update(null);
+
+            // Assert
+            var ex = Assert.Throws<ArgumentNullException>(TestAction);
+            Assert.Equal("entity", ex.ParamName);
+        }
+
+        [Fact]
+        public void TestInsert()
+        {
+            // Arrange
+            var mockContext = new Mock<BookingContext>();
+            mockContext
+                .Setup(x => x.Set<Consultant>().Add(It.IsAny<Consultant>()))
+                .Verifiable();
+
+            var repository = new Repository<Consultant>(mockContext.Object);
+            
+            var entity = new Consultant();
+            
+            // Act
+            repository.Add(entity);
+
+            // Assert
+            mockContext
+                .Verify(x => x.Set<Consultant>().Add(It.IsAny<Consultant>()), Times.Once);
+        }
+
+        [Fact]
+        public void TestUpdate()
+        {
+            // Arrange
+            var mockContext = new Mock<BookingContext>();
+            mockContext
+                .Setup(x => x.Set<Consultant>().Update(It.IsAny<Consultant>()))
+                .Verifiable();
+
+            var repository = new Repository<Consultant>(mockContext.Object);
+            
+            var entity = new Consultant();
+            
+            // Act
+            repository.Update(entity);
+
+            // Assert
+            mockContext
+                .Verify(x => x.Set<Consultant>().Update(It.IsAny<Consultant>()), Times.Once);
+        }
 
         /**
          * ============================

@@ -39,6 +39,7 @@ services:
       - rabbitmq
 
   rabbitmq:
+    hostname: rabbitmq
     build: 
       context: .
       dockerfile: Infrastructure/RabbitMQ/Dockerfile

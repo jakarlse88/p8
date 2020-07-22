@@ -49,7 +49,7 @@ namespace CalHealth.BookingService.Repositories
 
             var results = await query.ToListAsync();
 
-            return results;
+            return results ?? new List<TEntity>();
         }
 
         /// <summary>
@@ -76,7 +76,7 @@ namespace CalHealth.BookingService.Repositories
             
             var result = await query.ToListAsync();
 
-            return result;
+            return result ?? new List<TEntity>();
         }
 
         /// <summary>
@@ -112,14 +112,14 @@ namespace CalHealth.BookingService.Repositories
         /// </summary>
         /// <param name="entity"></param>
         /// <returns></returns>
-        public async Task InsertAsync(TEntity entity)
+        public void Add(TEntity entity)
         {
             if (entity == null)
             {
                 throw new ArgumentNullException(nameof(entity));
             }
             
-            await _context.Set<TEntity>().AddAsync(entity);
+            _context.Set<TEntity>().Add(entity);
         }
 
         /// <summary>
