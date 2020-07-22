@@ -1,0 +1,23 @@
+﻿{
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/api/booking/{everything}",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST"
+      ],
+      "SwaggerKey": "Booking",
+      "DownstreamPathTemplate": "/api/appointment/{everything}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "booking-service",
+          "Port": 8085
+        }    
+      ]
+    }
+  ],
+  "GlobalConfiguration": {
+   "BaseUrl": "https://ocelot:8088" 
+  }
+}

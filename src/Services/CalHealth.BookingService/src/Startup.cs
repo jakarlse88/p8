@@ -1,15 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+using AutoMapper;
+using CalHealth.BookingService.Infrastructure.Extensions;
 
 namespace CalHealth.BookingService
 {
@@ -20,12 +15,25 @@ namespace CalHealth.BookingService
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services
+                .AddControllers()
+                .AddNewtonsoftJson(options =>
+                    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            services
+                .AddAutoMapper(typeof(Startup))
+                .ConfigureDbContext(Configuration)
+                .AddOptionsObjects(Configuration)
+                .AddRepositoryLayer()
+                .AddServiceLayer()
+                .AddMessagingLayer()
+                .ConfigureSwagger()
+                .ConfigureCors();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -36,16 +44,15 @@ namespace CalHealth.BookingService
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.ApplyMigrations()
+                .UseAppointmentPublisher()
+                .UsePatientSubscriber()
+                .UseCustomExceptionHandler()
+                .UseCors()
+                .UseRouting()
+                .UseAuthorization()
+                .UseSwaggerUI()
+                .UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }
 }

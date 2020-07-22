@@ -1,33 +1,58 @@
 version: '3.4'
 
 services:
+  ocelot:
+    build:
+      context: .
+      dockerfile: Infrastructure/CalHealth.Ocelot/Dockerfile
+    depends_on:
+      - patient-service
+      - booking-service
+  
+  patient-service:
+    build:
+      context: .
+      dockerfile: Services/CalHealth.PatientService/src/Dockerfile
+    depends_on: 
+      - patient-db
+      - rabbitmq
+
   booking-service:
     build:
       context: .
       dockerfile: Services/CalHealth.BookingService/src/Dockerfile
     depends_on: 
       - booking-db
-
-  calendar-service:
-    build:
-      context: .
-      dockerfile: Services/CalHealth.CalendarService/src/Dockerfile
-    depends_on: 
-      - calendar-db
-
-  calendar-db:
-    image: "mcr.microsoft.com/mssql/server:2017-CU20-ubuntu-16.04"
+      - rabbitmq
 
   booking-db:
-    image: "mcr.microsoft.com/mssql/server:2017-CU20-ubuntu-16.04"
+    image: "mcr.microsoft.com/mssql/server:2017-latest"
+
+  patient-db:
+    image: "mcr.microsoft.com/mssql/server:2017-latest"
 
   blazor-server:
     build:
       context: .
       dockerfile: Client/CalHealth.Blazor/Server/Dockerfile
+    depends_on:
+      - rabbitmq
 
   rabbitmq:
+    hostname: rabbitmq
     build: 
       context: .
       dockerfile: Infrastructure/RabbitMQ/Dockerfile
-    restart: always
+    restart: unless-stopped
+
+volumes:
+  rabbitmq:
+  booking-db-sqldata:
+    external: false
+  booking-db-sqluser:
+    external: false
+  patient-db-sqldata:
+    external: false
+  patient-db-sqluser:
+    external: false
+    

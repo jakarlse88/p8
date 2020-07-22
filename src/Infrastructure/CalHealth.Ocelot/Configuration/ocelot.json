@@ -1,0 +1,146 @@
+﻿{
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/client-gw/appointment",
+      "UpstreamHttpMethod": [
+        "POST"
+      ],
+      "DownstreamPathTemplate": "/api/appointment",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "booking-service",
+          "Port": 80
+        }
+      ]
+    },
+    {
+      "Key": "Consultant",
+      "UpstreamPathTemplate": "/client-gw/consultant",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "DownstreamPathTemplate": "/api/consultant",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "booking-service",
+          "Port": 80
+        }
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 15,
+        "Region": "booking"
+      }
+    },
+    {
+      "Key": "TimeSlot",
+      "UpstreamPathTemplate": "/client-gw/timeslot",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "DownstreamPathTemplate": "/api/timeslot",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "booking-service",
+          "Port": 80
+        }
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 15,
+        "Region": "booking"
+      }
+    },
+    {
+      "Key": "Religion",
+      "UpstreamPathTemplate": "/client-gw/religion",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "DownstreamPathTemplate": "/api/religion",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "patient-service",
+          "Port": 80
+        }
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 15,
+        "Region": "patient"
+      }
+    },
+    {
+      "Key": "Allergy",
+      "UpstreamPathTemplate": "/client-gw/allergy",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "DownstreamPathTemplate": "/api/allergy",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "patient-service",
+          "Port": 80
+        }
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 15,
+        "Region": "patient"
+      }
+    },
+    {
+      "Key": "Gender",
+      "UpstreamPathTemplate": "/client-gw/gender",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "DownstreamPathTemplate": "/api/gender",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "patient-service",
+          "Port": 80
+        }
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 15,
+        "Region": "patient"
+      }
+    },
+    {
+      "Key": "Patient",
+      "UpstreamPathTemplate": "/client-gw/patient",
+      "UpstreamHttpMethod": [
+        "GET",
+        "POST"
+      ],
+      "DownstreamPathTemplate": "/api/patient",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "patient-service",
+          "Port": 80
+        }
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 15,
+        "Region": "patient"
+      }
+    }
+  ],
+  "Aggregates": [
+    {
+      "RouteKeys": [
+        "Consultant",
+        "TimeSlot",
+        "Patient"
+      ],
+      "UpstreamPathTemplate": "/client-gw/aggregate"
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:8088"
+  }
+}
