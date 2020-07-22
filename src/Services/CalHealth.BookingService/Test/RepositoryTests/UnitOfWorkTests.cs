@@ -51,6 +51,35 @@ namespace CalHealth.BookingService.Test.RepositoryTests
             Assert.NotNull(result);
             Assert.IsAssignableFrom<IRepository<Appointment>>(result);
         }
+        
+        [Fact]
+        public void TestDayRepositoryProperty()
+        {
+            // Arrange
+            var unitOfWork = new UnitOfWork(Mock.Of<BookingContext>());
+
+            // Act
+            var result = unitOfWork.DayRepository;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsAssignableFrom<IRepository<Day>>(result);
+        }
+        
+        [Fact]
+        public void TestWeekRepositoryProperty()
+        {
+            // Arrange
+            var unitOfWork = new UnitOfWork(Mock.Of<BookingContext>());
+
+            // Act
+            var result = unitOfWork.WeekRepository;
+
+            // Assert
+            Assert.NotNull(result);
+            Assert.IsAssignableFrom<IRepository<Week>>(result);
+        }
+        
 
         [Fact]
         public async Task TestCommitAsync()

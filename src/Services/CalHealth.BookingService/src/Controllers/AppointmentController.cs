@@ -12,12 +12,10 @@ namespace CalHealth.BookingService.Controllers
     public class AppointmentController : ControllerBase
     {
         private readonly IAppointmentService _appointmentService;
-        private readonly IConsultantService _consultantService;
 
-        public AppointmentController(IAppointmentService appointmentService, IConsultantService consultantService)
+        public AppointmentController(IAppointmentService appointmentService)
         {
             _appointmentService = appointmentService;
-            _consultantService = consultantService;
         }
 
         /// <summary>
@@ -83,15 +81,15 @@ namespace CalHealth.BookingService.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Post(AppointmentDTO dto)
-        {
+        { 
             if (dto?.Patient == null)
             {
                 return BadRequest();
             }
 
-            var entity = await _appointmentService.CreateAsync(dto);
+            var model = await _appointmentService.CreateAsync(dto);
 
-            return CreatedAtAction("Get", new { entity.Id }, entity);
+            return CreatedAtAction("Get", new { model.Id }, model);
         }
     }
 }

@@ -50,7 +50,7 @@ namespace CalHealth.PatientService.Repositories
 
             var results = await query.ToListAsync();
 
-            return results;
+            return results ?? new List<TEntity>();
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace CalHealth.PatientService.Repositories
 
             var result = await query.ToListAsync();
 
-            return result;
+            return result ?? new List<TEntity>();
         }
 
         /// <summary>

@@ -7,7 +7,7 @@ namespace CalHealth.BookingService.Services
 {
     public interface IAppointmentService : IDisposable
     {
-        Task<Appointment> CreateAsync(AppointmentDTO model);
+        Task<AppointmentDTO> CreateAsync(AppointmentDTO model);
         Task<Appointment> UpdatePatientIdAsync(int appointmentId, int patientId);
         Task<AppointmentDTO> GetByIdAsync(int appointmentId);
         Task<IEnumerable<AppointmentDTO>> GetByConsultantAsync(int consultantId);
