@@ -79,17 +79,6 @@
 
                         <div class="col-2">
                             @{
-                                var date = FormModel.Schedule.Date;
-                                var relevantConsultant =
-                                    ViewModel
-                                        .ConsultantList
-                                        .FirstOrDefault(c => c.Id == FormModel.Schedule.ConsultantId);
-
-                                var relevantAppointments =
-                                    relevantConsultant != null
-                                        ? relevantConsultant.Appointment
-                                        : new List<AppointmentViewModel>();
-
                                 <div class="form-group">
                                     <label for="date-select">Appointment time</label>
                                     <select
@@ -100,16 +89,7 @@
                                         <option value="0" disabled>Select a time</option>
                                         @foreach (var timeSlot in ViewModel.TimeSlotList)
                                         {
-                                            var disabled = relevantAppointments.Any(a =>
-                                            {
-                                                Console.WriteLine($"Appointment timeSlot: {a.TimeSlotId.ToString()}, loop timeslot {timeSlot.Id.ToString()}");
-                                                Console.WriteLine($"Appointment date :{a.Date.Date.ToString()}, selected date: {date.Date.ToString()}");
-
-                                                return a.TimeSlotId == timeSlot.Id
-                                                       && a.Date.Date.ToString(CultureInfo.InvariantCulture).Equals(date.Date.ToString(CultureInfo.InvariantCulture));
-                                            });
-
-                                            <option value="@timeSlot.Id" disabled="@disabled">
+                                            <option value="@timeSlot.Id" disabled="@(!timeSlot.Available)">
                                                 @timeSlot.StartTime.ToString("HH:mm") - @timeSlot.EndTime.ToString("HH:mm")
                                             </option>
                                         }
