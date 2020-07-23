@@ -1,0 +1,10 @@
+{
+    "timeSlotId": "${timeSlotId}",
+    "consultantId": "${consultantId}",
+    "date": "${date}",
+    "patient": {
+        "firstName": "${firstName}",
+        "lastName": "${lastName}",
+        "dateOfBirth": "${dateOfBirth}"
+    }
+}

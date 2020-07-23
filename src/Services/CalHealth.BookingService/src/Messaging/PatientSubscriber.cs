@@ -56,10 +56,7 @@ namespace CalHealth.BookingService.Messaging
                 {
                     Log.Error("An error has occurred: {@error}", e);
                     Channel.BasicNack(ea.DeliveryTag, false, false);
-                    throw;
                 }
-                
-                // TODO: handle Blazor update
             };
 
             Channel.BasicQos(0, 100, false);

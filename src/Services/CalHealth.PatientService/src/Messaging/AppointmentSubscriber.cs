@@ -66,7 +66,6 @@ namespace CalHealth.PatientService.Messaging
                 {
                     Log.Error(e.Message);
                     Channel.BasicNack(ea.DeliveryTag, false, false);
-                    throw;
                 }
             };
         }
