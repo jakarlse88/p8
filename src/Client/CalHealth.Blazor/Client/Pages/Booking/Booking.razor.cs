@@ -12,7 +12,6 @@ using Microsoft.AspNetCore.SignalR.Client;
 
 namespace CalHealth.Blazor.Client.Pages.Booking
 {
-    // ReSharper disable once ClassNeverInstantiated.Global
     public partial class Booking : IDisposable
     {
         [Inject] private IApiRequestService ApiRequestService { get; set; }
@@ -24,16 +23,11 @@ namespace CalHealth.Blazor.Client.Pages.Booking
         private EditContext ScheduleEditContext { get; set; }
         private EditContext PatientEditContext { get; set; }
         private bool ConsultantIsValid { get; set; }
-        private bool DateIsValid { get; set; }
         private bool PatientIsValid { get; set; }
         private APIOperationStatus Status { get; set; }
 
-        public bool IsConnected =>
-            _hubConnection.State == HubConnectionState.Connected;
-
         private bool FormIsValid =>
             ConsultantIsValid
-            && DateIsValid
             && PatientIsValid;
 
         /// <summary>
@@ -64,6 +58,8 @@ namespace CalHealth.Blazor.Client.Pages.Booking
                 };
 
                 consultant?.Appointment.Add(viewModel);
+                
+                EvaluateTimeSlots();
 
                 StateHasChanged();
             });
@@ -80,7 +76,6 @@ namespace CalHealth.Blazor.Client.Pages.Booking
             PatientEditContext.OnFieldChanged += HandlePatientEditContextFieldChanged;
 
             ScheduleEditContext = new EditContext(FormModel.Schedule);
-            ScheduleEditContext.OnFieldChanged += HandleDateEditContextFieldChanged;
             ScheduleEditContext.OnFieldChanged += HandleConsultantFieldChanged;
 
             try
@@ -112,7 +107,7 @@ namespace CalHealth.Blazor.Client.Pages.Booking
             if (!PatientInApprovedList())
             {
                 ToastService.ShowError(
-                    "Patient not found. Please check the personal details entered are correct and try again.");
+                    "Patient not found. Please ensure that the personal details entered are correct and try again.");
                 Status = APIOperationStatus.GET_Success;
                 StateHasChanged();
                 return;
@@ -135,20 +130,50 @@ namespace CalHealth.Blazor.Client.Pages.Booking
 
                 Status = APIOperationStatus.POST_Success;
 
-                ToastService.ShowSuccess("Appointment successfully scheduled!");
+                var consultant = ViewModel.ConsultantList.FirstOrDefault(c => c.Id == result.ConsultantId);
+                var timeSlot = ViewModel.TimeSlotList.FirstOrDefault(ts => ts.Id == result.TimeSlotId);
 
-                NavigationManager.NavigateTo("/Booking");
+                ToastService.ShowSuccess(
+                    $"Appointment with Dr. {consultant?.FirstName} {consultant?.LastName} ({consultant?.Specialty}) on {result.Date:dd/MM/yyyy} from {timeSlot?.StartTime:hh:mm} to {timeSlot?.EndTime:hh:mm} successfully scheduled.");
 
-                // TODO: /Appointment/Id page?
-                // NavigationManager.NavigateTo(result.ConsultantId);
+                NavigationManager.NavigateTo("/");
             }
             catch (Exception e)
             {
                 ToastService.ShowError(
-                    "There was an error submitting your request. Please check your entered data and retry.");
+                    "There was an error submitting your request. Please ensure that the entered is correct data and retry.");
                 throw;
             }
         }
+
+        private void EvaluateTimeSlots()
+        {
+            // Get the selected date
+            var selectedDate = FormModel.Schedule.Date;
+
+            // Get the selected consultant
+            var selectedConsultant =
+                ViewModel
+                    .ConsultantList
+                    .FirstOrDefault(c => c.Id == FormModel.Schedule.ConsultantId);
+
+            // Get the relevant appointments
+            var relevantAppointments =
+                selectedConsultant != null
+                    ? selectedConsultant.Appointment
+                    : new List<AppointmentViewModel>();
+
+            foreach (var timeSlot in ViewModel.TimeSlotList)
+            {
+                timeSlot.Available = !relevantAppointments.Any(a => a.TimeSlotId == timeSlot.Id
+                                                                   && a.Date.Date.ToString(CultureInfo.InvariantCulture)
+                                                                       .Equals(selectedDate.Date.ToString(CultureInfo
+                                                                           .InvariantCulture)));
+
+                Console.WriteLine($"TimeSlot {timeSlot.Id} is {timeSlot.Available.ToString().ToUpper()}");
+            }
+        }
+
 
         /// <summary>
         /// Verify appointment data against cache.
@@ -230,29 +255,6 @@ namespace CalHealth.Blazor.Client.Pages.Booking
             return result;
         }
 
-        private async Task<ICollection<AppointmentViewModel>> FetchAppointmentsByConsultant(int consultantId)
-        {
-            const string requestUrl = "https://localhost:8088/client-gw/aggregate";
-
-            var result = await ApiRequestService.HandleGetRequest<ICollection<AppointmentViewModel>>(requestUrl);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Handle date field change.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="ea"></param>
-        private void HandleDateEditContextFieldChanged(object sender, EventArgs ea)
-        {
-            Console.WriteLine("asd");
-            // TODO: We will likely have to perform some validation on the selected date against consultant availability here at some point.
-            DateIsValid = true;
-
-            StateHasChanged();
-        }
-
         /// <summary>
         /// Handle consultant field change.
         /// </summary>
@@ -262,6 +264,11 @@ namespace CalHealth.Blazor.Client.Pages.Booking
         {
             ConsultantIsValid = !string.IsNullOrWhiteSpace(FormModel.Schedule.ConsultantIdProxy)
                                 && FormModel.Schedule.ConsultantIdProxy != "0";
+
+            if (ConsultantIsValid)
+            {
+                EvaluateTimeSlots();   
+            }
 
             StateHasChanged();
         }
@@ -282,7 +289,6 @@ namespace CalHealth.Blazor.Client.Pages.Booking
         /// </summary>
         public void Dispose()
         {
-            ScheduleEditContext.OnFieldChanged -= HandleDateEditContextFieldChanged;
             PatientEditContext.OnFieldChanged -= HandlePatientEditContextFieldChanged;
             ScheduleEditContext.OnFieldChanged -= HandleConsultantFieldChanged;
             _ = _hubConnection.DisposeAsync();
