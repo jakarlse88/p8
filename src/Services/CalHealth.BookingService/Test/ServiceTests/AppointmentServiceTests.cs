@@ -167,10 +167,10 @@ namespace CalHealth.BookingService.Test.ServiceTests
             var service = new AppointmentService(mockUnitOfWork.Object, mockPublisher.Object, _mapper);
 
             // Act
-            async Task TestAction() => await service.CreateAsync(dto);
+            var result = await service.CreateAsync(dto);
 
             // Assert
-            await Assert.ThrowsAsync<Exception>(TestAction);
+            Assert.Null(result);
 
             mockPublisher
                 .Verify(x => x.PushMessageToQueue(It.IsAny<AppointmentMessage>()), Times.Once());

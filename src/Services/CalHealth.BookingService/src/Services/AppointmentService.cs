@@ -44,26 +44,28 @@ namespace CalHealth.BookingService.Services
 
             var entity = await GenerateEntity(model);
 
-            await CheckDuplicate(entity);
-
-            try
+            if (!await VerifyNoDuplicateEntry(entity))
             {
-                _unitOfWork.AppointmentRepository.Add(entity);
-                await _unitOfWork.CommitAsync();
+                try
+                {
+                    _unitOfWork.AppointmentRepository.Add(entity);
+                    await _unitOfWork.CommitAsync();
 
-                var message = GenerateMessage(model, entity);
+                    var message = GenerateMessage(model, entity);
 
-                _appointmentPublisher.PushMessageToQueue(message);
+                    _appointmentPublisher.PushMessageToQueue(message);
 
-                var mappedEntity = _mapper.Map<AppointmentDTO>(entity);
+                    var mappedEntity = _mapper.Map<AppointmentDTO>(entity);
 
-                return mappedEntity;
+                    return mappedEntity;
+                }
+                catch (Exception)
+                {
+                    await _unitOfWork.RollbackAsync();
+                }
             }
-            catch (Exception)
-            {
-                await _unitOfWork.RollbackAsync();
-                throw;
-            }
+
+            return null;
         }
 
         /// <summary>
@@ -154,7 +156,7 @@ namespace CalHealth.BookingService.Services
         /// <param name="entity"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        private async Task CheckDuplicate(Appointment entity)
+        private async Task<bool> VerifyNoDuplicateEntry(Appointment entity)
         {
             if (entity == null)
             {
@@ -164,12 +166,11 @@ namespace CalHealth.BookingService.Services
             var results = await _unitOfWork.AppointmentRepository.GetByConditionAsync(a =>
                 a.ConsultantId == entity.Consultant.Id);
 
-            if (results.Any(a => a.WeekId == entity.Week.Id
-                                 && a.TimeSlotId == entity.TimeSlot.Id
-                                 && a.DayId == entity.Day.Id))
-            {
-                throw new Exception("There already exists an appointment for this consultant at the specified time.");
-            }
+            var exists = results.Any(a => a.WeekId == entity.Week.Id
+                                          && a.TimeSlotId == entity.TimeSlot.Id
+                                          && a.DayId == entity.Day.Id);
+
+            return exists;
         }
 
         /// <summary>
@@ -188,16 +189,16 @@ namespace CalHealth.BookingService.Services
             var week = await GetWeekEntityAsync(model);
             var day = await GetDayEntityAsync(model);
             var timeslot = await GetTimeSlotEntityAsync(model);
-            
+
             var entity = new Appointment
             {
                 Consultant = consultant,
                 Date = model.Date,
                 Week = week,
                 Day = day,
-                TimeSlot = timeslot 
+                TimeSlot = timeslot
             };
- 
+
             return entity;
         }
 
@@ -209,7 +210,7 @@ namespace CalHealth.BookingService.Services
             }
 
             var result = await _unitOfWork.TimeSlotRepository.GetByIdAsync(model.TimeSlotId);
-            
+
             return result;
         }
 
@@ -220,7 +221,7 @@ namespace CalHealth.BookingService.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
-            var result =  await _unitOfWork.WeekRepository.GetByIdAsync(_calendar.GetWeekOfYear(model.Date,
+            var result = await _unitOfWork.WeekRepository.GetByIdAsync(_calendar.GetWeekOfYear(model.Date,
                 _cultureInfo.DateTimeFormat.CalendarWeekRule,
                 _cultureInfo.DateTimeFormat.FirstDayOfWeek));
 
@@ -233,9 +234,9 @@ namespace CalHealth.BookingService.Services
             {
                 throw new ArgumentNullException(nameof(model));
             }
-            
+
             var result = await _unitOfWork.ConsultantRepository.GetByIdAsync(model.ConsultantId);
-            
+
             return result;
         }
 
@@ -245,11 +246,11 @@ namespace CalHealth.BookingService.Services
             {
                 throw new ArgumentNullException(nameof(model));
             }
-            
+
             var days = await _unitOfWork.DayRepository.GetByConditionAsync(d =>
                 d.Name == model.Date.ToString("dddd", CultureInfo.CreateSpecificCulture("en-US")));
             var day = days.FirstOrDefault();
-            
+
             return day;
         }
 
@@ -270,7 +271,7 @@ namespace CalHealth.BookingService.Services
             {
                 throw new ArgumentNullException(nameof(entity));
             }
-            
+
             var message = new AppointmentMessage
             {
                 AppointmentId = entity.Id,
@@ -281,7 +282,7 @@ namespace CalHealth.BookingService.Services
                 LastName = model.Patient.LastName,
                 DateOfBirth = model.Patient.DateOfBirth
             };
-            
+
             return message;
         }
 
