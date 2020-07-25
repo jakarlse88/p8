@@ -16,7 +16,7 @@ namespace CalHealth.BookingService.Test.ControllerTests
         public async Task TestGetAppointmentIdInvalid()
         {
             // Arrange
-            var controller = new AppointmentController(null);
+            var controller = new AppointmentController(null, null);
 
             // Act
             var response = await controller.Get(0);
@@ -35,7 +35,7 @@ namespace CalHealth.BookingService.Test.ControllerTests
                 .Setup(x => x.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(null as AppointmentDTO);
 
-            var controller = new AppointmentController(mockService.Object);
+            var controller = new AppointmentController(mockService.Object, null);
 
             // Act
             var response = await controller.Get(1);
@@ -55,7 +55,7 @@ namespace CalHealth.BookingService.Test.ControllerTests
                 .Setup(x => x.GetByIdAsync(It.IsAny<int>()))
                 .ReturnsAsync(dto);
 
-            var controller = new AppointmentController(mockService.Object);
+            var controller = new AppointmentController(mockService.Object, null);
 
             // Act
             var response = await controller.Get(1);
@@ -70,7 +70,7 @@ namespace CalHealth.BookingService.Test.ControllerTests
         public async Task TestGetByConsultantIdInvalid()
         {
             // Arrange
-            var controller = new AppointmentController(null);
+            var controller = new AppointmentController(null, null);
 
             // Act
             var response = await controller.GetByConsultant(0);
@@ -91,7 +91,7 @@ namespace CalHealth.BookingService.Test.ControllerTests
                 .Setup(x => x.GetByConsultantAsync(1))
                 .ReturnsAsync(models);
 
-            var controller = new AppointmentController(mockService.Object);
+            var controller = new AppointmentController(mockService.Object, null);
 
             // Act
             var response = await controller.GetByConsultant(1);
@@ -113,7 +113,7 @@ namespace CalHealth.BookingService.Test.ControllerTests
                 .Setup(x => x.GetByConsultantAsync(1))
                 .ReturnsAsync(models);
 
-            var controller = new AppointmentController(mockService.Object);
+            var controller = new AppointmentController(mockService.Object, null);
 
             // Act
             var response = await controller.GetByConsultant(1);
@@ -128,7 +128,7 @@ namespace CalHealth.BookingService.Test.ControllerTests
         public async Task TestPostDtoNull()
         {
             // Arrange
-            var controller = new AppointmentController(null);
+            var controller = new AppointmentController(null, null);
 
             // Act
             var response = await controller.Post(null);
@@ -141,7 +141,7 @@ namespace CalHealth.BookingService.Test.ControllerTests
         public async Task TestPostPatientNull()
         {
             // Arrange
-            var controller = new AppointmentController(null);
+            var controller = new AppointmentController(null, null);
 
             // Act
             var response = await controller.Post(new AppointmentDTO { Patient = null });
@@ -157,12 +157,17 @@ namespace CalHealth.BookingService.Test.ControllerTests
             // Arrange
             var dto = new AppointmentDTO { Id = 1, Patient = new PatientDTO() };
 
-            var mockService = new Mock<IAppointmentService>();
-            mockService
+            var mockAppointmentService = new Mock<IAppointmentService>();
+            mockAppointmentService
                 .Setup(x => x.CreateAsync(dto))
                 .ReturnsAsync(dto);
 
-            var controller = new AppointmentController(mockService.Object);
+            var mockExternalPatientApiService = new Mock<IExternalPatientApiService>();
+            mockExternalPatientApiService
+                .Setup(x => x.PatientExists(It.IsAny<PatientDTO>()))
+                .ReturnsAsync(true);
+            
+            var controller = new AppointmentController(mockAppointmentService.Object, mockExternalPatientApiService.Object);
 
             // Act
             var response = await controller.Post(dto);
@@ -172,5 +177,31 @@ namespace CalHealth.BookingService.Test.ControllerTests
             Assert.Equal("Get", actionResult.ActionName);
             Assert.IsAssignableFrom<AppointmentDTO>(actionResult.Value);
         }
+
+        [Fact]
+        public async Task TestPostPatientNotFound()
+        {
+            // Arrange
+            var dto = new AppointmentDTO { Id = 1, Patient = new PatientDTO() };
+
+            var mockAppointmentService = new Mock<IAppointmentService>();
+            mockAppointmentService
+                .Setup(x => x.CreateAsync(dto))
+                .ReturnsAsync(dto);
+
+            var mockExternalPatientApiService = new Mock<IExternalPatientApiService>();
+            mockExternalPatientApiService
+                .Setup(x => x.PatientExists(It.IsAny<PatientDTO>()))
+                .ReturnsAsync(false);
+            
+            var controller = new AppointmentController(mockAppointmentService.Object, mockExternalPatientApiService.Object);
+
+            // Act
+            var response = await controller.Post(dto);
+
+            // Assert
+            var actionResult = Assert.IsAssignableFrom<BadRequestResult>(response);
+        }
+
     }
 }

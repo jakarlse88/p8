@@ -138,14 +138,6 @@
         "Patient"
       ],
       "UpstreamPathTemplate": "/client-gw/aggregate"
-    },
-    {
-      "RouteKeys": [
-        "Consultant",
-        "TimeSlot",
-        "Patient"
-      ],
-      "UpstreamPathTemplate": "/client-gw/aggregate"
     }
   ],
   "GlobalConfiguration": {

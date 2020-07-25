@@ -12,10 +12,12 @@ namespace CalHealth.BookingService.Controllers
     public class AppointmentController : ControllerBase
     {
         private readonly IAppointmentService _appointmentService;
+        private readonly IExternalPatientApiService _externalPatientApiService;
 
-        public AppointmentController(IAppointmentService appointmentService)
+        public AppointmentController(IAppointmentService appointmentService, IExternalPatientApiService externalPatientApiService)
         {
             _appointmentService = appointmentService;
+            _externalPatientApiService = externalPatientApiService;
         }
 
         /// <summary>
@@ -76,7 +78,7 @@ namespace CalHealth.BookingService.Controllers
         /// </summary>
         /// <returns></returns>
         /// <response code="201">The entity was successfully created.</response>
-        /// <response code="400">Malformed request (arg null).</response>
+        /// <response code="400">Bad request.</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -87,9 +89,19 @@ namespace CalHealth.BookingService.Controllers
                 return BadRequest();
             }
 
+            if (! await _externalPatientApiService.PatientExists(dto.Patient))
+            {
+                return BadRequest();
+            }
+            
             var model = await _appointmentService.CreateAsync(dto);
+            
+            if (model != null)
+            {
+                return CreatedAtAction("Get", new { model.Id }, model);    
+            }
 
-            return CreatedAtAction("Get", new { model.Id }, model);
+            return BadRequest();
         }
     }
 }

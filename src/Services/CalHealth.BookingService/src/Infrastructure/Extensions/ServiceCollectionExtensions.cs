@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Net.Http;
 using System.Reflection;
 using CalHealth.BookingService.Services;
 using CalHealth.BookingService.Repositories;
@@ -10,18 +11,23 @@ using Microsoft.OpenApi.Models;
 using CalHealth.BookingService.Data;
 using CalHealth.BookingService.Messaging;
 using CalHealth.BookingService.Messaging.Interfaces;
+using Polly;
+using Polly.Extensions.Http;
 
 namespace CalHealth.BookingService.Infrastructure.Extensions
 {
     internal static class ServiceCollectionExtensions
     {
-        internal static IServiceCollection AddOptionsObjects(this IServiceCollection services, IConfiguration configuration)
+        internal static IServiceCollection AddOptionsObjects(this IServiceCollection services,
+            IConfiguration configuration)
         {
             services.Configure<RabbitMqOptions>(configuration.GetSection(RabbitMqOptions.RabbitMq));
-            
+            services.Configure<ExternalPatientApiOptions>(
+                configuration.GetSection(ExternalPatientApiOptions.ExternalPatientApi));
+
             return services;
         }
-        
+
         internal static IServiceCollection AddRepositoryLayer(this IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -29,12 +35,22 @@ namespace CalHealth.BookingService.Infrastructure.Extensions
             return services;
         }
 
-        internal static IServiceCollection AddServiceLayer(this IServiceCollection services)
+        internal static IServiceCollection AddServiceLayer(this IServiceCollection services,
+            IConfiguration configuration)
         {
             services
                 .AddTransient<IAppointmentService, AppointmentService>()
                 .AddTransient<ITimeSlotService, TimeSlotService>()
-                .AddTransient<IConsultantService, ConsultantService>();
+                .AddTransient<IConsultantService, ConsultantService>()
+                .AddHttpClient<IExternalPatientApiService, ExternalPatientApiService>(cfg =>
+                {
+                    var options = new ExternalPatientApiOptions();
+                    configuration.GetSection(ExternalPatientApiOptions.ExternalPatientApi).Bind(options);
+
+                    cfg.BaseAddress = new Uri($"{options.Protocol}://{options.HostName}:{options.Port}");
+                })
+                .AddPolicyHandler(GetRetryPolicy());
+                // .AddPolicyHandler(GetCircuitBreakerPolicy());
 
             return services;
         }
@@ -47,7 +63,7 @@ namespace CalHealth.BookingService.Infrastructure.Extensions
 
             return services;
         }
-        
+
         internal static void ConfigureCors(this IServiceCollection services)
         {
             services.AddCors(options => options.AddDefaultPolicy(builder =>
@@ -57,7 +73,7 @@ namespace CalHealth.BookingService.Infrastructure.Extensions
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();
-                    
+
                 builder // For testing using docker-compose
                     .WithOrigins("http://localhost:8080")
                     .AllowAnyHeader()
@@ -69,7 +85,7 @@ namespace CalHealth.BookingService.Infrastructure.Extensions
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();
-                    
+
                 builder // For testing with non-container client
                     .WithOrigins("https://localhost:5001")
                     .AllowAnyHeader()
@@ -77,8 +93,9 @@ namespace CalHealth.BookingService.Infrastructure.Extensions
                     .AllowCredentials();
             }));
         }
-        
-        internal static IServiceCollection ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)
+
+        internal static IServiceCollection ConfigureDbContext(this IServiceCollection services,
+            IConfiguration configuration)
         {
             services.AddDbContext<BookingContext>(opt =>
                 opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
@@ -114,6 +131,26 @@ namespace CalHealth.BookingService.Infrastructure.Extensions
             });
 
             return services;
+        }
+
+        private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
+        {
+            var jitterer = new Random();
+            
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
+                .WaitAndRetryAsync(6,
+                    retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))  
+                                    + TimeSpan.FromMilliseconds(jitterer.Next(0, 100))
+                );
+        }
+        
+        static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
+        {
+            return HttpPolicyExtensions
+                .HandleTransientHttpError()
+                .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
         }
     }
 }
