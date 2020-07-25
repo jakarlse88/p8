@@ -49,7 +49,7 @@ namespace CalHealth.Blazor.Client.Pages.Booking
                     ViewModel.ConsultantList
                         .FirstOrDefault(c => c.Id == msg.ConsultantId);
 
-                var viewModel = new AppointmentViewModel
+                var appointment = new AppointmentViewModel
                 {
                     Id = msg.AppointmentId,
                     ConsultantId = msg.ConsultantId,
@@ -57,7 +57,7 @@ namespace CalHealth.Blazor.Client.Pages.Booking
                     TimeSlotId = msg.TimeSlotId
                 };
 
-                consultant?.Appointment.Add(viewModel);
+                consultant?.Appointment.Add(appointment);
                 
                 EvaluateTimeSlots();
 
@@ -127,7 +127,7 @@ namespace CalHealth.Blazor.Client.Pages.Booking
                 var dto = CreateDTO();
 
                 var result = await ApiRequestService.HandlePostRequest(requestUrl, dto);
-
+       
                 Status = APIOperationStatus.POST_Success;
 
                 var consultant = ViewModel.ConsultantList.FirstOrDefault(c => c.Id == result.ConsultantId);
@@ -169,8 +169,6 @@ namespace CalHealth.Blazor.Client.Pages.Booking
                                                                    && a.Date.Date.ToString(CultureInfo.InvariantCulture)
                                                                        .Equals(selectedDate.Date.ToString(CultureInfo
                                                                            .InvariantCulture)));
-
-                Console.WriteLine($"TimeSlot {timeSlot.Id} is {timeSlot.Available.ToString().ToUpper()}");
             }
         }
 

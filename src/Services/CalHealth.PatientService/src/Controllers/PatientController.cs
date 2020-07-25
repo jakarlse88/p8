@@ -1,8 +1,12 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Globalization;
+using System.Linq;
+using System.Threading.Tasks;
 using CalHealth.PatientService.Models;
 using CalHealth.PatientService.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace CalHealth.PatientService.Controllers
 {
@@ -29,6 +33,35 @@ namespace CalHealth.PatientService.Controllers
             var results = await _patientService.GetAllAsync();
 
             return Ok(results);
+        }
+
+        /// <summary>
+        /// Verify whether a <see cref="Patient"/> entity exists based on his/her personal information.
+        /// </summary>
+        /// <param name="firstName"></param>
+        /// <param name="lastName"></param>
+        /// <param name="dateOfBirth"></param>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("Exists")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<bool>> PatientExists(string firstName, string lastName, string dateOfBirth)
+        {
+            if (string.IsNullOrWhiteSpace(firstName)
+                || string.IsNullOrWhiteSpace(lastName)
+                || string.IsNullOrWhiteSpace(dateOfBirth))
+            {
+                return BadRequest();
+            }
+            
+            var results = await _patientService.GetAllAsync();
+
+            var exists = results.Any((p => p.FirstName.Equals(firstName, StringComparison.OrdinalIgnoreCase)
+                && p.LastName.Equals(lastName, StringComparison.OrdinalIgnoreCase) 
+                && p.DateOfBirth.ToShortDateString().Equals(dateOfBirth)));
+
+            return Ok(exists);
         }
     }
 }

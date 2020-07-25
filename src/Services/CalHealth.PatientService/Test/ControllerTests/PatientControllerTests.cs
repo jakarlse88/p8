@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CalHealth.PatientService.Controllers;
@@ -56,6 +57,76 @@ namespace CalHealth.PatientService.Test.ControllerTests
             Assert.Empty(modelResult);
         }
 
+        [Theory]
+        [InlineData("Test", "", "2000.01.01")]
+        [InlineData("", "Test", "2000.01.01")]
+        [InlineData("", "", "")]
+        public async Task TestPatientExistsNullArg(string firstName, string lastName, string dateOfBirth)
+        {
+            // Arrange
+            var controller = new PatientController(null);
+
+            // Act
+            var result = await controller.PatientExists(firstName, lastName, dateOfBirth);
+
+            // Assert
+            var actionResult = Assert.IsAssignableFrom<BadRequestResult>(result.Result);
+        }
+
+        [Fact]
+        public async Task TestPatientExistsValidArgs()
+        {
+            // Arrange
+            const string firstName = "Test";
+            const string lastName = "McTest";
+            const string dateOfBirth = "01.01.2000";
+            
+            var models = GeneratePatients();
+
+            var mockService = new Mock<IPatientService>();
+            mockService
+                .Setup(x => x.GetAllAsync())
+                .ReturnsAsync(models);
+
+            var controller = new PatientController(mockService.Object);
+            
+            // Act
+            var response = await controller.PatientExists(firstName, lastName, dateOfBirth);
+            
+            // Assert
+            var actionResult = Assert.IsAssignableFrom<OkObjectResult>(response.Result);
+            var model = Assert.IsAssignableFrom<bool>(actionResult.Value);
+            Assert.True(model);
+        }
+
+        [Fact]
+        public async Task TestPatientExistsInvalidArgs()
+        {
+            // Arrange
+            const string firstName = "Untest";
+            const string lastName = "McTest";
+            const string dateOfBirth = "01.01.2000";
+            
+            var models = GeneratePatients();
+
+            var mockService = new Mock<IPatientService>();
+            mockService
+                .Setup(x => x.GetAllAsync())
+                .ReturnsAsync(models);
+
+            var controller = new PatientController(mockService.Object);
+            
+            // Act
+            var response = await controller.PatientExists(firstName, lastName, dateOfBirth);
+            
+            // Assert
+            var actionResult = Assert.IsAssignableFrom<OkObjectResult>(response.Result);
+            var model = Assert.IsAssignableFrom<bool>(actionResult.Value);
+            Assert.False(model);
+        }
+
+
+
         /**
          * ============================
          * Internal helper methods
@@ -68,26 +139,44 @@ namespace CalHealth.PatientService.Test.ControllerTests
                 new PatientDTO
                 {
                     Id = 1,
+                    FirstName = "Test",
+                    LastName = "McTest",
+                    DateOfBirth = new DateTime(2000,1,1)
                 },
                 new PatientDTO
                 {
                     Id = 2,
+                    FirstName = "Test",
+                    LastName = "McTest",
+                    DateOfBirth = new DateTime(2000,1,1)
                 },
                 new PatientDTO
                 {
                     Id = 3,
+                    FirstName = "Test",
+                    LastName = "McTest",
+                    DateOfBirth = new DateTime(2000,1,1)
                 },
                 new PatientDTO
                 {
                     Id = 4,
+                    FirstName = "Test",
+                    LastName = "McTest",
+                    DateOfBirth = new DateTime(2000,1,1)
                 },
                 new PatientDTO
                 {
                     Id = 5,
+                    FirstName = "Test",
+                    LastName = "McTest",
+                    DateOfBirth = new DateTime(2000,1,1)
                 },
                 new PatientDTO
                 {
                     Id = 6,
+                    FirstName = "Test",
+                    LastName = "McTest",
+                    DateOfBirth = new DateTime(2000,1,1)
                 },
             };
 
