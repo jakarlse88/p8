@@ -37,35 +37,54 @@ namespace CalHealth.BookingService.Services
         /// <exception cref="ArgumentNullException"></exception>
         public async Task<AppointmentDTO> CreateAsync(AppointmentDTO model)
         {
-            if (model?.Patient == null)
+            if (model == null)
             {
                 throw new ArgumentNullException(nameof(model));
             }
 
+            if (model.Patient == null)
+            {
+                throw new ArgumentNullException(nameof(model.Patient));
+            }
+
             var entity = await GenerateEntity(model);
 
-            if (!await VerifyNoDuplicateEntry(entity))
+            if (model.Date.Date < DateTime.Today.Date
+                || await CheckIdenticalEntry(entity))
             {
-                try
-                {
-                    _unitOfWork.AppointmentRepository.Add(entity);
-                    await _unitOfWork.CommitAsync();
+                return null;
+            }
 
-                    var message = GenerateMessage(model, entity);
+            try
+            {
+                await PersistToDb(entity);
 
-                    _appointmentPublisher.PushMessageToQueue(message);
+                EmitMessage(model, entity);
 
-                    var mappedEntity = _mapper.Map<AppointmentDTO>(entity);
+                var mappedEntity = _mapper.Map<AppointmentDTO>(entity);
 
-                    return mappedEntity;
-                }
-                catch (Exception)
-                {
-                    await _unitOfWork.RollbackAsync();
-                }
+                return mappedEntity;
+            }
+            catch (Exception e)
+            {
+                Log.Error("An exception was raised while attempting to create an appointment: {@exception}", e);
+                await _unitOfWork.RollbackAsync();
             }
 
             return null;
+        }
+
+        private async Task PersistToDb(Appointment entity)
+        {
+            _unitOfWork.AppointmentRepository.Add(entity);
+            await _unitOfWork.CommitAsync();
+        }
+
+        private void EmitMessage(AppointmentDTO model, Appointment entity)
+        {
+            var message = GenerateMessage(model, entity);
+
+            _appointmentPublisher.PushMessageToQueue(message);
         }
 
         /// <summary>
@@ -151,12 +170,12 @@ namespace CalHealth.BookingService.Services
         }
 
         /// <summary>
-        /// Verify that there doesn't exist a duplicate <see cref="Appointment"/> entity.
+        /// Checks whether an identical <see cref="Appointment"/> entity already exists in the DB.
         /// </summary>
         /// <param name="entity"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        private async Task<bool> VerifyNoDuplicateEntry(Appointment entity)
+        /// <returns>A bool indicating whether or not an identical entry already exists.</returns>
+        /// <exception cref="ArgumentNullException"></exception>
+        private async Task<bool> CheckIdenticalEntry(Appointment entity)
         {
             if (entity == null)
             {

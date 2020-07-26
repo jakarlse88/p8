@@ -49,7 +49,7 @@ namespace CalHealth.BookingService.Test.ServiceTests
 
             // Assert
             var ex = await Assert.ThrowsAsync<ArgumentNullException>(TestAction);
-            Assert.Equal("model", ex.ParamName);
+            Assert.Equal("Patient", ex.ParamName);
         }
 
         [Fact]
@@ -189,6 +189,7 @@ namespace CalHealth.BookingService.Test.ServiceTests
             var week = new Week { Id = 1 };
             var day = new Day { Id = 1 };
             var timeSlot = new TimeSlot { Id = 1 };
+            
             var dto = new AppointmentDTO
             {
                 ConsultantId = consultant.Id,
@@ -245,11 +246,10 @@ namespace CalHealth.BookingService.Test.ServiceTests
             var service = new AppointmentService(mockUnitOfWork.Object, mockPublisher.Object, _mapper);
 
             // Act
-            async Task TestAction() => await service.CreateAsync(dto);
+            var result = await service.CreateAsync(dto);
 
             // Assert
-            var ex = await Assert.ThrowsAsync<Exception>(TestAction);
-            Assert.Equal("There already exists an appointment for this consultant at the specified time.", ex.Message);
+            Assert.Null(result);
         }
 
         [Fact]
