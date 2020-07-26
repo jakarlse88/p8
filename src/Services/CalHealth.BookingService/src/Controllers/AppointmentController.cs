@@ -84,14 +84,19 @@ namespace CalHealth.BookingService.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Post(AppointmentDTO dto)
         { 
-            if (dto?.Patient == null)
+            if (dto == null)
             {
-                return BadRequest();
+                return BadRequest($"The {nameof(dto)} parameter cannot be null.");
+            }
+
+            if (dto.Patient == null)
+            {
+                return BadRequest($"The {nameof(dto.Patient)} property of the {typeof(AppointmentDTO)} parameter cannot be null.");
             }
 
             if (! await _externalPatientApiService.PatientExists(dto.Patient))
             {
-                return BadRequest();
+                return BadRequest("No patient entity matching the specified personal details was found.");
             }
             
             var model = await _appointmentService.CreateAsync(dto);
@@ -101,7 +106,7 @@ namespace CalHealth.BookingService.Controllers
                 return CreatedAtAction("Get", new { model.Id }, model);    
             }
 
-            return BadRequest();
+            return BadRequest("An error occurred creating the appointment.");
         }
     }
 }

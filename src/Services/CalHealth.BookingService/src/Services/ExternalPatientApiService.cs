@@ -20,13 +20,28 @@ namespace CalHealth.BookingService.Services
             _cache = cache;
         }
         
+        /// <summary>
+        /// Verifies with the external PatientService API that a patient entity matching the supplied personal data
+        /// exists.
+        /// </summary>
+        /// <param name="patient"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"></exception>
         public async Task<bool> PatientExists(PatientDTO patient)
         {
-            if (patient == null 
-                || string.IsNullOrWhiteSpace(patient.FirstName)
-                || string.IsNullOrWhiteSpace(patient.LastName))
+            if (patient == null)
             {
-                throw new ArgumentNullException();
+                throw new ArgumentNullException(nameof(patient));
+            }
+
+            if (string.IsNullOrWhiteSpace(patient.FirstName))
+            {
+                throw new ArgumentNullException(nameof(patient.FirstName));
+            }
+            
+            if (string.IsNullOrWhiteSpace(patient.LastName))
+            {
+                throw new ArgumentNullException(nameof(patient.FirstName));
             }
 
             var cacheEntry = _cache.GetOrCreate(CacheKeys.PatientEntry, entry =>
