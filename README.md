@@ -1,4 +1,4 @@
-# California Health
+# Californian Health
 
 ## Running
 ##### Core services only
@@ -20,7 +20,7 @@ Docker must be running, and must be assigned at least 4GB of memory.
 5. ``docker-compose -f docker-compose.yml -f docker-compose.prod.yml down`` to bring the services down
 
 ##### Patient Overview
-| First Name | Last Name | Date of Birth |
+| First Name | Last Name | Date of Birth<sup>1</sup> |
 | ---------- | --------- | ------------- |
 | Alima      | Rankin    | 01/01/2000    |
 | Chelsie    | Regan     | 17/07/1980    |
@@ -32,3 +32,5 @@ Docker must be running, and must be assigned at least 4GB of memory.
 | Nur        | Lim       | 19/02/1963    |
 | Kenzo      | Traynor   | 30/10/1990    |
 | Nyla       | Davey     | 13/06/2007    |                   
+
+<sup>1</sup>DD/MM/YYYY

@@ -11,13 +11,18 @@ namespace CalHealth.BookingService.Messaging
 {
     public class AppointmentPublisher : IAppointmentPublisher
     {
-        private ConnectionFactory Factory { get; set; }
+        private ConnectionFactory Factory { get; }
         private IConnection Connection { get; }
         private IModel Channel { get; }
 
         public AppointmentPublisher(IOptions<RabbitMqOptions> options)
         {
-            Factory = new ConnectionFactory { HostName = options.Value.HostName };
+            Factory = new ConnectionFactory
+            {
+                HostName = options.Value.HostName,
+                UserName = options.Value.User,
+                Password = options.Value.Password
+            };
             Connection = Factory.CreateConnection();
             Channel = Connection.CreateModel();
         }
