@@ -23,7 +23,12 @@ namespace CalHealth.PatientService.Messaging
         public AppointmentSubscriber(IServiceScopeFactory scopeFactory, IOptions<RabbitMqOptions> options)
         {
             _scopeFactory = scopeFactory;
-            Factory = new ConnectionFactory { HostName = options.Value.HostName };
+            Factory = new ConnectionFactory
+            {
+                HostName = options.Value.HostName,
+                UserName = options.Value.User,
+                Password = options.Value.Password
+            };
             Connection = Factory.CreateConnection();
             Channel = Connection.CreateModel();
         }
@@ -38,7 +43,7 @@ namespace CalHealth.PatientService.Messaging
                 routingKey: "");
 
             var consumer = new EventingBasicConsumer(Channel);
-            
+
             consumer.Received += ConsumerOnReceived();
 
             Channel.BasicQos(0, 100, false);

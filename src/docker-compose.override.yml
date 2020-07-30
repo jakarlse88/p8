@@ -23,6 +23,8 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - "ConnectionStrings__DefaultConnection=Server=${PATIENT_DB_SERVER_NAME},${PATIENT_DB_PORT_INT};Initial Catalog=${PATIENT_DB_INITIAL_CATALOG};User Id=${PATIENT_DB_USER_ID};Password=${PATIENT_DB_PASSWORD}"
       - "RabbitMQ__HostName=${RABBITMQ_HOSTNAME}"
+      - "RabbitMQ__User=${RABBITMQ_USER}"
+      - "RabbitMQ__Password=${RABBITMQ_PASSWORD}"
     ports:
       - "${PATIENT_SERVICE_EXT_PORT}:80"
       - "${PATIENT_SERVICE_EXT_HTTPS_PORT}:443"
@@ -38,6 +40,8 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - "ConnectionStrings__DefaultConnection=Server=${BOOKING_DB_SERVER_NAME},${BOOKING_DB_PORT_INT};Initial Catalog=${BOOKING_DB_INITIAL_CATALOG};User Id=${BOOKING_DB_USER_ID};Password=${BOOKING_DB_PASSWORD}"
       - "RabbitMQ__HostName=${RABBITMQ_HOSTNAME}"
+      - "RabbitMQ__User=${RABBITMQ_USER}"
+      - "RabbitMQ__Password=${RABBITMQ_PASSWORD}"
       - "ExternalPatientApi__Protocol=http"
       - "ExternalPatientApi__HostName=patient-service"
       - "ExternalPatientApi__Port=${PATIENT_SERVICE_INT_HTTP_PORT}"
@@ -81,6 +85,8 @@ services:
       - ASPNETCORE_Kestrel__Certificates__Default__Password=${ASPNETCORE_KESTREL_CERT_DEFAULT_PW}
       - ASPNETCORE_Kestrel__Certificates__Default__Path=/https/aspnetapp.pfx
       - "RabbitMQ__HostName=${RABBITMQ_HOSTNAME}"
+      - "RabbitMQ__User=${RABBITMQ_USER}"
+      - "RabbitMQ__Password=${RABBITMQ_PASSWORD}"
     ports:
       - "${BLAZOR_SERVER_EXT_PORT}:80"
       - "${BLAZOR_SERVER_EXT_HTTPS_PORT}:443"

@@ -22,7 +22,12 @@ namespace CalHealth.BookingService.Messaging
         public PatientSubscriber(IServiceScopeFactory scopeFactory, IOptions<RabbitMqOptions> options)
         {
             _scopeFactory = scopeFactory;
-            Factory = new ConnectionFactory { HostName = options.Value.HostName };
+            Factory = new ConnectionFactory
+            {
+                HostName = options.Value.HostName,
+                UserName = options.Value.User,
+                Password = options.Value.Password
+            };
             Connection = Factory.CreateConnection();
             Channel = Connection.CreateModel();
         }
