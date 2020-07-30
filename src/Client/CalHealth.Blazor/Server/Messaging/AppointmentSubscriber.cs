@@ -23,7 +23,12 @@ namespace CalHealth.Blazor.Server.Messaging
         public AppointmentSubscriber(IHubContext<AppointmentHub> hubContext, IOptions<RabbitMqOptions> options)
         {
             _hubContext = hubContext;
-            Factory = new ConnectionFactory { HostName = options.Value.HostName };
+            Factory = new ConnectionFactory
+            {
+                HostName = options.Value.HostName,
+                UserName = options.Value.User,
+                Password = options.Value.Password
+            };
             Connection = Factory.CreateConnection();
             Channel = Connection.CreateModel();
         }

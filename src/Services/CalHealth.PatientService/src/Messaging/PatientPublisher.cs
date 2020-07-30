@@ -20,7 +20,12 @@ namespace CalHealth.PatientService.Messaging
 
         public PatientPublisher(IOptions<RabbitMqOptions> options)
         {
-            Factory = new ConnectionFactory { HostName = options.Value.HostName };
+            Factory = new ConnectionFactory
+            {
+                HostName = options.Value.HostName,
+                UserName = options.Value.User,
+                Password = options.Value.Password
+            };
             Connection = Factory.CreateConnection();
             Channel = Connection.CreateModel();
         }

@@ -26,5 +26,5 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 CMD dockerize \
-    -wait http://rabbitmq:15672 -wait-retry-interval 30s -timeout 240s \
+    -wait http://rabbitmq:15672 -wait-retry-interval 30s -timeout 600s \
     dotnet CalHealth.Blazor.Server.dll

@@ -24,5 +24,7 @@ RUN dotnet publish "CalHealth.BookingService.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-CMD dockerize -wait http://rabbitmq:15672 -wait-retry-interval 30s -timeout 240s -wait tcp://booking-db:1433 -wait-retry-interval 30s -timeout 240s dotnet CalHealth.BookingService.dll
+CMD dockerize -wait http://rabbitmq:15672 -wait-retry-interval 30s -timeout 600s \
+    -wait tcp://booking-db:1433 -wait-retry-interval 30s -timeout 600s \
+    dotnet CalHealth.BookingService.dll
 
