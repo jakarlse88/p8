@@ -27,7 +27,8 @@ namespace CalHealth.Blazor.Server.Messaging
             {
                 HostName = options.Value.HostName,
                 UserName = options.Value.User,
-                Password = options.Value.Password
+                Password = options.Value.Password,
+                DispatchConsumersAsync = true
             };
             Connection = Factory.CreateConnection();
             Channel = Connection.CreateModel();
@@ -42,7 +43,7 @@ namespace CalHealth.Blazor.Server.Messaging
                 exchange: "appointment",
                 routingKey: "");
 
-            var consumer = new EventingBasicConsumer(Channel);
+            var consumer = new AsyncEventingBasicConsumer(Channel);
             consumer.Received += async (sender, ea) =>
             {
                 var body = ea.Body.ToArray();

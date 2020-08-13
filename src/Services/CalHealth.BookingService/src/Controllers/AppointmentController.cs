@@ -83,7 +83,7 @@ namespace CalHealth.BookingService.Controllers
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Post(AppointmentDTO dto)
-        { 
+        {
             if (dto == null)
             {
                 return BadRequest($"The {nameof(dto)} parameter cannot be null.");

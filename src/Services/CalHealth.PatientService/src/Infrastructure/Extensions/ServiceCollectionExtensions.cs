@@ -10,29 +10,33 @@ using CalHealth.PatientService.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.ObjectPool;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 
 namespace CalHealth.PatientService.Infrastructure
 {
     internal static class ServiceCollectionExtensions
     {
-        internal static IServiceCollection AddOptionsObjects(this IServiceCollection services, IConfiguration configuration)
+        internal static IServiceCollection AddOptionsObjects(this IServiceCollection services,
+            IConfiguration configuration)
         {
             services.Configure<RabbitMqOptions>(configuration.GetSection(RabbitMqOptions.RabbitMq));
-            
+
             return services;
         }
-        
+
         internal static IServiceCollection AddRepositoryLayer(this IServiceCollection services)
         {
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            
+
             return services;
         }
 
         internal static IServiceCollection AddServiceLayer(this IServiceCollection services)
         {
             services
+                .AddSingleton<IPatientPublisher, PatientPublisher>()
                 .AddTransient<IGenderService, GenderService>()
                 .AddTransient<IReligionService, ReligionService>()
                 .AddTransient<IAllergyService, AllergyService>()
@@ -41,15 +45,6 @@ namespace CalHealth.PatientService.Infrastructure
             return services;
         }
 
-        internal static IServiceCollection AddMessagingLayer(this IServiceCollection services)
-        {
-            services
-                .AddSingleton<IAppointmentSubscriber, AppointmentSubscriber>()
-                .AddSingleton<IPatientPublisher, PatientPublisher>();
-
-            return services;
-        }
-        
         internal static IServiceCollection ConfigureCors(this IServiceCollection services)
         {
             services.AddCors(options =>
@@ -85,7 +80,8 @@ namespace CalHealth.PatientService.Infrastructure
             return services;
         }
 
-        internal static IServiceCollection ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)
+        internal static IServiceCollection ConfigureDbContext(this IServiceCollection services,
+            IConfiguration configuration)
         {
             services.AddDbContext<PatientContext>(opt =>
                 opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));

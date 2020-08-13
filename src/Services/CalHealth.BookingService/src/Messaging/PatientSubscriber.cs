@@ -1,76 +1,47 @@
 ﻿using System;
-using System.Text;
+using System.Threading.Tasks;
 using CalHealth.BookingService.Infrastructure;
-using CalHealth.BookingService.Messaging.Interfaces;
 using CalHealth.BookingService.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
 using Serilog;
 
 namespace CalHealth.BookingService.Messaging
 {
-    public class PatientSubscriber : IPatientSubscriber
+    public class PatientSubscriber : RabbitSubscriber
     {
-        private readonly IServiceScopeFactory _scopeFactory;
-        private ConnectionFactory Factory { get; }
-        private IConnection Connection { get; }
-        private IModel Channel { get; }
-
-        public PatientSubscriber(IServiceScopeFactory scopeFactory, IOptions<RabbitMqOptions> options)
-        {
-            _scopeFactory = scopeFactory;
-            Factory = new ConnectionFactory
-            {
-                HostName = options.Value.HostName,
-                UserName = options.Value.User,
-                Password = options.Value.Password
-            };
-            Connection = Factory.CreateConnection();
-            Channel = Connection.CreateModel();
-        }
+        private readonly IServiceProvider _services;
         
-        public void Register()
+        public PatientSubscriber(IOptions<RabbitMqOptions> options, IServiceProvider services) : base(options)
         {
-            Channel.ExchangeDeclare(exchange: "patient", type: ExchangeType.Fanout);
+            _services = services;
+        }
 
-            var queueName = Channel.QueueDeclare().QueueName;
-            Channel.QueueBind(queue: queueName,
-                exchange: "patient",
-                routingKey: "");
+        protected override async Task<bool> Process(string message)
+        {
+            if (message == null)
+            {
+                return false;
+            }
             
-            var consumer = new EventingBasicConsumer(Channel);
-            consumer.Received += async (sender, ea) =>
+            try
             {
-                var body = ea.Body.ToArray();
-                var message = JsonConvert.DeserializeObject<PatientMessage>(Encoding.UTF8.GetString(body));
-
-                try
+                var deserialized = JsonConvert.DeserializeObject<PatientMessage>(message);
+                    
+                using (var scope = _services.CreateScope())
+                using (var service = scope.ServiceProvider.GetRequiredService<IAppointmentService>())
                 {
-                    using (var scope = _scopeFactory.CreateScope())
-                    using (var service = scope.ServiceProvider.GetRequiredService<IAppointmentService>())
-                    {
-                        await service.UpdatePatientIdAsync(message.AppointmentId, message.PatientId);
-                    }
-
-                    Channel.BasicAck(deliveryTag: ea.DeliveryTag, multiple: false);
+                    await service.UpdatePatientIdAsync(deserialized.AppointmentId, deserialized.PatientId);
                 }
-                catch (Exception e)
-                {
-                    Log.Error("An error has occurred: {@error}", e);
-                    Channel.BasicNack(ea.DeliveryTag, false, false);
-                }
-            };
-
-            Channel.BasicQos(0, 100, false);
-            Channel.BasicConsume(queue: queueName, autoAck: false, consumer: consumer);
-        }
-        
-        public void Deregister()
-        {
-            Connection.Close();
+            }
+            catch (Exception e)
+            {
+                Log.Error("An error has occurred: {@error}", e);
+                    
+            }
+            
+            return true;
         }
     }
 }

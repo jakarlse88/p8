@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Globalization;
+using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
 using CalHealth.BookingService.Messaging;
@@ -20,7 +22,7 @@ namespace CalHealth.BookingService.Services
         private readonly Calendar _calendar;
         private readonly CultureInfo _cultureInfo;
 
-        public AppointmentService(IUnitOfWork unitOfWork, IAppointmentPublisher appointmentPublisher, IMapper mapper)
+        public AppointmentService(IUnitOfWork unitOfWork, IMapper mapper, IAppointmentPublisher appointmentPublisher)
         {
             _unitOfWork = unitOfWork;
             _appointmentPublisher = appointmentPublisher;
@@ -46,7 +48,7 @@ namespace CalHealth.BookingService.Services
             {
                 throw new ArgumentNullException(nameof(model.Patient));
             }
-
+            
             var entity = await GenerateEntity(model);
 
             if (model.Date.Date < DateTime.Today.Date
@@ -54,7 +56,7 @@ namespace CalHealth.BookingService.Services
             {
                 return null;
             }
-
+            
             try
             {
                 await PersistToDb(entity);
@@ -62,16 +64,15 @@ namespace CalHealth.BookingService.Services
                 EmitMessage(model, entity);
 
                 var mappedEntity = _mapper.Map<AppointmentDTO>(entity);
-
+                
                 return mappedEntity;
             }
             catch (Exception e)
             {
                 Log.Error("An exception was raised while attempting to create an appointment: {@exception}", e);
                 await _unitOfWork.RollbackAsync();
+                return null;
             }
-
-            return null;
         }
 
         private async Task PersistToDb(Appointment entity)
@@ -204,6 +205,7 @@ namespace CalHealth.BookingService.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
+            
             var consultant = await GetConsultantEntityAsync(model);
             var week = await GetWeekEntityAsync(model);
             var day = await GetDayEntityAsync(model);
@@ -242,7 +244,7 @@ namespace CalHealth.BookingService.Services
 
             var result = await _unitOfWork.WeekRepository.GetByIdAsync(_calendar.GetWeekOfYear(model.Date,
                 _cultureInfo.DateTimeFormat.CalendarWeekRule,
-                _cultureInfo.DateTimeFormat.FirstDayOfWeek));
+                _cultureInfo.DateTimeFormat.FirstDayOfWeek) % 52);
 
             return result;
         }

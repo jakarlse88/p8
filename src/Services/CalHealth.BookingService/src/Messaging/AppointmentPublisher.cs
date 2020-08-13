@@ -11,50 +11,57 @@ namespace CalHealth.BookingService.Messaging
 {
     public class AppointmentPublisher : IAppointmentPublisher
     {
-        private ConnectionFactory Factory { get; }
-        private IConnection Connection { get; }
-        private IModel Channel { get; }
-
+        private readonly IConnection _connection;
+        
         public AppointmentPublisher(IOptions<RabbitMqOptions> options)
         {
-            Factory = new ConnectionFactory
+            try
             {
-                HostName = options.Value.HostName,
-                UserName = options.Value.User,
-                Password = options.Value.Password
-            };
-            Connection = Factory.CreateConnection();
-            Channel = Connection.CreateModel();
+                var factory = new ConnectionFactory
+                {
+                    HostName = options.Value.HostName,
+                    UserName = options.Value.User,
+                    Password = options.Value.Password,
+                    DispatchConsumersAsync = true
+                };
+
+                _connection = factory.CreateConnection();
+            }
+            catch (Exception e)
+            {
+                Log.Error("AppointmentPublisher initialisation error: {@error}", e);
+            }
         }
-        
+
         public bool PushMessageToQueue(AppointmentMessage entity)
         {
             if (entity == null)
             {
                 throw new ArgumentNullException(nameof(entity));
             }
-            
-            var body = 
-                Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(entity));
 
-            Channel.BasicPublish(exchange: "appointment",
-                routingKey: "",
-                basicProperties: null,
-                body: body);
+            try
+            {
+                var body =
+                    Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(entity));
 
-            Log.Information("Published successfully.");
+                using (var channel = _connection.CreateModel())
+                {
+                    channel.ExchangeDeclare(exchange: "appointment", type: ExchangeType.Fanout);
+                
+                    channel.BasicPublish(exchange: "appointment",
+                        routingKey: "",
+                        basicProperties: null,
+                        body: body);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error("An error occurred while attempting to emit an event: {@ex}", e);
+                return false;
+            }
             
             return true;
-        }
-         
-        public void Register()
-        {
-            Channel.ExchangeDeclare(exchange: "appointment", type: ExchangeType.Fanout);
-        }
-
-        public void Deregister()
-        {
-            Connection.Close();
         }
     }
 }

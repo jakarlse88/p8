@@ -105,5 +105,5 @@ services:
         - "${RABBITMQ_EXT_PORT_1}:5672"
         - "${RABBITMQ_EXT_PORT_2}:15672"
     volumes:
-      - ./rabbitmq/data/mnesia:/var/lib/rabbitmq/mnesia
+      - ./rabbitmq/data/:/var/lib/rabbitmq/mnesia
       - ./rabbitmq/logs/:/var/log/rabbitmq/

@@ -1,5 +1,3 @@
-using System;
-using System.Net.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -7,8 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
 using CalHealth.BookingService.Infrastructure.Extensions;
-using Polly;
-using Polly.Extensions.Http;
+using CalHealth.BookingService.Messaging;
 
 namespace CalHealth.BookingService
 {
@@ -36,8 +33,8 @@ namespace CalHealth.BookingService
                 .AddOptionsObjects(Configuration)
                 .AddRepositoryLayer()
                 .AddServiceLayer(Configuration)
-                .AddMessagingLayer()
                 .ConfigureSwagger()
+                .AddHostedService<PatientSubscriber>()
                 .ConfigureCors();
         }
 
@@ -50,13 +47,11 @@ namespace CalHealth.BookingService
             }
 
             app.ApplyMigrations()
-                .UseAppointmentPublisher()
-                .UsePatientSubscriber()
                 .UseCustomExceptionHandler()
                 .UseCors()
-                .UseRouting()
                 .UseAuthorization()
                 .UseSwaggerUI()
+                .UseRouting()
                 .UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }

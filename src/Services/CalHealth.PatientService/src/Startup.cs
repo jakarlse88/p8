@@ -1,12 +1,11 @@
-using System;
 using AutoMapper;
 using CalHealth.PatientService.Infrastructure;
+using CalHealth.PatientService.Messaging;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using RabbitMQ.Client;
 
 namespace CalHealth.PatientService
 {
@@ -32,8 +31,8 @@ namespace CalHealth.PatientService
                 .AddOptionsObjects(Configuration)
                 .AddRepositoryLayer()
                 .AddServiceLayer()
-                .AddMessagingLayer()
                 .ConfigureCors()
+                .AddHostedService<AppointmentSubscriber>()
                 .ConfigureSwagger()
                 .AddAutoMapper(typeof(Startup));
         }
@@ -47,8 +46,6 @@ namespace CalHealth.PatientService
             }
 
             app.ApplyMigrations()
-                .UseAppointmentSubscriber()
-                .UsePatientPublisher()
                 .UseCustomExceptionHandler()
                 .UseRouting()
                 .UseAuthorization()

@@ -5,29 +5,33 @@ using CalHealth.PatientService.Messaging.Interfaces;
 using CalHealth.PatientService.Messaging.Messages;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Polly;
 using RabbitMQ.Client;
-using RabbitMQ.Client.Exceptions;
 using Serilog;
 
 namespace CalHealth.PatientService.Messaging
 {
-    public class PatientPublisher : IPatientPublisher
+    public class PatientPublisher : IPatientPublisher, IDisposable
     {
-        private ConnectionFactory Factory { get; }
-        private IConnection Connection { get; }
-        private IModel Channel { get; }
+        private readonly IConnection _connection;
 
         public PatientPublisher(IOptions<RabbitMqOptions> options)
         {
-            Factory = new ConnectionFactory
+            try
             {
-                HostName = options.Value.HostName,
-                UserName = options.Value.User,
-                Password = options.Value.Password
-            };
-            Connection = Factory.CreateConnection();
-            Channel = Connection.CreateModel();
+                var factory = new ConnectionFactory
+                {
+                    HostName = options.Value.HostName,
+                    UserName = options.Value.User,
+                    Password = options.Value.Password,
+                    DispatchConsumersAsync = true
+                };
+
+                _connection = factory.CreateConnection();
+            }
+            catch (Exception e)
+            {
+                Log.Error("PatientPublisher initialisation error: {@error}", e);
+            }
         }
 
         public bool PushMessageToQueue(PatientMessage entity)
@@ -36,28 +40,33 @@ namespace CalHealth.PatientService.Messaging
             {
                 throw new ArgumentNullException(nameof(entity));
             }
+            try
+            {
+                var body =
+                    Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(entity));
 
-            var body =
-                Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(entity));
-
-            Channel.BasicPublish(exchange: "patient",
-                routingKey: "",
-                basicProperties: null,
-                body: body);
-
-            Log.Information("Published successfully.");
-
+                using (var channel = _connection.CreateModel())
+                {
+                    channel.ExchangeDeclare(exchange: "patient", type: ExchangeType.Fanout);
+                
+                    channel.BasicPublish(exchange: "patient",
+                        routingKey: "",
+                        basicProperties: null,
+                        body: body);
+                }
+            }
+            catch (Exception e)
+            {
+                Log.Error("An error occurred while attempting to emit an event: {@ex}", e);
+                return false;
+            }
+            
             return true;
         }
 
-        public void Register()
+        public void Dispose()
         {
-            Channel.ExchangeDeclare(exchange: "patient", type: ExchangeType.Fanout);
-        }
-
-        public void Deregister()
-        {
-            Connection.Close();
+            _connection.Close();
         }
     }
 }

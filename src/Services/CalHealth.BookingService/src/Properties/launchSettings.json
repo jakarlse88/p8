@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "CalHealth.CalendarService": {
+    "CalHealth.BookingService": {
       "commandName": "Project",
       "launchBrowser": false,
       "launchUrl": "/",

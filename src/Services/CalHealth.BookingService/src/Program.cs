@@ -23,7 +23,7 @@ namespace CalHealth.BookingService
             {
                 CreateHostBuilder(args).Build().Run();
             }
-            catch (System.Exception ex)
+            catch (Exception ex)
             {
                 Log.Fatal($"Failed to start {Assembly.GetExecutingAssembly().GetName().Name}", ex);
                 throw;
