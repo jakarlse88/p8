@@ -1,8 +1,9 @@
 using System;
 using System.Text;
+using CalHealth.Messages;
 using CalHealth.PatientService.Infrastructure.OptionsObjects;
 using CalHealth.PatientService.Messaging.Interfaces;
-using CalHealth.PatientService.Messaging.Messages;
+using EasyNetQ;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 using RabbitMQ.Client;
@@ -10,50 +11,25 @@ using Serilog;
 
 namespace CalHealth.PatientService.Messaging
 {
-    public class PatientPublisher : IPatientPublisher, IDisposable
+    public class PatientPublisher : IPatientPublisher
     {
-        private readonly IConnection _connection;
+        private readonly IBus _bus;
 
-        public PatientPublisher(IOptions<RabbitMqOptions> options)
+        public PatientPublisher(IOptions<RabbitMqOptions> options, IBus bus)
         {
-            try
-            {
-                var factory = new ConnectionFactory
-                {
-                    HostName = options.Value.HostName,
-                    UserName = options.Value.User,
-                    Password = options.Value.Password,
-                    DispatchConsumersAsync = true
-                };
-
-                _connection = factory.CreateConnection();
-            }
-            catch (Exception e)
-            {
-                Log.Error("PatientPublisher initialisation error: {@error}", e);
-            }
+            _bus = bus;
         }
 
-        public bool PushMessageToQueue(PatientMessage entity)
+        public bool PushMessageToQueue(PatientMessage message)
         {
-            if (entity == null)
+            if (message == null)
             {
-                throw new ArgumentNullException(nameof(entity));
+                throw new ArgumentNullException(nameof(message));
             }
+            
             try
             {
-                var body =
-                    Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(entity));
-
-                using (var channel = _connection.CreateModel())
-                {
-                    channel.ExchangeDeclare(exchange: "patient", type: ExchangeType.Fanout);
-                
-                    channel.BasicPublish(exchange: "patient",
-                        routingKey: "",
-                        basicProperties: null,
-                        body: body);
-                }
+                _bus.Publish<PatientMessage>(message);
             }
             catch (Exception e)
             {
@@ -62,11 +38,6 @@ namespace CalHealth.PatientService.Messaging
             }
             
             return true;
-        }
-
-        public void Dispose()
-        {
-            _connection.Close();
         }
     }
 }

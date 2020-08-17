@@ -27,14 +27,14 @@ namespace CalHealth.BookingService
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services
-                .AddMemoryCache()
-                .AddAutoMapper(typeof(Startup))
-                .ConfigureDbContext(Configuration)
+                .AddLazyCache()
                 .AddOptionsObjects(Configuration)
+                .ConfigureDbContext(Configuration)
                 .AddRepositoryLayer()
                 .AddServiceLayer(Configuration)
-                .ConfigureSwagger()
                 .AddHostedService<PatientSubscriber>()
+                .AddAutoMapper(typeof(Startup))
+                .ConfigureSwagger()
                 .ConfigureCors();
         }
 
@@ -48,10 +48,10 @@ namespace CalHealth.BookingService
 
             app.ApplyMigrations()
                 .UseCustomExceptionHandler()
+                .UseRouting()
                 .UseCors()
                 .UseAuthorization()
                 .UseSwaggerUI()
-                .UseRouting()
                 .UseEndpoints(endpoints => { endpoints.MapControllers(); });
         }
     }

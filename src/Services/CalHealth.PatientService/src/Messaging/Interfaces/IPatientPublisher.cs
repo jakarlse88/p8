@@ -1,9 +1,9 @@
-using CalHealth.PatientService.Messaging.Messages;
+using CalHealth.Messages;
 
 namespace CalHealth.PatientService.Messaging.Interfaces
 {
     public interface IPatientPublisher
     {
-        bool PushMessageToQueue(PatientMessage entity);
+        bool PushMessageToQueue(PatientMessage message);
     }
 }

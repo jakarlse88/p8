@@ -7,6 +7,7 @@ using CalHealth.PatientService.Messaging;
 using CalHealth.PatientService.Messaging.Interfaces;
 using CalHealth.PatientService.Repositories;
 using CalHealth.PatientService.Services;
+using EasyNetQ;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -33,9 +34,15 @@ namespace CalHealth.PatientService.Infrastructure
             return services;
         }
 
-        internal static IServiceCollection AddServiceLayer(this IServiceCollection services)
+        internal static IServiceCollection AddServiceLayer(this IServiceCollection services, IConfiguration configuration)
         {
+            var rabbitString = $"host={configuration["RabbitMQ:HostName"]};";
+            rabbitString += "virtualHost=" + (configuration["RabbitMQ:VirtualHost"] ?? "/") + ";";
+            rabbitString += $"username={configuration["RabbitMQ:User"]};";
+            rabbitString += $"password={configuration["RabbitMQ:Password"]}";
+            
             services
+                .AddSingleton<IBus>(RabbitHutch.CreateBus(rabbitString))
                 .AddSingleton<IPatientPublisher, PatientPublisher>()
                 .AddTransient<IGenderService, GenderService>()
                 .AddTransient<IReligionService, ReligionService>()

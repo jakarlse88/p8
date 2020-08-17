@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using CalHealth.PatientService.Infrastructure.OptionsObjects;
-using CalHealth.PatientService.Messaging.Messages;
+using CalHealth.Messages;
 using CalHealth.PatientService.Services;
+using EasyNetQ;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
-using Newtonsoft.Json;
 using Serilog;
 
 namespace CalHealth.PatientService.Messaging
@@ -14,13 +12,13 @@ namespace CalHealth.PatientService.Messaging
     {
         private readonly IServiceProvider _services;
         
-        public AppointmentSubscriber(IServiceProvider services, IOptions<RabbitMqOptions> options) 
-            : base(options)
+        public AppointmentSubscriber(IServiceProvider services, IBus bus) 
+            : base(bus)
         {
             _services = services;
         }
 
-        protected override async Task<bool> Process(string message)
+        protected override async Task<bool> Process(AppointmentMessage message)
         {
             if (message == null)
             {
@@ -29,18 +27,15 @@ namespace CalHealth.PatientService.Messaging
             
             try
             {
-                var deserialized = JsonConvert.DeserializeObject<AppointmentMessage>(message);
-                    
                 using (var scope = _services.CreateScope())
                 using (var service = scope.ServiceProvider.GetRequiredService<IPatientService>())
                 {
-                    await service.HandleIncomingPatientData(deserialized);
+                    await service.HandleIncomingPatientData(message);
                 }
             }
             catch (Exception e)
             {
                 Log.Error("An error has occurred: {@error}", e);
-                    
             }
             
             return true;

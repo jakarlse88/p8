@@ -7,11 +7,11 @@
         "GET"
       ],
       "DownstreamPathTemplate": "/api/appointment",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "booking-service",
-          "Port": 80
+          "Host": "localhost",
+          "Port": 5001
         }
       ]
     },
@@ -22,11 +22,11 @@
         "GET"
       ],
       "DownstreamPathTemplate": "/api/consultant",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "booking-service",
-          "Port": 80
+          "Host": "localhost",
+          "Port": 5001
         }
       ],
       "FileCacheOptions": {
@@ -41,11 +41,11 @@
         "GET"
       ],
       "DownstreamPathTemplate": "/api/timeslot",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "booking-service",
-          "Port": 80
+          "Host": "localhost",
+          "Port": 5001
         }
       ],
       "FileCacheOptions": {
@@ -60,11 +60,11 @@
         "GET"
       ],
       "DownstreamPathTemplate": "/api/patient",
-      "DownstreamScheme": "http",
+      "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "patient-service",
-          "Port": 80
+          "Host": "localhost",
+          "Port": 5003
         }
       ],
       "FileCacheOptions": {
@@ -84,6 +84,6 @@
     }
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "https://localhost:8088"
+    "BaseUrl": "https://localhost:5009"
   }
 }

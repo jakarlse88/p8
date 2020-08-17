@@ -1,16 +1,13 @@
 using System;
 using System.Net;
 using CalHealth.BookingService.Data;
-using CalHealth.BookingService.Messaging.Interfaces;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Polly;
-using Serilog;
 
 namespace CalHealth.BookingService.Infrastructure.Extensions
 {
@@ -29,7 +26,7 @@ namespace CalHealth.BookingService.Infrastructure.Extensions
         }
         internal static IApplicationBuilder ApplyMigrations(this IApplicationBuilder app)
         {
-            Log.Information("Applying migrations. This may take a moment.");
+            Console.WriteLine("Applying migrations. This may take a moment.");
 
             using (var serviceScope = app.ApplicationServices.CreateScope())
             using (var context = serviceScope.ServiceProvider.GetRequiredService<BookingContext>())
@@ -50,12 +47,12 @@ namespace CalHealth.BookingService.Infrastructure.Extensions
                 }
                 catch (Exception ex)
                 {
-                    Log.Fatal("A fatal error occurred while trying to apply migrations: {ex}", ex);
+                    Console.WriteLine("A fatal error occurred while trying to apply migrations: {ex}", ex);
                     throw;
                 }
             }
 
-            Log.Information("Migrations operation successful. Continuing application Startup.");
+            Console.WriteLine("Migrations operation successful. Continuing application Startup.");
             return app;
         }
 
@@ -72,7 +69,7 @@ namespace CalHealth.BookingService.Infrastructure.Extensions
 
                     if (contextFeature != null)
                     {
-                        Log.Error("Error: {0}", contextFeature.Error);
+                        Console.WriteLine("Error: {0}", contextFeature.Error);
 
                         await context.Response.WriteAsync(new ErrorDetails()
                         {

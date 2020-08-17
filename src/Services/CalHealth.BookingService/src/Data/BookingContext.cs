@@ -7,6 +7,10 @@ namespace CalHealth.BookingService.Data
 {
     public class BookingContext : DbContext
     {
+        public BookingContext()
+        {
+        }
+        
         public BookingContext(DbContextOptions<BookingContext> options)
             : base(options)
         {

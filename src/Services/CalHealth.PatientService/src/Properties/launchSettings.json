@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "CalHealth.BookingService": {
+    "CalHealth.PatientService": {
       "commandName": "Project",
       "launchBrowser": false,
       "launchUrl": "weatherforecast",

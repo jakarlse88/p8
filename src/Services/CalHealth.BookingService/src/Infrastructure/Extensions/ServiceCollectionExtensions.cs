@@ -11,8 +11,7 @@ using Microsoft.OpenApi.Models;
 using CalHealth.BookingService.Data;
 using CalHealth.BookingService.Messaging;
 using CalHealth.BookingService.Messaging.Interfaces;
-using Microsoft.Extensions.ObjectPool;
-using Microsoft.Extensions.Options;
+using EasyNetQ;
 using Polly;
 using Polly.Extensions.Http;
 
@@ -40,14 +39,19 @@ namespace CalHealth.BookingService.Infrastructure.Extensions
         internal static IServiceCollection AddServiceLayer(this IServiceCollection services,
             IConfiguration configuration)
         {
+            var rabbitString = $"host={configuration["RabbitMQ:HostName"]};";
+            rabbitString += "virtualHost=" + (configuration["RabbitMQ:VirtualHost"] ?? "/") + ";";
+            rabbitString += $"username={configuration["RabbitMQ:User"]};";
+            rabbitString += $"password={configuration["RabbitMQ:Password"]}";
+            
             services
-                .AddSingleton<ObjectPoolProvider, DefaultObjectPoolProvider>()
+                .AddHttpClient()
                 .AddSingleton<IExternalPatientApiService, ExternalPatientApiService>()
+                .AddSingleton<IBus>(RabbitHutch.CreateBus(rabbitString))
                 .AddSingleton<IAppointmentPublisher, AppointmentPublisher>()
                 .AddScoped<IAppointmentService, AppointmentService>()
                 .AddTransient<ITimeSlotService, TimeSlotService>()
-                .AddTransient<IConsultantService, ConsultantService>()
-                .AddHttpClient();
+                .AddTransient<IConsultantService, ConsultantService>();
 
             return services;
         }
@@ -123,19 +127,6 @@ namespace CalHealth.BookingService.Infrastructure.Extensions
             });
 
             return services;
-        }
-
-        private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
-        {
-            var jitterer = new Random();
-
-            return HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
-                .WaitAndRetryAsync(6,
-                    retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))
-                                    + TimeSpan.FromMilliseconds(jitterer.Next(0, 100))
-                );
         }
     }
 }

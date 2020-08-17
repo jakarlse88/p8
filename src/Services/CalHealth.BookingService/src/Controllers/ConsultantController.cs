@@ -21,7 +21,7 @@ namespace CalHealth.BookingService.Controllers
         /// <summary>
         /// Gets all <see cref="Consultant"/> entities.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of all <see cref="Consultant"/> entities.</returns>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<ConsultantDTO>>> Get()

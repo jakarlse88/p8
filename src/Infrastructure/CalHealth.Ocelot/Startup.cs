@@ -48,7 +48,7 @@ namespace CalHealth.Ocelot
                     .AllowCredentials();
 
                 builder // For testing with non-container client
-                    .WithOrigins("https://localhost:5001")
+                    .WithOrigins("https://localhost:5005")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials();

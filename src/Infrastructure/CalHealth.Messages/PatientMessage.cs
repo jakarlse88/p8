@@ -1,4 +1,4 @@
-namespace CalHealth.PatientService.Messaging.Messages
+﻿namespace CalHealth.Messages
 {
     public class PatientMessage
     {

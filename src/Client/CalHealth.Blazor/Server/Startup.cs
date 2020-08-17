@@ -9,6 +9,7 @@ using System.Linq;
 using CalHealth.Blazor.Server.Hubs;
 using CalHealth.Blazor.Server.Infrastructure.Extensions;
 using CalHealth.Blazor.Server.Messaging;
+using EasyNetQ;
 
 namespace CalHealth.Blazor.Server
 {
@@ -25,11 +26,17 @@ namespace CalHealth.Blazor.Server
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            var rabbitString = $"host={Configuration["RabbitMQ:HostName"]};";
+            rabbitString += "virtualHost=" + (Configuration["RabbitMQ:VirtualHost"] ?? "/") + ";";
+            rabbitString += $"username={Configuration["RabbitMQ:User"]};";
+            rabbitString += $"password={Configuration["RabbitMQ:Password"]}";
+            
             services.AddRazorPages();
             services.AddSignalR();
             services.AddControllersWithViews();
             services.AddOptionsObjects(Configuration);
-            services.AddSingleton<IAppointmentSubscriber, AppointmentSubscriber>();
+            services.AddSingleton<IBus>(RabbitHutch.CreateBus(rabbitString));
+            services.AddHostedService<AppointmentSubscriber>();
             services.AddResponseCompression(opts =>
             {
                 opts.MimeTypes = ResponseCompressionDefaults.MimeTypes.Concat(
@@ -58,8 +65,6 @@ namespace CalHealth.Blazor.Server
             app.UseBlazorFrameworkFiles();
             app.UseStaticFiles();
 
-            app.UseAppointmentSubscriber();
-            
             app.UseRouting();
 
             app.UseEndpoints(endpoints =>

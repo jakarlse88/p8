@@ -4,7 +4,7 @@ using CalHealth.Messages;
 using EasyNetQ;
 using Microsoft.Extensions.Hosting;
 
-namespace CalHealth.PatientService.Messaging
+namespace CalHealth.Blazor.Server.Messaging
 {
     public abstract class RabbitSubscriber : IHostedService
     {

@@ -20,10 +20,10 @@ namespace CalHealth.PatientService.Controllers
         }
 
         /// <summary>
-        /// Gets all <see cref="Patient"/> entities as <seealso cref="PatientDTO"/> data transfer objects.
+        /// Gets all <see cref="Patient"/> entities.
         /// </summary>
-        /// <returns></returns>
-        /// <response code="200">Returns all results.</response>
+        /// <returns>A list of all existing entities as <see cref="PatientDTO"/> data transfer objects.</returns>
+        /// <response code="200">Query OK.</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<PatientDTO>> Get()
@@ -36,10 +36,10 @@ namespace CalHealth.PatientService.Controllers
         /// <summary>
         /// Verify whether a <see cref="Patient"/> entity exists based on his/her personal information.
         /// </summary>
-        /// <param name="firstName"></param>
-        /// <param name="lastName"></param>
-        /// <param name="dateOfBirth"></param>
-        /// <returns></returns>
+        /// <param name="firstName">First name of patient.</param>
+        /// <param name="lastName">Last name of patient.</param>
+        /// <param name="dateOfBirth">Date of birth of patient.</param>
+        /// <returns>A boolean value indicating whether or not the patient exists in the DB.</returns>
         [HttpGet]
         [Route("Exists")]
         [ProducesResponseType(StatusCodes.Status200OK)]

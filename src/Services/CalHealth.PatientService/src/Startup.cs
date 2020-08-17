@@ -30,7 +30,7 @@ namespace CalHealth.PatientService
                 .ConfigureDbContext(Configuration)
                 .AddOptionsObjects(Configuration)
                 .AddRepositoryLayer()
-                .AddServiceLayer()
+                .AddServiceLayer(Configuration)
                 .ConfigureCors()
                 .AddHostedService<AppointmentSubscriber>()
                 .ConfigureSwagger()

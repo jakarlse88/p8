@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using CalHealth.BookingService.Infrastructure;
 using CalHealth.BookingService.Models;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.Extensions.Options;
+ using Microsoft.Extensions.Logging;
+ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Serilog;
 
 namespace CalHealth.BookingService.Services
 {
@@ -17,11 +17,13 @@ namespace CalHealth.BookingService.Services
         private readonly IHttpClientFactory _clientFactory;
         private readonly IMemoryCache _cache;
         private readonly ExternalPatientApiOptions _options;
+        private readonly ILogger<ExternalPatientApiService> _logger;
         
-        public ExternalPatientApiService(IMemoryCache cache, IHttpClientFactory clientFactory, IOptions<ExternalPatientApiOptions> options)
+        public ExternalPatientApiService(IMemoryCache cache, IHttpClientFactory clientFactory, IOptions<ExternalPatientApiOptions> options, ILogger<ExternalPatientApiService> logger)
         {
             _cache = cache;
             _clientFactory = clientFactory;
+            _logger = logger;
             _options = options.Value;
         }
         
@@ -78,7 +80,7 @@ namespace CalHealth.BookingService.Services
                     
                     var stringContent = await response.Content.ReadAsStringAsync();
             
-                    exists = JsonConvert.DeserializeObject<bool>(stringContent);
+                    exists = JsonConvert.DeserializeObject<bool>(stringContent.ToLower());
             
                     if (exists)
                     {
@@ -87,7 +89,7 @@ namespace CalHealth.BookingService.Services
                 }
                 catch (Exception e)
                 {
-                    Log.Error("An error occurred while attempting to query an external service: {ex}", e);
+                    _logger.LogError("An error occurred while attempting to query an external service: {ex}", e);
                 }    
             }
             

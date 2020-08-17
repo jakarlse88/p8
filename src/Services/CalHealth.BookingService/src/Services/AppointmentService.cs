@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Globalization;
-using System.IO;
 using System.Threading.Tasks;
 using AutoMapper;
 using CalHealth.BookingService.Messaging;
 using CalHealth.BookingService.Messaging.Interfaces;
 using CalHealth.BookingService.Models;
 using CalHealth.BookingService.Repositories;
-using Serilog;
+using CalHealth.Messages;
+using Microsoft.Extensions.Logging;
 
 namespace CalHealth.BookingService.Services
 {
@@ -19,14 +18,16 @@ namespace CalHealth.BookingService.Services
         private readonly IAppointmentPublisher _appointmentPublisher;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ILogger<AppointmentService> _logger;
         private readonly Calendar _calendar;
         private readonly CultureInfo _cultureInfo;
 
-        public AppointmentService(IUnitOfWork unitOfWork, IMapper mapper, IAppointmentPublisher appointmentPublisher)
+        public AppointmentService(IUnitOfWork unitOfWork, IMapper mapper, IAppointmentPublisher appointmentPublisher, ILogger<AppointmentService> logger)
         {
             _unitOfWork = unitOfWork;
-            _appointmentPublisher = appointmentPublisher;
             _mapper = mapper;
+            _appointmentPublisher = appointmentPublisher;
+            _logger = logger;
             _cultureInfo = new CultureInfo("en-US");
             _calendar = _cultureInfo.Calendar;
         }
@@ -69,7 +70,7 @@ namespace CalHealth.BookingService.Services
             }
             catch (Exception e)
             {
-                Log.Error("An exception was raised while attempting to create an appointment: {@exception}", e);
+                _logger.LogError($"An exception was raised while attempting to create an appointment: {e}", e);
                 await _unitOfWork.RollbackAsync();
                 return null;
             }
@@ -120,7 +121,7 @@ namespace CalHealth.BookingService.Services
             catch (Exception e)
             {
                 await _unitOfWork.RollbackAsync();
-                Log.Error("An error has occurred: {@error}", e);
+                _logger.LogError($"An error has occurred: {e}", e);
                 throw;
             }
         }

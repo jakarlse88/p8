@@ -21,7 +21,7 @@ namespace CalHealth.BookingService.Controllers
         /// <summary>
         /// Gets all <see cref="TimeSlot"/> entities.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>A list of all <see cref="TimeSlot"/> entities.</returns>
         /// <response code="200">Request OK, return results.</response>
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
