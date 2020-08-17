@@ -8,6 +8,7 @@ using CalHealth.Blazor.Client.Models;
 using CalHealth.Blazor.Client.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using Microsoft.AspNetCore.SignalR.Client;
 
 namespace CalHealth.Blazor.Client.Pages.Booking
@@ -17,6 +18,7 @@ namespace CalHealth.Blazor.Client.Pages.Booking
         [Inject] private IApiRequestService ApiRequestService { get; set; }
         [Inject] private NavigationManager NavigationManager { get; set; }
         [Inject] private IToastService ToastService { get; set; }
+        [Inject] private IWebAssemblyHostEnvironment Env { get; set; }
         private HubConnection _hubConnection;
         private BookingFormViewModel FormModel { get; set; }
         private BookingViewModel ViewModel { get; set; }
@@ -45,6 +47,8 @@ namespace CalHealth.Blazor.Client.Pages.Booking
 
             _hubConnection.On<AppointmentMessage>("Appointment", msg =>
             {
+                ToastService.ShowInfo("Received");
+                
                 var consultant =
                     ViewModel.ConsultantList
                         .FirstOrDefault(c => c.Id == msg.ConsultantId);
@@ -99,7 +103,10 @@ namespace CalHealth.Blazor.Client.Pages.Booking
         /// <returns></returns>
         private async Task HandleSubmit()
         {
-            const string requestUrl = "https://localhost:8088/client-gw/appointment";
+            var requestUrl = 
+                Env.IsDevelopment() 
+                    ? "https://localhost:5009/client-gw/appointment"
+                    : "https://localhost:8088/client-gw/appointment";
 
             Status = APIOperationStatus.POST_Pending;
             StateHasChanged();
@@ -142,7 +149,6 @@ namespace CalHealth.Blazor.Client.Pages.Booking
             {
                 ToastService.ShowError(
                     "There was an error submitting your request. Please ensure that the entered is correct data and retry.");
-                throw;
             }
         }
 
@@ -245,7 +251,10 @@ namespace CalHealth.Blazor.Client.Pages.Booking
         /// <returns></returns>
         private async Task<BookingViewModel> FetchBookingInfo()
         {
-            const string requestUrl = "https://localhost:8088/client-gw/aggregate";
+            var requestUrl =
+                Env.IsDevelopment()
+                    ? "https://localhost:5009/client-gw/aggregate"
+                    : "https://localhost:8088/client-gw/aggregate";
 
             var result =
                 await ApiRequestService.HandleGetRequest<BookingViewModel>(requestUrl);

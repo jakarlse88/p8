@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CalHealth.BookingService.Repositories
 {
-    public class Repository<TEntity> : IRepository<TEntity> 
+    public class Repository<TEntity> : IRepository<TEntity>
         where TEntity : class, IEntityBase
     {
         private readonly BookingContext _context;
@@ -60,7 +60,7 @@ namespace CalHealth.BookingService.Repositories
         public async Task<IEnumerable<TEntity>> GetAllAsync(bool eager = false)
         {
             var query = _context.Set<TEntity>().AsQueryable();
-            
+
             if (eager)
             {
                 var navigations = _context.Model.FindEntityType(typeof(TEntity))
@@ -73,7 +73,7 @@ namespace CalHealth.BookingService.Repositories
                     query = query.Include(property.Name);
                 }
             }
-            
+
             var result = await query.ToListAsync();
 
             return result ?? new List<TEntity>();
@@ -118,7 +118,7 @@ namespace CalHealth.BookingService.Repositories
             {
                 throw new ArgumentNullException(nameof(entity));
             }
-            
+
             _context.Set<TEntity>().Add(entity);
         }
 

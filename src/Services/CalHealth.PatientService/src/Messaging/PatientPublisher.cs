@@ -1,63 +1,43 @@
 using System;
 using System.Text;
+using CalHealth.Messages;
 using CalHealth.PatientService.Infrastructure.OptionsObjects;
 using CalHealth.PatientService.Messaging.Interfaces;
-using CalHealth.PatientService.Messaging.Messages;
+using EasyNetQ;
 using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
-using Polly;
 using RabbitMQ.Client;
-using RabbitMQ.Client.Exceptions;
 using Serilog;
 
 namespace CalHealth.PatientService.Messaging
 {
     public class PatientPublisher : IPatientPublisher
     {
-        private ConnectionFactory Factory { get; }
-        private IConnection Connection { get; }
-        private IModel Channel { get; }
+        private readonly IBus _bus;
 
-        public PatientPublisher(IOptions<RabbitMqOptions> options)
+        public PatientPublisher(IOptions<RabbitMqOptions> options, IBus bus)
         {
-            Factory = new ConnectionFactory
-            {
-                HostName = options.Value.HostName,
-                UserName = options.Value.User,
-                Password = options.Value.Password
-            };
-            Connection = Factory.CreateConnection();
-            Channel = Connection.CreateModel();
+            _bus = bus;
         }
 
-        public bool PushMessageToQueue(PatientMessage entity)
+        public bool PushMessageToQueue(PatientMessage message)
         {
-            if (entity == null)
+            if (message == null)
             {
-                throw new ArgumentNullException(nameof(entity));
+                throw new ArgumentNullException(nameof(message));
             }
-
-            var body =
-                Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(entity));
-
-            Channel.BasicPublish(exchange: "patient",
-                routingKey: "",
-                basicProperties: null,
-                body: body);
-
-            Log.Information("Published successfully.");
-
+            
+            try
+            {
+                _bus.Publish<PatientMessage>(message);
+            }
+            catch (Exception e)
+            {
+                Log.Error("An error occurred while attempting to emit an event: {@ex}", e);
+                return false;
+            }
+            
             return true;
-        }
-
-        public void Register()
-        {
-            Channel.ExchangeDeclare(exchange: "patient", type: ExchangeType.Fanout);
-        }
-
-        public void Deregister()
-        {
-            Connection.Close();
         }
     }
 }

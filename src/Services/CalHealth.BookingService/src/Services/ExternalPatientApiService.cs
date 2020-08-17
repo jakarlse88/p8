@@ -1,23 +1,30 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using CalHealth.BookingService.Infrastructure;
 using CalHealth.BookingService.Models;
 using Microsoft.Extensions.Caching.Memory;
+ using Microsoft.Extensions.Logging;
+ using Microsoft.Extensions.Options;
 using Newtonsoft.Json;
 
 namespace CalHealth.BookingService.Services
 {
     public class ExternalPatientApiService : IExternalPatientApiService
     {
-        private readonly HttpClient _httpClient;
+        private readonly IHttpClientFactory _clientFactory;
         private readonly IMemoryCache _cache;
+        private readonly ExternalPatientApiOptions _options;
+        private readonly ILogger<ExternalPatientApiService> _logger;
         
-        public ExternalPatientApiService(HttpClient httpClient, IMemoryCache cache)
+        public ExternalPatientApiService(IMemoryCache cache, IHttpClientFactory clientFactory, IOptions<ExternalPatientApiOptions> options, ILogger<ExternalPatientApiService> logger)
         {
-            _httpClient = httpClient;
             _cache = cache;
+            _clientFactory = clientFactory;
+            _logger = logger;
+            _options = options.Value;
         }
         
         /// <summary>
@@ -44,6 +51,8 @@ namespace CalHealth.BookingService.Services
                 throw new ArgumentNullException(nameof(patient.FirstName));
             }
 
+            var exists = false;
+            
             var cacheEntry = _cache.GetOrCreate(CacheKeys.PatientEntry, entry =>
             {
                 entry.SetSlidingExpiration(TimeSpan.FromSeconds(3));
@@ -55,23 +64,36 @@ namespace CalHealth.BookingService.Services
                                     && p.LastName == patient.LastName
                                     && p.DateOfBirth.ToShortDateString().Equals(patient.DateOfBirth.ToShortDateString())))
             {
-                return true;
+                exists = true;
             }
 
-            var response = await _httpClient.GetAsync(
-                $"api/patient/exists?firstName={patient.FirstName}&lastName={patient.LastName}&dateOfBirth={patient.DateOfBirth.ToShortDateString()}");
-
-            var stringContent = await response.Content.ReadAsStringAsync();
-            
-            var exists = JsonConvert.DeserializeObject<bool>(stringContent);
-            
             if (!exists)
             {
-                return false;
+                try
+                {
+                    using var client = _clientFactory.CreateClient();
+                    
+                    var response = await client.GetAsync(
+                        $"{_options.Protocol}://{_options.HostName}:{_options.Port}/api/patient/exists?firstName={patient.FirstName}&lastName={patient.LastName}&dateOfBirth={patient.DateOfBirth.ToShortDateString()}");
+                    
+                    response.EnsureSuccessStatusCode();
+                    
+                    var stringContent = await response.Content.ReadAsStringAsync();
+            
+                    exists = JsonConvert.DeserializeObject<bool>(stringContent.ToLower());
+            
+                    if (exists)
+                    {
+                        cacheEntry.Add(patient);
+                    }
+                }
+                catch (Exception e)
+                {
+                    _logger.LogError("An error occurred while attempting to query an external service: {ex}", e);
+                }    
             }
             
-            cacheEntry.Add(patient);
-            return true;
+            return exists;
         }
 
         private static class CacheKeys

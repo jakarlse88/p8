@@ -1,0 +1,89 @@
+﻿{
+  "Routes": [
+    {
+      "UpstreamPathTemplate": "/client-gw/appointment",
+      "UpstreamHttpMethod": [
+        "POST",
+        "GET"
+      ],
+      "DownstreamPathTemplate": "/api/appointment",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ]
+    },
+    {
+      "Key": "Consultant",
+      "UpstreamPathTemplate": "/client-gw/consultant",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "DownstreamPathTemplate": "/api/consultant",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 15,
+        "Region": "booking"
+      }
+    },
+    {
+      "Key": "TimeSlot",
+      "UpstreamPathTemplate": "/client-gw/timeslot",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "DownstreamPathTemplate": "/api/timeslot",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5001
+        }
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 15,
+        "Region": "booking"
+      }
+    },
+    {
+      "Key": "Patient",
+      "UpstreamPathTemplate": "/client-gw/patient",
+      "UpstreamHttpMethod": [
+        "GET"
+      ],
+      "DownstreamPathTemplate": "/api/patient",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5003
+        }
+      ],
+      "FileCacheOptions": {
+        "TtlSeconds": 15,
+        "Region": "patient"
+      }
+    }
+  ],
+  "Aggregates": [
+    {
+      "RouteKeys": [
+        "Consultant",
+        "TimeSlot",
+        "Patient"
+      ],
+      "UpstreamPathTemplate": "/client-gw/aggregate"
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "https://localhost:5009"
+  }
+}

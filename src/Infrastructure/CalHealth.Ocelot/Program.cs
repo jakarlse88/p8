@@ -50,6 +50,9 @@ namespace CalHealth.Ocelot
                 .ConfigureAppConfiguration(configuration =>
                 {
                     configuration.AddJsonFile(Path.Combine("Configuration", "ocelot.json"), false);
+                    configuration.AddJsonFile(
+                        Path.Combine("Configuration", $"ocelot.{Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")}.json"),
+                        optional: true);
                 })
                 .ConfigureServices(s => s.AddOcelot().AddCacheManager(x => x.WithDictionaryHandle()))
                 .UseSerilog();

@@ -1,5 +1,3 @@
-using System;
-using System.Net.Http;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -7,8 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using AutoMapper;
 using CalHealth.BookingService.Infrastructure.Extensions;
-using Polly;
-using Polly.Extensions.Http;
+using CalHealth.BookingService.Messaging;
 
 namespace CalHealth.BookingService
 {
@@ -30,13 +27,13 @@ namespace CalHealth.BookingService
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services
-                .AddMemoryCache()
-                .AddAutoMapper(typeof(Startup))
-                .ConfigureDbContext(Configuration)
+                .AddLazyCache()
                 .AddOptionsObjects(Configuration)
+                .ConfigureDbContext(Configuration)
                 .AddRepositoryLayer()
                 .AddServiceLayer(Configuration)
-                .AddMessagingLayer()
+                .AddHostedService<PatientSubscriber>()
+                .AddAutoMapper(typeof(Startup))
                 .ConfigureSwagger()
                 .ConfigureCors();
         }
@@ -50,11 +47,9 @@ namespace CalHealth.BookingService
             }
 
             app.ApplyMigrations()
-                .UseAppointmentPublisher()
-                .UsePatientSubscriber()
                 .UseCustomExceptionHandler()
-                .UseCors()
                 .UseRouting()
+                .UseCors()
                 .UseAuthorization()
                 .UseSwaggerUI()
                 .UseEndpoints(endpoints => { endpoints.MapControllers(); });

@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
 using AutoMapper;
-using CalHealth.BookingService.Messaging;
 using CalHealth.BookingService.Messaging.Interfaces;
 using CalHealth.BookingService.Models;
 using CalHealth.BookingService.Models.MappingProfiles;
 using CalHealth.BookingService.Repositories;
 using CalHealth.BookingService.Services;
+using CalHealth.Messages;
+using Microsoft.Extensions.Logging;
 using Moq;
 using Xunit;
 
@@ -17,18 +18,28 @@ namespace CalHealth.BookingService.Test.ServiceTests
     public class AppointmentServiceTests
     {
         private readonly IMapper _mapper;
+        private readonly Mock<ILogger<AppointmentService>> _mockLogger;
 
         public AppointmentServiceTests()
         {
             var config = new MapperConfiguration(opt => opt.AddProfile(new AppointmentMappingProfile()));
             _mapper = new Mapper(config);
+            
+            _mockLogger = new Mock<ILogger<AppointmentService>>();
+            _mockLogger.Setup(l => l.Log(
+                    LogLevel.Information,
+                    It.IsAny<EventId>(),
+                    It.IsAny<It.IsAnyType>(),
+                    It.IsAny<Exception>(),
+                    (Func<It.IsAnyType, Exception, string>) It.IsAny<object>()))
+                .Verifiable();
         }
 
         [Fact]
         public async Task TestCreateAsyncModelNull()
         {
             // Arrange
-            var service = new AppointmentService(null, null, null);
+            var service = new AppointmentService(null, null, null, null);
 
             // Act
             async Task TestAction() => await service.CreateAsync(null);
@@ -42,7 +53,7 @@ namespace CalHealth.BookingService.Test.ServiceTests
         public async Task TestCreateAsyncModelPatientNull()
         {
             // Arrange
-            var service = new AppointmentService(null, null, null);
+            var service = new AppointmentService(null, null, null, null);
 
             // Act
             async Task TestAction() => await service.CreateAsync(new AppointmentDTO { Patient = null });
@@ -99,7 +110,7 @@ namespace CalHealth.BookingService.Test.ServiceTests
                 .Setup(x => x.PushMessageToQueue(It.IsAny<AppointmentMessage>()))
                 .Verifiable();
 
-            var service = new AppointmentService(mockUnitOfWork.Object, mockPublisher.Object, _mapper);
+            var service = new AppointmentService(mockUnitOfWork.Object, _mapper, mockPublisher.Object, _mockLogger.Object);
 
             // Act
             var result = await service.CreateAsync(dto);
@@ -164,7 +175,7 @@ namespace CalHealth.BookingService.Test.ServiceTests
                 .Throws<Exception>()
                 .Verifiable();
 
-            var service = new AppointmentService(mockUnitOfWork.Object, mockPublisher.Object, _mapper);
+            var service = new AppointmentService(mockUnitOfWork.Object, _mapper, mockPublisher.Object, _mockLogger.Object);
 
             // Act
             var result = await service.CreateAsync(dto);
@@ -243,7 +254,7 @@ namespace CalHealth.BookingService.Test.ServiceTests
                 .Setup(x => x.PushMessageToQueue(It.IsAny<AppointmentMessage>()))
                 .Verifiable();
 
-            var service = new AppointmentService(mockUnitOfWork.Object, mockPublisher.Object, _mapper);
+            var service = new AppointmentService(mockUnitOfWork.Object, _mapper, mockPublisher.Object, _mockLogger.Object);
 
             // Act
             var result = await service.CreateAsync(dto);
@@ -256,7 +267,7 @@ namespace CalHealth.BookingService.Test.ServiceTests
         public async Task TestUpdatePatientIdAsyncAppointmentIdInvalid()
         {
             // Arrange
-            var service = new AppointmentService(null, null, null);
+            var service = new AppointmentService(null, null, null, null);
 
             // Act
             async Task TestAction() => await service.UpdatePatientIdAsync(0, 0);
@@ -278,7 +289,7 @@ namespace CalHealth.BookingService.Test.ServiceTests
                 .Setup(x => x.AppointmentRepository.GetByIdAsync(1, It.IsAny<bool>()))
                 .ReturnsAsync(null as Appointment);
 
-            var service = new AppointmentService(mockUnitOfWork.Object, null, null);
+            var service = new AppointmentService(mockUnitOfWork.Object, null, null, null);
 
             // Act
             async Task TestAction() => await service.UpdatePatientIdAsync(testId, 1);
@@ -315,7 +326,7 @@ namespace CalHealth.BookingService.Test.ServiceTests
                 .Setup(x => x.RollbackAsync())
                 .Verifiable();
 
-            var service = new AppointmentService(mockUnitOfWork.Object, null, null);
+            var service = new AppointmentService(mockUnitOfWork.Object, null, null, _mockLogger.Object);
 
             // Act
             async Task TestAction() => await service.UpdatePatientIdAsync(testEntityId, testPatientId);
@@ -335,7 +346,7 @@ namespace CalHealth.BookingService.Test.ServiceTests
         public async Task TestGetByIdAsyncAppointmentIdInvalid()
         {
             // Arrange
-            var service = new AppointmentService(null, null, null);
+            var service = new AppointmentService(null, null, null, null);
 
             // Act
             async Task TestAction() => await service.GetByIdAsync(0);
@@ -356,7 +367,7 @@ namespace CalHealth.BookingService.Test.ServiceTests
                 .Setup(x => x.AppointmentRepository.GetByIdAsync(testId, It.IsAny<bool>()))
                 .ReturnsAsync(null as Appointment);
 
-            var service = new AppointmentService(mockUnitOfWork.Object, null, null);
+            var service = new AppointmentService(mockUnitOfWork.Object, null, null, null);
 
             // Act
             var result = await service.GetByIdAsync(testId);
@@ -377,7 +388,7 @@ namespace CalHealth.BookingService.Test.ServiceTests
                 .Setup(x => x.AppointmentRepository.GetByIdAsync(1, It.IsAny<bool>()))
                 .ReturnsAsync(appointment);
 
-            var service = new AppointmentService(mockUnitOfWork.Object, null, _mapper);
+            var service = new AppointmentService(mockUnitOfWork.Object, _mapper, null, _mockLogger.Object);
 
             // Act
             var result = await service.GetByIdAsync(testId);
@@ -392,7 +403,7 @@ namespace CalHealth.BookingService.Test.ServiceTests
         public async Task TestGetByConsultantIdConsultantIdInvalid()
         {
             // Arrange
-            var service = new AppointmentService(null, null, null);
+            var service = new AppointmentService(null, null, null, null);
 
             // Act
             async Task TestAction() => await service.GetByConsultantAsync(0);
@@ -417,7 +428,7 @@ namespace CalHealth.BookingService.Test.ServiceTests
                     It.IsAny<bool>()))
                 .ReturnsAsync(new List<Appointment> { testEntity });
             
-            var service = new AppointmentService(mockUnitOfWork.Object, null, _mapper);
+            var service = new AppointmentService(mockUnitOfWork.Object, _mapper, null, _mockLogger.Object);
             
             // Act
             var result = await service.GetByConsultantAsync(testConsultantId);

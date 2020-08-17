@@ -134,7 +134,8 @@ namespace CalHealth.BookingService.Test.ControllerTests
             var response = await controller.Post(null);
 
             // Assert
-            var actionResult = Assert.IsAssignableFrom<BadRequestResult>(response);
+            var actionResult = Assert.IsAssignableFrom<BadRequestObjectResult>(response);
+            Assert.Equal("The dto parameter cannot be null.", actionResult.Value);
         }
 
         [Fact]
@@ -147,7 +148,8 @@ namespace CalHealth.BookingService.Test.ControllerTests
             var response = await controller.Post(new AppointmentDTO { Patient = null });
 
             // Assert
-            var actionResult = Assert.IsAssignableFrom<BadRequestResult>(response);
+            var actionResult = Assert.IsAssignableFrom<BadRequestObjectResult>(response);
+            Assert.Equal($"The Patient property of the {typeof(AppointmentDTO)} parameter cannot be null.", actionResult.Value);
         }
 
 
@@ -200,7 +202,8 @@ namespace CalHealth.BookingService.Test.ControllerTests
             var response = await controller.Post(dto);
 
             // Assert
-            var actionResult = Assert.IsAssignableFrom<BadRequestResult>(response);
+            var actionResult = Assert.IsAssignableFrom<BadRequestObjectResult>(response);
+            Assert.Equal("No patient entity matching the specified personal details was found.", actionResult.Value);
         }
 
     }

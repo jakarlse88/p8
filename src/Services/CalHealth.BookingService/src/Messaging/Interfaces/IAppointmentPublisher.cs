@@ -1,9 +1,9 @@
-﻿namespace CalHealth.BookingService.Messaging.Interfaces
+﻿using CalHealth.Messages;
+
+namespace CalHealth.BookingService.Messaging.Interfaces
 {
     public interface IAppointmentPublisher
     {
-        bool PushMessageToQueue(AppointmentMessage entity);
-        public void Register();
-        public void Deregister();
+        bool PushMessageToQueue(AppointmentMessage message);
     }
 }

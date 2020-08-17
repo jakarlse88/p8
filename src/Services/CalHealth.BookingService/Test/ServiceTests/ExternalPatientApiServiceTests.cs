@@ -1,11 +1,16 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using CalHealth.BookingService.Infrastructure;
 using CalHealth.BookingService.Models;
 using CalHealth.BookingService.Services;
 using Microsoft.Extensions.Caching.Memory;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Moq;
 using Moq.Protected;
 using Newtonsoft.Json;
@@ -15,11 +20,23 @@ namespace CalHealth.BookingService.Test.ServiceTests
 {
     public class ExternalPatientApiServiceTests
     {
+        private readonly IOptions<ExternalPatientApiOptions> _options;
+
+        public ExternalPatientApiServiceTests()
+        {
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", false)
+                .Build();
+
+            _options = Options.Create(configuration.GetSection("ExternalPatientApi").Get<ExternalPatientApiOptions>());
+        }
+
         [Fact]
         public async Task TestPatientExistsArgumentNull()
         {
             // Arrange
-            var service = new ExternalPatientApiService(null, null);
+            var service = new ExternalPatientApiService(Mock.Of<IMemoryCache>(), Mock.Of<IHttpClientFactory>(), Mock.Of<IOptions<ExternalPatientApiOptions>>(), Mock.Of<ILogger<ExternalPatientApiService>>());
 
             // Act
             async Task TestAction() => await service.PatientExists(null);
@@ -40,7 +57,18 @@ namespace CalHealth.BookingService.Test.ServiceTests
                 LastName = lastName
             };
 
-            var service = new ExternalPatientApiService(null, null);
+            var cache = new MemoryCache(new MemoryCacheOptions());
+            
+            var mockLogger = new Mock<ILogger<ExternalPatientApiService>>();
+            mockLogger.Setup(l => l.Log(
+                    LogLevel.Information,
+                    It.IsAny<EventId>(),
+                    It.IsAny<It.IsAnyType>(),
+                    It.IsAny<Exception>(),
+                    (Func<It.IsAnyType, Exception, string>) It.IsAny<object>()))
+                .Verifiable();
+            
+            var service = new ExternalPatientApiService(cache, Mock.Of<IHttpClientFactory>(), Mock.Of<IOptions<ExternalPatientApiOptions>>(), mockLogger.Object);
 
             // Act
             async Task TestAction() => await service.PatientExists(null);
@@ -61,37 +89,43 @@ namespace CalHealth.BookingService.Test.ServiceTests
             };
 
             var cache = new MemoryCache(new MemoryCacheOptions());
-            var mockHandler = new Mock<HttpMessageHandler>(MockBehavior.Strict);
-            mockHandler
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.IsAny<HttpRequestMessage>(),
+
+            var mockFactory = new Mock<IHttpClientFactory>();
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(),
                     ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Content = new StringContent(JsonConvert.SerializeObject(true))
-                })
+                    Content = new StringContent(true.ToString()),
+                });
+
+            var client = new HttpClient(mockHttpMessageHandler.Object);
+            mockFactory.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(client);
+
+            var expectedUri =
+                new Uri(
+                    $"https://localhost:5003/api/patient/exists?firstName={testPatient.FirstName}&lastName={testPatient.LastName}&dateOfBirth={testPatient.DateOfBirth.ToShortDateString()}");
+
+            var mockLogger = new Mock<ILogger<ExternalPatientApiService>>();
+            mockLogger.Setup(l => l.Log(
+                    LogLevel.Information,
+                    It.IsAny<EventId>(),
+                    It.IsAny<It.IsAnyType>(),
+                    It.IsAny<Exception>(),
+                    (Func<It.IsAnyType, Exception, string>) It.IsAny<object>()))
                 .Verifiable();
 
-            
-            var httpClient = new HttpClient(mockHandler.Object)
-            {
-                BaseAddress = new Uri("https://localhost:8083")
-            };
+            var service = new ExternalPatientApiService(cache, mockFactory.Object, _options, mockLogger.Object);
 
-            var expectedUri = new Uri($"https://localhost:8083/api/patient/exists?firstName={testPatient.FirstName}&lastName={testPatient.LastName}&dateOfBirth={testPatient.DateOfBirth.ToShortDateString()}");
-            
-            var service = new ExternalPatientApiService(httpClient, cache);
-            
             // Act
             var result = await service.PatientExists(testPatient);
 
             // Assert
             Assert.True(result);
-            
-            mockHandler
+
+            mockHttpMessageHandler
                 .Protected()
                 .Verify(
                     "SendAsync",
@@ -116,37 +150,43 @@ namespace CalHealth.BookingService.Test.ServiceTests
             };
 
             var cache = new MemoryCache(new MemoryCacheOptions());
-            var mockHandler = new Mock<HttpMessageHandler>(MockBehavior.Strict);
-            mockHandler
-                .Protected()
-                .Setup<Task<HttpResponseMessage>>(
-                    "SendAsync",
-                    ItExpr.IsAny<HttpRequestMessage>(),
+            
+            var mockFactory = new Mock<IHttpClientFactory>();
+            var mockHttpMessageHandler = new Mock<HttpMessageHandler>();
+            mockHttpMessageHandler.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(),
                     ItExpr.IsAny<CancellationToken>())
                 .ReturnsAsync(new HttpResponseMessage
                 {
                     StatusCode = HttpStatusCode.OK,
-                    Content = new StringContent(JsonConvert.SerializeObject(false))
-                })
+                    Content = new StringContent("{true}"),
+                });
+
+            var client = new HttpClient(mockHttpMessageHandler.Object);
+            mockFactory.Setup(_ => _.CreateClient(It.IsAny<string>())).Returns(client);
+            
+            var mockLogger = new Mock<ILogger<ExternalPatientApiService>>();
+            mockLogger.Setup(l => l.Log(
+                    LogLevel.Information,
+                    It.IsAny<EventId>(),
+                    It.IsAny<It.IsAnyType>(),
+                    It.IsAny<Exception>(),
+                    (Func<It.IsAnyType, Exception, string>) It.IsAny<object>()))
                 .Verifiable();
 
-            
-            var httpClient = new HttpClient(mockHandler.Object)
-            {
-                BaseAddress = new Uri("https://localhost:8083")
-            };
+            var expectedUri =
+                new Uri(
+                    $"https://localhost:5003/api/patient/exists?firstName={testPatient.FirstName}&lastName={testPatient.LastName}&dateOfBirth={testPatient.DateOfBirth.ToShortDateString()}");
 
-            var expectedUri = new Uri($"https://localhost:8083/api/patient/exists?firstName={testPatient.FirstName}&lastName={testPatient.LastName}&dateOfBirth={testPatient.DateOfBirth.ToShortDateString()}");
-            
-            var service = new ExternalPatientApiService(httpClient, cache);
-            
+            var service = new ExternalPatientApiService(cache, mockFactory.Object, _options, mockLogger.Object);
+
             // Act
             var result = await service.PatientExists(testPatient);
 
             // Assert
             Assert.False(result);
-            
-            mockHandler
+
+            mockHttpMessageHandler
                 .Protected()
                 .Verify(
                     "SendAsync",
@@ -158,6 +198,5 @@ namespace CalHealth.BookingService.Test.ServiceTests
                     ItExpr.IsAny<CancellationToken>()
                 );
         }
-
     }
 }

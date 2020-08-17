@@ -11,6 +11,7 @@ using Microsoft.OpenApi.Models;
 using CalHealth.BookingService.Data;
 using CalHealth.BookingService.Messaging;
 using CalHealth.BookingService.Messaging.Interfaces;
+using EasyNetQ;
 using Polly;
 using Polly.Extensions.Http;
 
@@ -38,28 +39,19 @@ namespace CalHealth.BookingService.Infrastructure.Extensions
         internal static IServiceCollection AddServiceLayer(this IServiceCollection services,
             IConfiguration configuration)
         {
+            var rabbitString = $"host={configuration["RabbitMQ:HostName"]};";
+            rabbitString += "virtualHost=" + (configuration["RabbitMQ:VirtualHost"] ?? "/") + ";";
+            rabbitString += $"username={configuration["RabbitMQ:User"]};";
+            rabbitString += $"password={configuration["RabbitMQ:Password"]}";
+            
             services
-                .AddTransient<IAppointmentService, AppointmentService>()
-                .AddTransient<ITimeSlotService, TimeSlotService>()
-                .AddTransient<IConsultantService, ConsultantService>()
-                .AddHttpClient<IExternalPatientApiService, ExternalPatientApiService>(cfg =>
-                {
-                    var options = new ExternalPatientApiOptions();
-                    configuration.GetSection(ExternalPatientApiOptions.ExternalPatientApi).Bind(options);
-
-                    cfg.BaseAddress = new Uri($"{options.Protocol}://{options.HostName}:{options.Port}");
-                })
-                .AddPolicyHandler(GetRetryPolicy());
-                // .AddPolicyHandler(GetCircuitBreakerPolicy());
-
-            return services;
-        }
-
-        internal static IServiceCollection AddMessagingLayer(this IServiceCollection services)
-        {
-            services
+                .AddHttpClient()
+                .AddSingleton<IExternalPatientApiService, ExternalPatientApiService>()
+                .AddSingleton<IBus>(RabbitHutch.CreateBus(rabbitString))
                 .AddSingleton<IAppointmentPublisher, AppointmentPublisher>()
-                .AddSingleton<IPatientSubscriber, PatientSubscriber>();
+                .AddScoped<IAppointmentService, AppointmentService>()
+                .AddTransient<ITimeSlotService, TimeSlotService>()
+                .AddTransient<IConsultantService, ConsultantService>();
 
             return services;
         }
@@ -98,7 +90,11 @@ namespace CalHealth.BookingService.Infrastructure.Extensions
             IConfiguration configuration)
         {
             services.AddDbContext<BookingContext>(opt =>
-                opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                opt.UseSqlServer(configuration.GetConnectionString("DefaultConnection"), options =>
+                {
+                    options.EnableRetryOnFailure();
+                    options.CommandTimeout(300);
+                }));
 
             return services;
         }
@@ -109,7 +105,7 @@ namespace CalHealth.BookingService.Infrastructure.Extensions
             {
                 config.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Calendar Service",
+                    Title = "Booking Service",
                     Version = "v1",
                     Description = "Californian Health Booking Service API",
                     Contact = new OpenApiContact
@@ -131,26 +127,6 @@ namespace CalHealth.BookingService.Infrastructure.Extensions
             });
 
             return services;
-        }
-
-        private static IAsyncPolicy<HttpResponseMessage> GetRetryPolicy()
-        {
-            var jitterer = new Random();
-            
-            return HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .OrResult(msg => msg.StatusCode == System.Net.HttpStatusCode.NotFound)
-                .WaitAndRetryAsync(6,
-                    retryAttempt => TimeSpan.FromSeconds(Math.Pow(2, retryAttempt))  
-                                    + TimeSpan.FromMilliseconds(jitterer.Next(0, 100))
-                );
-        }
-        
-        static IAsyncPolicy<HttpResponseMessage> GetCircuitBreakerPolicy()
-        {
-            return HttpPolicyExtensions
-                .HandleTransientHttpError()
-                .CircuitBreakerAsync(5, TimeSpan.FromSeconds(30));
         }
     }
 }
