@@ -23,7 +23,27 @@
     <ItemGroup>
       <Content Update="Configuration\ocelot.json">
         <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
-        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Update="appsettings.Production.json">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Update="appsettings.json">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Update="appsettings.Development.json">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+      <Content Update="Configuration\ocelot.Development.json">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
       </Content>
     </ItemGroup>

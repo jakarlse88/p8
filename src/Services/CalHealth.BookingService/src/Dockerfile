@@ -12,6 +12,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/core/sdk:3.1-buster AS build
 WORKDIR /src
+COPY ["Infrastructure/CalHealth.Messages/CalHealth.Messages.csproj", "Client/CalHealth.Blazor/Server/"]
 COPY ["Services/CalHealth.BookingService/src/CalHealth.BookingService.csproj", "Services/CalHealth.BookingService/src/"]
 RUN dotnet restore "Services/CalHealth.BookingService/src/CalHealth.BookingService.csproj"
 COPY . .

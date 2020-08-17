@@ -50,12 +50,12 @@ namespace CalHealth.BookingService.Controllers
         }
 
         /// <summary>
-        /// Get all <see cref="Appointment"/> entities associated with a given <seealso cref="Consultant"/> entity.
+        /// Get all <see cref="Appointment"/> entities associated with a given <see cref="Consultant"/> entity.
         /// </summary>
-        /// <param name="consultantId"></param>
-        /// <returns></returns>
+        /// <param name="consultantId">ID by which to query.</param>
+        /// <returns>A list of all <see cref="Appointment"/> entities associated with the given <see cref="Consultant"/>.</returns>
         /// <response code="200">Query OK.</response>
-        /// <response code="400">Malformed request (invalid <paramref name="consultantId"/>).</response>
+        /// <response code="400">No <see cref="Consultant"/> entities exist with the given ID.</response>
         [HttpGet]
         [Route("consultant/{consultantId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -74,16 +74,16 @@ namespace CalHealth.BookingService.Controllers
         }
         
         /// <summary>
-        /// Creates a new appointment.
+        /// Creates a new <see cref="Appointment"/> entity.
         /// </summary>
-        /// <returns></returns>
+        /// <returns><see cref="CreatedAtActionResult"/> with the created entity's ID.</returns>
         /// <response code="201">The entity was successfully created.</response>
         /// <response code="400">Bad request.</response>
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Post(AppointmentDTO dto)
-        { 
+        {
             if (dto == null)
             {
                 return BadRequest($"The {nameof(dto)} parameter cannot be null.");

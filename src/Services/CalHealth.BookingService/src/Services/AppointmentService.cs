@@ -8,7 +8,8 @@ using CalHealth.BookingService.Messaging;
 using CalHealth.BookingService.Messaging.Interfaces;
 using CalHealth.BookingService.Models;
 using CalHealth.BookingService.Repositories;
-using Serilog;
+using CalHealth.Messages;
+using Microsoft.Extensions.Logging;
 
 namespace CalHealth.BookingService.Services
 {
@@ -17,14 +18,16 @@ namespace CalHealth.BookingService.Services
         private readonly IAppointmentPublisher _appointmentPublisher;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ILogger<AppointmentService> _logger;
         private readonly Calendar _calendar;
         private readonly CultureInfo _cultureInfo;
 
-        public AppointmentService(IUnitOfWork unitOfWork, IAppointmentPublisher appointmentPublisher, IMapper mapper)
+        public AppointmentService(IUnitOfWork unitOfWork, IMapper mapper, IAppointmentPublisher appointmentPublisher, ILogger<AppointmentService> logger)
         {
             _unitOfWork = unitOfWork;
-            _appointmentPublisher = appointmentPublisher;
             _mapper = mapper;
+            _appointmentPublisher = appointmentPublisher;
+            _logger = logger;
             _cultureInfo = new CultureInfo("en-US");
             _calendar = _cultureInfo.Calendar;
         }
@@ -46,7 +49,7 @@ namespace CalHealth.BookingService.Services
             {
                 throw new ArgumentNullException(nameof(model.Patient));
             }
-
+            
             var entity = await GenerateEntity(model);
 
             if (model.Date.Date < DateTime.Today.Date
@@ -54,7 +57,7 @@ namespace CalHealth.BookingService.Services
             {
                 return null;
             }
-
+            
             try
             {
                 await PersistToDb(entity);
@@ -62,16 +65,15 @@ namespace CalHealth.BookingService.Services
                 EmitMessage(model, entity);
 
                 var mappedEntity = _mapper.Map<AppointmentDTO>(entity);
-
+                
                 return mappedEntity;
             }
             catch (Exception e)
             {
-                Log.Error("An exception was raised while attempting to create an appointment: {@exception}", e);
+                _logger.LogError($"An exception was raised while attempting to create an appointment: {e}", e);
                 await _unitOfWork.RollbackAsync();
+                return null;
             }
-
-            return null;
         }
 
         private async Task PersistToDb(Appointment entity)
@@ -119,7 +121,7 @@ namespace CalHealth.BookingService.Services
             catch (Exception e)
             {
                 await _unitOfWork.RollbackAsync();
-                Log.Error("An error has occurred: {@error}", e);
+                _logger.LogError($"An error has occurred: {e}", e);
                 throw;
             }
         }
@@ -204,6 +206,7 @@ namespace CalHealth.BookingService.Services
                 throw new ArgumentNullException(nameof(model));
             }
 
+            
             var consultant = await GetConsultantEntityAsync(model);
             var week = await GetWeekEntityAsync(model);
             var day = await GetDayEntityAsync(model);
@@ -242,7 +245,7 @@ namespace CalHealth.BookingService.Services
 
             var result = await _unitOfWork.WeekRepository.GetByIdAsync(_calendar.GetWeekOfYear(model.Date,
                 _cultureInfo.DateTimeFormat.CalendarWeekRule,
-                _cultureInfo.DateTimeFormat.FirstDayOfWeek));
+                _cultureInfo.DateTimeFormat.FirstDayOfWeek) % 52);
 
             return result;
         }

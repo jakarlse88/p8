@@ -4,13 +4,14 @@ using System.Threading.Tasks;
 using CalHealth.Blazor.Client.Models;
 using CalHealth.Blazor.Client.Services.Interfaces;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 
 namespace CalHealth.Blazor.Client.Pages.ConsultantOverview
 {
     public partial class ConsultantOverview
     {
         [Inject] private IApiRequestService ApiRequestService { get; set; }
-        private const string RequestUrl = "https://localhost:8088/gateway/consultant";
+        [Inject] private IWebAssemblyHostEnvironment Env { get; set; }
         private IEnumerable<ConsultantViewModel> Consultants { get; set; }
         private APIOperationStatus Status { get; set; }
 
@@ -18,11 +19,15 @@ namespace CalHealth.Blazor.Client.Pages.ConsultantOverview
         {
             Status = APIOperationStatus.Initial;
             Consultants = new List<ConsultantViewModel>();
+            var requestUrl =
+                Env.IsDevelopment()
+                    ? "https://localhost:5009/client-gw/consultant"
+                    : "https://localhost:8088/client-gw/consultant";
 
             try
             {
                 Consultants =
-                    await ApiRequestService.HandleGetRequest<IEnumerable<ConsultantViewModel>>(RequestUrl);
+                    await ApiRequestService.HandleGetRequest<IEnumerable<ConsultantViewModel>>(requestUrl);
                 Status = APIOperationStatus.GET_Success;
             }
             catch (Exception e)
